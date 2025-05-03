@@ -1,19 +1,17 @@
-import { useNavigation } from "expo-router";
-import { useRef } from "react";
-import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-const { height } = Dimensions.get('window');
-import { Feather, MaterialIcons } from '@expo/vector-icons';
 import CardBuilding from "@/components/fragments/CardBuilding/CardBuilding";
-import GaleriIcon from '../assets/images/galeri.svg';
-import ReportIcon from '../assets/images/report.svg';
-import BuildingIcon from '../assets/images/building.svg';
-import OtherIcon from '../assets/images/other.svg';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from "expo-router";
+import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
+import BuildingIcon from '../assets/images/building.svg';
+import GaleriIcon from '../assets/images/galeri.svg';
+import OtherIcon from '../assets/images/other.svg';
+import ReportIcon from '../assets/images/report.svg';
+const { height } = Dimensions.get('window');
 
 
 export default function Index() {
   const navigation: any = useNavigation()
-  const ref: any = useRef();
   const data = [
     {
       title: 'Jalan Rusak',
@@ -101,7 +99,7 @@ export default function Index() {
 
         {/* layanan */}
         <View className="px-2">
-          <Text className="text-lg font-semibold my-5 text-slate-600">Layanan</Text>
+          <Text className="text-lg font-semibold my-5 text-primary">Layanan</Text>
           <View className="flex-row flex-wrap justify-between">
             {layananData.map((item, index) => (
               <View key={index} className="items-center w-[20%] my-2">
@@ -115,92 +113,38 @@ export default function Index() {
 
         </View>
 
-        {/*  */}
+        {/* progres */}
         <View className="bg-primary h-36 my-6 rounded-xl p-5 overflow-hidden">
           <View className="flex-row items-center justify-between h-full">
             <View className="flex-row items-center gap-2">
-              <Svg height="60" width="60" viewBox="0 0 100 100">
-                <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="#F9F8A7"
-                  strokeWidth="10"
-                  opacity={0.2}
-                  fill="none"
-                />
-                <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="#F9F8A7"
-                  strokeWidth="10"
-                  strokeDasharray={2 * Math.PI * 45}
-                  strokeDashoffset={(1 - 0.45) * 2 * Math.PI * 45} // 45% progress
-                  strokeLinecap="round"
-                  rotation="-90"
-                  origin="50,50"
-                  fill="none"
-                />
+              {[...Array(3)].map((index) => (
+                <Svg height="60" width="60" viewBox="0 0 100 100" key={index}>
+                  <Circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="#F9F8A7"
+                    strokeWidth="10"
+                    opacity={0.2}
+                    fill="none"
+                  />
+                  <Circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="#F9F8A7"
+                    strokeWidth="10"
+                    strokeDasharray={2 * Math.PI * 45}
+                    strokeDashoffset={(1 - 0.45) * 2 * Math.PI * 45} // 45% progress
+                    strokeLinecap="round"
+                    rotation="-90"
+                    origin="50,50"
+                    fill="none"
+                  />
 
-              </Svg>
-              <Svg height="60" width="60" viewBox="0 0 100 100">
-                <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="#F9F8A7"
-                  strokeWidth="10"
-                  opacity={0.2}
-                  fill="none"
-                />
-                <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="#F9F8A7"
-                  strokeWidth="10"
-                  strokeDasharray={2 * Math.PI * 45}
-                  strokeDashoffset={(1 - 0.45) * 2 * Math.PI * 45} // 45% progress
-                  strokeLinecap="round"
-                  rotation="-90"
-                  origin="50,50"
-                  fill="none"
-                />
-
-              </Svg>
-              <Svg height="60" width="60" viewBox="0 0 100 100">
-                <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="#F9F8A7"
-                  strokeWidth="10"
-                  opacity={0.2}
-                  fill="none"
-                />
-                <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="#F9F8A7"
-                  strokeWidth="10"
-                  strokeDasharray={2 * Math.PI * 45}
-                  strokeDashoffset={(1 - 0.45) * 2 * Math.PI * 45} // 45% progress
-                  strokeLinecap="round"
-                  rotation="-90"
-                  origin="50,50"
-                  fill="none"
-                />
-
-              </Svg>
-
-
+                </Svg>
+              ))}
             </View>
-
-
-
-
 
 
             <View className="relative">
@@ -213,15 +157,30 @@ export default function Index() {
         </View>
 
 
-        <Text className="text-lg font-semibold mb-5 text-slate-600">Laporan Prioritas 🔥</Text>
+        <View>
+          <Text className="text-lg font-semibold mb-5 text-primary">Laporan Prioritas 🔥</Text>
 
-        {/* data belum di map */}
-        <View className="flex flex-row flex-wrap ">
-          {data.map((item: any, index: any) => (
-            <CardBuilding key={index} title={item.title}
-              desc={item.desc} location={() => navigation.navigate('report')} />
-          ))}
+          {/* data laporan */}
+          <View className="flex flex-row flex-wrap ">
+            {data.map((item: any, index: any) => (
+              <CardBuilding key={index} title={item.title}
+                desc={item.desc} location={() => navigation.navigate('report')} />
+            ))}
+          </View>
         </View>
+
+        <View>
+          <Text className="text-lg font-semibold my-5 text-primary">Laporan Reguler 🍃</Text>
+
+          {/* data laporan */}
+          <View className="flex flex-row flex-wrap ">
+            {data.map((item: any, index: any) => (
+              <CardBuilding key={index} title={item.title}
+                desc={item.desc} location={() => navigation.navigate('report')} />
+            ))}
+          </View>
+        </View>
+
 
       </View>
     </ScrollView >
