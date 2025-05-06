@@ -1,7 +1,13 @@
 import CardBuilding from "@/components/fragments/CardBuilding/CardBuilding";
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "expo-router";
+import React from "react";
 import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
+import Carousel, {
+  ICarouselInstance,
+  Pagination
+} from "react-native-reanimated-carousel";
 import Svg, { Circle } from "react-native-svg";
 import BuildingIcon from '../assets/images/building.svg';
 import GaleriIcon from '../assets/images/galeri.svg';
@@ -9,7 +15,8 @@ import OtherIcon from '../assets/images/other.svg';
 import ReportIcon from '../assets/images/report.svg';
 const { height } = Dimensions.get('window');
 
-
+const dataCaraosel = [...new Array(6).keys()];
+const width = Dimensions.get("window").width;
 export default function Index() {
   const navigation: any = useNavigation()
   const data = [
@@ -54,6 +61,21 @@ export default function Index() {
     },
   ];
   console.log(GaleriIcon);
+
+  const ref = React.useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+
+  const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      /**
+       * Calculate the difference between the current index and the target index
+       * to ensure that the carousel scrolls to the nearest index
+       */
+      count: index - progress.value,
+      animated: true,
+    });
+  };
+
 
   return (
     <ScrollView className='pt-4 px-2 bg-white' style={{ height: height }} >
@@ -117,7 +139,7 @@ export default function Index() {
         <View className="bg-primary h-36 my-6 rounded-xl p-5 overflow-hidden">
           <View className="flex-row items-center justify-between h-full">
             <View className="flex-row items-center gap-2">
-              {[...Array(3)].map((index) => (
+              {[...Array(3)].map((_, index) => (
                 <Svg height="60" width="60" viewBox="0 0 100 100" key={index}>
                   <Circle
                     cx="50"
@@ -181,6 +203,35 @@ export default function Index() {
           </View>
         </View>
 
+        <View style={{ flex: 1 }}>
+          <Carousel
+            ref={ref}
+            width={width}
+            height={width / 2}
+            data={dataCaraosel}
+            onProgressChange={progress}
+            renderItem={({ item, index }) => (
+              <View
+                key={item} // item = 0, 1, 2, 3, 4, 5 → sudah unik
+                style={{
+                  flex: 1,
+                  borderWidth: 1,
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ textAlign: "center", fontSize: 30 }}>{index}</Text>
+              </View>
+            )}
+          />
+
+          <Pagination.Basic
+            progress={progress}
+            data={data}
+            dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
+            containerStyle={{ gap: 5, marginTop: 10 }}
+            onPress={onPressPagination}
+          />
+        </View>
 
       </View>
     </ScrollView >
