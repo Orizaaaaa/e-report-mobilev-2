@@ -1,14 +1,12 @@
-import CardBuilding from "@/components/fragments/CardBuilding/CardBuilding";
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "expo-router";
 import React from "react";
-import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, ScrollView, Text, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
   Pagination
 } from "react-native-reanimated-carousel";
-import Svg, { Circle } from "react-native-svg";
 import BuildingIcon from '../assets/images/building.svg';
 import GaleriIcon from '../assets/images/galeri.svg';
 import OtherIcon from '../assets/images/other.svg';
@@ -119,24 +117,41 @@ export default function Index() {
           </View>
         </View>
 
-        {/* layanan */}
-        <View className="px-2">
-          <Text className="text-lg font-semibold my-5 text-primary">Layanan</Text>
-          <View className="flex-row flex-wrap justify-between">
-            {layananData.map((item, index) => (
-              <View key={index} className="items-center w-[20%] my-2">
-                <TouchableOpacity className="w-24 h-20 p-3 rounded-xl bg-white shadow-xl shadow-slate-500">
-                  {item.image}
-                </TouchableOpacity>
-                <Text className="mt-2 text-sm text-center text-slate-600">{item.label}</Text>
-              </View>
-            ))}
-          </View>
 
+
+
+        <View className='w-full h-40 rounded-3xl my-5 overflow-hidden relative'>
+          {/* Gambar */}
+          <Image
+            className='w-full h-full'
+            source={require('../assets/images/study1.png')}
+            resizeMode='cover'
+          />
+
+          {/* Overlay hitam */}
+          <View className='absolute inset-0 bg-black/30' />
+
+          {/* Konten di bawah */}
+          <View className='absolute bottom-0 left-0 right-0 p-5'>
+            <Text className='text-white text-lg'>Lomba Koding 3 April</Text>
+            <Text className='text-white text-sm'>Terbuka untuk umum</Text>
+
+            <View className='flex-row justify-between items-center mt-3'>
+              <View>
+                <Text className='text-black text-sm py-2 px-3 bg-slate-200 rounded-2xl'>Gabung</Text>
+              </View>
+
+              <View className='p-2 bg-slate-200 rounded-full'>
+                <MaterialIcons name="keyboard-double-arrow-right" size={20} color="black" />
+              </View>
+            </View>
+          </View>
         </View>
 
+
+
         {/* progres */}
-        <View className="bg-primary h-36 my-6 rounded-xl p-5 overflow-hidden">
+        {/* <View className="bg-primary h-36 my-6 rounded-xl p-5 overflow-hidden">
           <View className="flex-row items-center justify-between h-full">
             <View className="flex-row items-center gap-2">
               {[...Array(3)].map((_, index) => (
@@ -176,32 +191,31 @@ export default function Index() {
               <View className="absolute right-[-50] bottom-[-100] h-32 w-32 rounded-full bg-gray-700 opacity-60" />
             </View>
           </View>
-        </View>
+        </View> */}
 
 
-        <View>
+        {/* <View>
           <Text className="text-lg font-semibold mb-5 text-primary">Laporan Prioritas 🔥</Text>
 
-          {/* data laporan */}
+         
           <View className="flex flex-row flex-wrap ">
             {data.map((item: any, index: any) => (
               <CardBuilding key={index} title={item.title}
                 desc={item.desc} location={() => navigation.navigate('report')} />
             ))}
           </View>
-        </View>
+        </View> */}
 
-        <View>
+        {/* <View>
           <Text className="text-lg font-semibold my-5 text-primary">Laporan Reguler 🍃</Text>
 
-          {/* data laporan */}
           <View className="flex flex-row flex-wrap ">
             {data.map((item: any, index: any) => (
               <CardBuilding key={index} title={item.title}
                 desc={item.desc} location={() => navigation.navigate('report')} />
             ))}
           </View>
-        </View>
+        </View> */}
 
         <View style={{ flex: 1 }}>
           <Carousel
