@@ -22,7 +22,8 @@ module.exports = {
     extend: {
       textColors: {
         primary: '#020E22',
-        secondary: '#1B1E28'
+        secondary: '#1B1E28',
+        blueCustom: '#1C3BA4'
       },
       fontFamily: {
         Geometric: ['Geometric', 'sans-serif'],
@@ -31,14 +32,16 @@ module.exports = {
       },
       backgroundColor: {
         primary: '#020E22',
-        light: '#F7F7F9'
+        light: '#F7F7F9',
+        blueCustom: '#1C3BA4'
       },
       borderColor: {
         primary: '#020E22',
       },
       colors: {
         primary: '#020E22',
-        secondary: '#1B1E28'
+        secondary: '#1B1E28',
+        blueCustom: '#1C3BA4'
       }
     },
   },

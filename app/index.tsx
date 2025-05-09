@@ -67,7 +67,7 @@ export default function Index() {
 
 
 
-        <View className='w-full h-40 rounded-3xl my-5 overflow-hidden relative'>
+        <View className='w-full h-40 rounded-3xl mt-5 mb-7 overflow-hidden relative'>
           {/* Gambar */}
           <Image
             className='w-full h-full'
@@ -95,11 +95,16 @@ export default function Index() {
           </View>
         </View>
 
+        <View className='flex-row justify-between items-center mb-3 '>
+          <Text>Laporan prioritas</Text>
+          <Text className='text-blueCustom'>Lihat Semua</Text>
+        </View>
+
 
         <View style={{ flex: 1 }}>
           <Carousel
             ref={ref}
-            width={width * 0.8}
+            width={width * 0.9}
             height={(width * 0.8) / 1.8}
             data={dataCaraosel}
             onProgressChange={progress}
