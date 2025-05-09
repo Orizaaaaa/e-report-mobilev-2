@@ -9,7 +9,7 @@ import Carousel, {
 import GaleriIcon from '../assets/images/galeri.svg';
 const { height } = Dimensions.get('window');
 
-const dataCaraosel = [...new Array(6).keys()];
+
 const width = Dimensions.get("window").width;
 export default function Index() {
   const navigation: any = useNavigation()
@@ -18,7 +18,32 @@ export default function Index() {
 
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
-
+  const dataCaraosel = [
+    {
+      id: '1',
+      title: 'title 1',
+      desc: 'lorem ipsum dolor sit amet',
+      image: require('../assets/images/demo.png')
+    },
+    {
+      id: '2',
+      title: 'title 1',
+      desc: 'lorem ipsum dolor sit amet',
+      image: require('../assets/images/demo.png')
+    },
+    {
+      id: '3',
+      title: 'title 1',
+      desc: 'lorem ipsum dolor sit amet',
+      image: require('../assets/images/demo.png')
+    },
+    {
+      id: '4',
+      title: 'title 1',
+      desc: 'lorem ipsum dolor sit amet',
+      image: require('../assets/images/demo.png')
+    },
+  ];
 
 
 
@@ -123,19 +148,20 @@ export default function Index() {
             snapEnabled={false}
             renderItem={({ item, index }) => (
               <View
-                key={item}
+                key={index}
                 style={{
                   flex: 1,
                   marginRight: 10,
-                  borderRadius: 16,
-                  borderWidth: 1,
                   justifyContent: 'center',
-                  backgroundColor: '#333',
+
                 }}
               >
-                <Text style={{ textAlign: "center", fontSize: 30, color: 'white' }}>
-                  {index}
-                </Text>
+                <View className='w-full h-full p-2  bg-primary rounded-2xl'>
+                  <View className='flex-row h-full'>
+                    <Image className='w-1/2 h-full rounded-2xl' source={item.image} resizeMode='cover' />
+                    <Text>{item.id}</Text>
+                  </View>
+                </View>
               </View>
             )}
           />
