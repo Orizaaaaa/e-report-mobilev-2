@@ -4,75 +4,22 @@ import React from "react";
 import { Dimensions, Image, ScrollView, Text, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
-  ICarouselInstance,
-  Pagination
+  ICarouselInstance
 } from "react-native-reanimated-carousel";
-import BuildingIcon from '../assets/images/building.svg';
 import GaleriIcon from '../assets/images/galeri.svg';
-import OtherIcon from '../assets/images/other.svg';
-import ReportIcon from '../assets/images/report.svg';
 const { height } = Dimensions.get('window');
 
 const dataCaraosel = [...new Array(6).keys()];
 const width = Dimensions.get("window").width;
 export default function Index() {
   const navigation: any = useNavigation()
-  const data = [
-    {
-      title: 'Jalan Rusak',
-      desc: 'Lorem ipsum dolor s...'
-    },
-    {
-      title: 'Jalan Rusak',
-      desc: 'Lorem ipsum dolor s...'
-    },
-    {
-      title: 'Jalan Rusak',
-      desc: 'Lorem ipsum dolor s...'
-    },
-    {
-      title: 'Jalan Rusak',
-      desc: 'Lorem ipsum dolor s...'
-    },
 
-  ]
-
-
-
-  const layananData = [
-    {
-      image: <ReportIcon width="100%" height="100%" fill="black" />,
-      label: 'Laporan'
-    },
-    {
-      image: <BuildingIcon width="100%" height="100%" fill="black" />,
-      label: 'Bangunan'
-    },
-    {
-      image: <GaleriIcon width="100%" height="100%" fill="black" />,
-      label: 'Galeri desa'
-    },
-
-    {
-      image: <OtherIcon width="100%" height="100%" fill="black" />,
-      label: 'Lainnya'
-    },
-  ];
   console.log(GaleriIcon);
 
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
-  const onPressPagination = (index: number) => {
-    ref.current?.scrollTo({
-      /**
-       * Calculate the difference between the current index and the target index
-       * to ensure that the carousel scrolls to the nearest index
-       */
-      count: index - progress.value,
-      animated: true,
-    });
-  };
+
 
 
   return (
@@ -149,74 +96,6 @@ export default function Index() {
         </View>
 
 
-
-        {/* progres */}
-        {/* <View className="bg-primary h-36 my-6 rounded-xl p-5 overflow-hidden">
-          <View className="flex-row items-center justify-between h-full">
-            <View className="flex-row items-center gap-2">
-              {[...Array(3)].map((_, index) => (
-                <Svg height="60" width="60" viewBox="0 0 100 100" key={index}>
-                  <Circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    stroke="#F9F8A7"
-                    strokeWidth="10"
-                    opacity={0.2}
-                    fill="none"
-                  />
-                  <Circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    stroke="#F9F8A7"
-                    strokeWidth="10"
-                    strokeDasharray={2 * Math.PI * 45}
-                    strokeDashoffset={(1 - 0.45) * 2 * Math.PI * 45} // 45% progress
-                    strokeLinecap="round"
-                    rotation="-90"
-                    origin="50,50"
-                    fill="none"
-                  />
-
-                </Svg>
-              ))}
-            </View>
-
-
-            <View className="relative">
-              <View className="absolute right-[-140] bottom-[-190] h-80 w-80 rounded-full bg-gray-400 opacity-20" />
-              <View className="absolute right-[-110] bottom-[-160] h-64 w-64 rounded-full bg-gray-500 opacity-30" />
-              <View className="absolute right-[-80] bottom-[-130] h-48 w-48 rounded-full bg-gray-600 opacity-40" />
-              <View className="absolute right-[-50] bottom-[-100] h-32 w-32 rounded-full bg-gray-700 opacity-60" />
-            </View>
-          </View>
-        </View> */}
-
-
-        {/* <View>
-          <Text className="text-lg font-semibold mb-5 text-primary">Laporan Prioritas 🔥</Text>
-
-         
-          <View className="flex flex-row flex-wrap ">
-            {data.map((item: any, index: any) => (
-              <CardBuilding key={index} title={item.title}
-                desc={item.desc} location={() => navigation.navigate('report')} />
-            ))}
-          </View>
-        </View> */}
-
-        {/* <View>
-          <Text className="text-lg font-semibold my-5 text-primary">Laporan Reguler 🍃</Text>
-
-          <View className="flex flex-row flex-wrap ">
-            {data.map((item: any, index: any) => (
-              <CardBuilding key={index} title={item.title}
-                desc={item.desc} location={() => navigation.navigate('report')} />
-            ))}
-          </View>
-        </View> */}
-
         <View style={{ flex: 1 }}>
           <Carousel
             ref={ref}
@@ -238,13 +117,7 @@ export default function Index() {
             )}
           />
 
-          <Pagination.Basic
-            progress={progress}
-            data={data}
-            dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
-            containerStyle={{ gap: 5, marginTop: 10 }}
-            onPress={onPressPagination}
-          />
+
         </View>
 
       </View>
