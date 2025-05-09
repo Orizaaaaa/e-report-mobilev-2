@@ -99,26 +99,44 @@ export default function Index() {
         <View style={{ flex: 1 }}>
           <Carousel
             ref={ref}
-            width={width}
-            height={width / 2}
+            width={width * 0.8}
+            height={(width * 0.8) / 1.8}
             data={dataCaraosel}
             onProgressChange={progress}
+            style={{
+              width: width,
+              alignSelf: 'flex-start', // penting untuk menempel ke kiri
+            }}
+            mode="parallax"
+            modeConfig={{
+              parallaxScrollingScale: 1,
+              parallaxScrollingOffset: 0,
+              parallaxAdjacentItemScale: 1,
+            }}
+            pagingEnabled={false}
+            loop={false}
+            snapEnabled={false}
             renderItem={({ item, index }) => (
               <View
-                key={item} // item = 0, 1, 2, 3, 4, 5 → sudah unik
+                key={item}
                 style={{
                   flex: 1,
+                  marginRight: 10,
+                  borderRadius: 16,
                   borderWidth: 1,
-                  justifyContent: "center",
+                  justifyContent: 'center',
+                  backgroundColor: '#333',
                 }}
               >
-                <Text style={{ textAlign: "center", fontSize: 30 }}>{index}</Text>
+                <Text style={{ textAlign: "center", fontSize: 30, color: 'white' }}>
+                  {index}
+                </Text>
               </View>
             )}
           />
 
-
         </View>
+
 
       </View>
     </ScrollView >
