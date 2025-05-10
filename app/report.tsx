@@ -13,35 +13,51 @@ const dummyData = [
 ];
 
 
+
 const reportScreen = () => {
-    const navigationScreen = (value: string) => {
-        if (value === 'priority') {
-            return 'priorityScreen'
-        } else {
-            return 'regularScreen'
-        }
-    }
-
     const [searchText, setSearchText] = useState('');
-    const filteredData = dummyData.filter(item =>
-        item.name.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const [activePage, setActivePage] = useState<'regular' | 'prioritas' | 'laporan'>('regular');
 
+    const renderContent = () => {
+        switch (activePage) {
+            case 'regular':
+                return <Text className="p-4">Ini halaman Regular</Text>;
+            case 'prioritas':
+                return <Text className="p-4">Ini halaman Prioritas</Text>;
+            case 'laporan':
+                return <Text className="p-4">Ini halaman Buat Laporan</Text>;
+            default:
+                return null;
+        }
+    };
 
     return (
         <LayoutPage>
-            <View className='w-full bg-[#EBEEF0]  rounded-lg'>
-                <View className='flex-row justify-between items-center py-2 px-5'>
-                    <TouchableOpacity className='bg-white py-2 px-4 rounded-lg shadow-2xl'>
+            {/* multipages */}
+            <View className="flex-1  bg-[#EBEEF0] rounded-lg">
+                {/* Tab Navigation */}
+                <View className="flex-row justify-between items-center py-3 px-5  rounded-lg ">
+                    <TouchableOpacity
+                        className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'regular' ? 'bg-white' : ''}`}
+                        onPress={() => setActivePage('regular')}
+                    >
                         <Text>Regular</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'prioritas' ? 'bg-white' : ''}`}
+                        onPress={() => setActivePage('prioritas')}
+                    >
                         <Text>Prioritas</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'laporan' ? 'bg-white' : ''}`}
+                        onPress={() => setActivePage('laporan')}
+                    >
                         <Text>Buat laporan</Text>
                     </TouchableOpacity>
                 </View>
+
+
             </View>
 
             <View className="mt-5 flex-row items-center gap-2">
@@ -60,9 +76,12 @@ const reportScreen = () => {
                 </View>
             </View>
 
-
+            {/* Content */}
+            <View className="bg-white rounded-lg">
+                {renderContent()}
+            </View>
         </LayoutPage>
-    )
+    );
 }
 
-export default reportScreen
+export default reportScreen;
