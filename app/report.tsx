@@ -1,6 +1,16 @@
-import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage'
-import { Feather } from '@expo/vector-icons'
-import { Text, TouchableOpacity, View } from 'react-native'
+import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
+import { Feather } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+// Dummy data
+const dummyData = [
+    { id: '1', name: 'Baju Katun' },
+    { id: '2', name: 'Celana Jeans' },
+    { id: '3', name: 'Sepatu Sneakers' },
+    { id: '4', name: 'Jaket Hoodie' },
+    { id: '5', name: 'Kaos Polos' },
+];
 
 
 const reportScreen = () => {
@@ -11,6 +21,13 @@ const reportScreen = () => {
             return 'regularScreen'
         }
     }
+
+    const [searchText, setSearchText] = useState('');
+    const filteredData = dummyData.filter(item =>
+        item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+
     return (
         <LayoutPage>
             <View className='w-full bg-[#EBEEF0]  rounded-lg'>
@@ -27,17 +44,23 @@ const reportScreen = () => {
                 </View>
             </View>
 
-            <View className="mt-5 flex flex-row items-center  gap-2">
-                <View className="flex-1 border-2 border-gray-300 h-14 justify-center px-2 rounded-lg">
-                    <View className="flex-row items-center gap-2">
-                        <Feather name="search" size={24} color="gray" />
-                        <Text className="text-gray-400" >Cari apa saja...</Text>
-                    </View>
+            <View className="mt-5 flex-row items-center gap-2">
+                <View className="flex-1 border-2 border-gray-300 h-14 px-2 rounded-lg flex-row items-center gap-2">
+                    <Feather name="search" size={24} color="gray" />
+                    <TextInput
+                        className="flex-1 text-gray-800"
+                        placeholder="Cari apa saja..."
+                        value={searchText}
+                        onChangeText={setSearchText}
+                    />
                 </View>
-                <View className="w-24 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
+
+                <View className="w-14 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
                     <Feather name="menu" size={24} color="black" />
                 </View>
             </View>
+
+
         </LayoutPage>
     )
 }
