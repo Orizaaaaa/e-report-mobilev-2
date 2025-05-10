@@ -1,12 +1,11 @@
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "expo-router";
 import React from "react";
-import { Dimensions, Image, ScrollView, Text, View } from "react-native";
+import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance
 } from "react-native-reanimated-carousel";
-import GaleriIcon from '../assets/images/galeri.svg';
 const { height } = Dimensions.get('window');
 
 
@@ -14,7 +13,6 @@ const width = Dimensions.get("window").width;
 export default function Index() {
   const navigation: any = useNavigation()
 
-  console.log(GaleriIcon);
 
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -44,6 +42,11 @@ export default function Index() {
       image: require('../assets/images/demo.png')
     },
   ];
+
+  const handlePress = () => {
+    console.log('Tombol custom ditekan!');
+  };
+
 
 
 
@@ -130,7 +133,7 @@ export default function Index() {
           <Carousel
             ref={ref}
             width={width * 0.9}
-            height={(width * 0.8) / 1.8}
+            height={(width * 0.8) / 1.5}
             data={dataCaraosel}
             onProgressChange={progress}
             style={{
@@ -168,8 +171,13 @@ export default function Index() {
                       <Text className=' text-white text-base'>{item.title}</Text>
                       <Text className=' text-white text-base mt-2'>{item.desc}</Text>
                     </View>
-
                   </View>
+                  <TouchableOpacity
+                    onPress={handlePress}
+                    className='bg-white p-2 rounded-lg mt-3'
+                  >
+                    <Text className='text-sm text-center text-primary'>Selengkapnya</Text>
+                  </TouchableOpacity>
                 </View>
 
               </View>
