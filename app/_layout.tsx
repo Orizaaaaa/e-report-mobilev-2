@@ -40,8 +40,8 @@ const circle2 = {
 const tabs = [
   { name: 'index', title: 'Beranda', icon: 'home' },
   { name: 'galery', title: 'Galeri', icon: 'images-outline' },
-  { name: 'report', title: 'Buat Laporan', icon: 'camera-outline' },
-  { name: 'building', title: 'Profile', icon: 'business-outline' },
+  { name: 'report', title: 'Laporan', icon: 'camera-outline' },
+  { name: 'building', title: 'Pembangunan', icon: 'business-outline' },
   { name: 'profile', title: 'Profile', icon: 'person-outline' },
 ];
 
@@ -110,6 +110,7 @@ export default function Layout() {
         screenOptions={{
           headerShown: false,
           tabBarStyle: styles.tabBar,
+          tabBarHideOnKeyboard: true
         }}
       >
         {tabs.map((tab, index) => (
