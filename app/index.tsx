@@ -21,8 +21,8 @@ export default function Index() {
   const dataCaraosel = [
     {
       id: '1',
-      title: 'title 1',
-      desc: 'lorem ipsum dolor sit amet',
+      title: 'Jalan Rusak',
+      desc: 'lorem ipsum dolor sit amet...',
       image: require('../assets/images/demo.png')
     },
     {
@@ -156,12 +156,22 @@ export default function Index() {
 
                 }}
               >
-                <View className='w-full h-full p-2  bg-primary rounded-2xl'>
-                  <View className='flex-row h-full'>
-                    <Image className='w-1/2 h-full rounded-2xl' source={item.image} resizeMode='cover' />
-                    <Text>{item.id}</Text>
+                <View className='w-full p-3 bg-primary rounded-2xl'>
+                  <View className='flex-row gap-3 space-x-3'>
+                    <Image
+                      className='w-2/5 aspect-square rounded-2xl'
+                      source={item.image}
+                      resizeMode='cover'
+                    />
+
+                    <View className='flex-1'>
+                      <Text className=' text-white text-base'>{item.title}</Text>
+                      <Text className=' text-white text-base mt-2'>{item.desc}</Text>
+                    </View>
+
                   </View>
                 </View>
+
               </View>
             )}
           />
