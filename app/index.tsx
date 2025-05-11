@@ -53,7 +53,7 @@ export default function Index() {
 
   return (
     <ScrollView className='pt-4 px-3 bg-white' style={{ height: height }} >
-      <View className="mb-32">
+      <View className="mb-40">
         <View className='flex-row items-center w-full justify-between  p-1   ' >
 
           <View className="gap-3 flex-col" >
@@ -100,7 +100,7 @@ export default function Index() {
 
 
 
-        <View className='w-full h-40 rounded-3xl mt-5 mb-7 overflow-hidden relative'>
+        <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative'>
           {/* Gambar */}
           <Image
             className='w-full h-full'
@@ -129,8 +129,10 @@ export default function Index() {
         </View>
 
 
-        <CaraoselReport textTitle='laporan prioritas' backgroundCard='bg-primary' bgButton='bg-white' colorButton='text-primary' color='text-white' dataCaraosel={data} />
-        <CaraoselReport textTitle='laporan reguler' backgroundCard='bg-white shadow-2xl' bgButton='bg-primary' colorButton='text-white' color='text-primary' dataCaraosel={data} />
+        <CaraoselReport margin='mt-5 mb-3' textTitle='laporan prioritas' dataCaraosel={data} />
+        {/* <CaraoselReport margin='mt-5 mb-2' textTitle='laporan reguler' dataCaraosel={data} /> */}
+
+
 
       </View>
     </ScrollView >

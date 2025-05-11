@@ -1,27 +1,25 @@
+import { Entypo } from '@expo/vector-icons';
 import React from 'react';
 import { Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 type Props = {
-    backgroundCard: string
     dataCaraosel: {
         id: string;
         title: string;
         desc: string;
         image: any;
     }[];
-    colorButton: string,
-    color: string,
-    bgButton: string,
-    textTitle: string
+    textTitle: string,
+    margin: string
 
 }
 
 const { height } = Dimensions.get('window');
 const width = Dimensions.get("window").width;
 
-const CaraoselReport = ({ backgroundCard, dataCaraosel, bgButton, color, colorButton, textTitle }: Props) => {
+const CaraoselReport = ({ dataCaraosel, textTitle, margin }: Props) => {
     const ref = React.useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
     const handlePress = () => {
@@ -29,7 +27,7 @@ const CaraoselReport = ({ backgroundCard, dataCaraosel, bgButton, color, colorBu
     };
     return (
         <>
-            <View className='flex-row justify-between items-center mb-3 mt-5'>
+            <View className={`flex-row justify-between items-center ${margin}`}>
                 <Text>{textTitle}</Text>
                 <TouchableOpacity
                     onPress={handlePress}
@@ -44,7 +42,7 @@ const CaraoselReport = ({ backgroundCard, dataCaraosel, bgButton, color, colorBu
                 <Carousel
                     ref={ref}
                     width={width * 0.9}
-                    height={(width * 0.8) / 1.5}
+                    height={300}
                     data={dataCaraosel}
                     onProgressChange={progress}
                     style={{
@@ -70,24 +68,32 @@ const CaraoselReport = ({ backgroundCard, dataCaraosel, bgButton, color, colorBu
 
                             }}
                         >
-                            <View className={`w-full p-3 ${backgroundCard} rounded-2xl `}>
-                                <View className='flex-row gap-3 space-x-3'>
-                                    <Image
-                                        className='w-2/5 aspect-square rounded-2xl'
-                                        source={item.image}
-                                        resizeMode='cover'
-                                    />
+                            <View className={`rounded-2xl flex-1`}>
+                                <Image
+                                    className=' rounded-tl-3xl  rounded-br-3xl w-full h-40'
+                                    source={item.image}
+                                    resizeMode='cover'
+                                />
 
-                                    <View className='flex-1'>
-                                        <Text className={` ${color} text-base`}>{item.title}</Text>
-                                        <Text className={` ${color} text-primary text-base mt-2`}>{item.desc}</Text>
+                                <View className='py-3 flex-1' >
+                                    <Text className={` text-lg text font-semibold`}>Demo Mahasiswa</Text>
+                                    <Text className={`  text-primary text-base `}>beberapa mahasiswa berdemo tentang hak asasin... </Text>
+                                    <View className='flex-row items-center gap-2 mt-3' >
+                                        <Entypo name="location-pin" size={15} color="red" />
+                                        <Text className='text-sm text-gray-500' >Bandung, pasir kaliki</Text>
                                     </View>
+                                    <View className='flex-row items-center gap-2 mt-2' >
+                                        <Entypo name="time-slot" size={15} color="black" />
+                                        <Text className='text-sm text-gray-500' >29 Maret 2023</Text>
+                                    </View>
+
                                 </View>
+
                                 <TouchableOpacity
                                     onPress={handlePress}
-                                    className={`${bgButton} p-2 rounded-lg mt-3`}
+                                    className=' p-2 rounded-lg  bg-primary '
                                 >
-                                    <Text className={`text-sm text-center ${colorButton}`}>Selengkapnya</Text>
+                                    <Text className={`text-base text-center  text-white `}>Selengkapnya</Text>
                                 </TouchableOpacity>
                             </View>
 
