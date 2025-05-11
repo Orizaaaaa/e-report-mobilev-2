@@ -88,52 +88,54 @@ const reportScreen = () => {
     };
 
     return (
-        <LayoutPage>
+        <LayoutPage padding='p-0'>
             {/* multipages */}
-            <View className="flex-1  bg-[#EBEEF0] rounded-lg">
+            <View className="bg-primary pb-14 px-3">
+
                 {/* Tab Navigation */}
-                <View className="flex-row justify-between items-center py-3 px-5  rounded-lg ">
+                <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-[#EBEEF0]  rounded-lg ">
                     <TouchableOpacity
                         className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'regular' ? 'bg-white' : ''}`}
                         onPress={() => setActivePage('regular')}
                     >
-                        <Text>Regular</Text>
+                        <Text>REGULER</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'prioritas' ? 'bg-white' : ''}`}
                         onPress={() => setActivePage('prioritas')}
                     >
-                        <Text>Prioritas</Text>
+                        <Text>PRIORITAS</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'laporan' ? 'bg-white' : ''}`}
                         onPress={() => setActivePage('laporan')}
                     >
-                        <Text>Buat laporan</Text>
+                        <Text>BUAT LAPORAN</Text>
                     </TouchableOpacity>
                 </View>
+                {/* search */}
+                <View className="mt-7 flex-row items-center gap-2">
+                    <View className="flex-1 border-2 border-white h-14 px-2 rounded-lg flex-row items-center gap-2">
+                        <Feather name="search" size={24} color="white" />
+                        <TextInput
+                            className="flex-1 text-white"
+                            placeholder="Cari apa saja..."
+                            placeholderTextColor="#FFFFFF"
+                            value={searchText}
+                            onChangeText={setSearchText}
+                        />
+                    </View>
 
-
+                    <View className="w-14 border-2 border-white h-14 justify-center items-center rounded-lg">
+                        <Feather name="menu" size={24} color="white" />
+                    </View>
+                </View>
             </View>
 
-            <View className="mt-5 flex-row items-center gap-2">
-                <View className="flex-1 border-2 border-gray-300 h-14 px-2 rounded-lg flex-row items-center gap-2">
-                    <Feather name="search" size={24} color="gray" />
-                    <TextInput
-                        className="flex-1 text-gray-800"
-                        placeholder="Cari apa saja..."
-                        value={searchText}
-                        onChangeText={setSearchText}
-                    />
-                </View>
 
-                <View className="w-14 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
-                    <Feather name="menu" size={24} color="black" />
-                </View>
-            </View>
 
             {/* Content */}
-            <View className="bg-white rounded-lg">
+            <View className="bg-white rounded-t-3xl p-4 -mt-6">
                 {renderContent()}
             </View>
         </LayoutPage>

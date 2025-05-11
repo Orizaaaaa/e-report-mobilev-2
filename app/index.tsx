@@ -1,8 +1,8 @@
 import CaraoselReport from '@/components/fragments/CaraoselReport/CaraoselReport';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "expo-router";
-import React from "react";
-import { Dimensions, Image, ScrollView, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Dimensions, Image, ScrollView, Text, TextInput, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import {
   ICarouselInstance
@@ -13,7 +13,7 @@ const { height } = Dimensions.get('window');
 const width = Dimensions.get("window").width;
 export default function Index() {
   const navigation: any = useNavigation()
-
+  const [searchText, setSearchText] = useState('');
 
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -52,7 +52,7 @@ export default function Index() {
 
 
   return (
-    <ScrollView className='pt-4 px-2 bg-white' style={{ height: height }} >
+    <ScrollView className='pt-4 px-3 bg-white' style={{ height: height }} >
       <View className="mb-32">
         <View className='flex-row items-center w-full justify-between  p-1   ' >
 
@@ -81,14 +81,18 @@ export default function Index() {
         </View>
 
 
-        <View className="mt-5 flex flex-row items-center  gap-2">
-          <View className="flex-1 border-2 border-gray-300 h-14 justify-center px-2 rounded-lg">
-            <View className="flex-row items-center gap-2">
-              <Feather name="search" size={24} color="gray" />
-              <Text className="text-gray-400" >Cari apa saja...</Text>
-            </View>
+        <View className="mt-5 flex-row items-center gap-2">
+          <View className="flex-1 border-2 border-gray-300 h-14 px-2 rounded-lg flex-row items-center gap-2">
+            <Feather name="search" size={24} color="gray" />
+            <TextInput
+              className="flex-1 text-gray-800"
+              placeholder="Cari apa saja..."
+              value={searchText}
+              onChangeText={setSearchText}
+            />
           </View>
-          <View className="w-24 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
+
+          <View className="w-14 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
             <Feather name="menu" size={24} color="black" />
           </View>
         </View>
