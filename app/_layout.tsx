@@ -41,7 +41,7 @@ const tabs = [
   { name: 'index', title: 'Beranda', icon: 'home' },
   { name: 'galery', title: 'Galeri', icon: 'images-outline' },
   { name: 'report', title: 'Laporan', icon: 'camera-outline' },
-  { name: 'building', title: 'Pembangunan', icon: 'business-outline' },
+  { name: 'building', title: 'Bangunan', icon: 'business-outline' },
   { name: 'profile', title: 'Profile', icon: 'person-outline' },
 ];
 

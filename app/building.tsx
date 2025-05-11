@@ -3,14 +3,14 @@ import { StyleSheet, Text, View } from 'react-native'
 
 type Props = {}
 
-const building = (props: Props) => {
+const Building = (props: Props) => {
     return (
         <View>
-            <Text>building</Text>
+            <Text>Building</Text>
         </View>
     )
 }
 
-export default building
+export default Building
 
 const styles = StyleSheet.create({})
