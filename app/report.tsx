@@ -103,7 +103,7 @@ const reportScreen = () => {
                     <View >
 
                         <View
-                            className={`w-full h-40  justify-center items-center rounded-lg ${images[mainImageIndex] ? '' : 'border-2 border-dotted'
+                            className={`w-full h-40 rounded-lg  justify-center items-center  ${images[mainImageIndex] ? '' : 'border-2 border-dotted'
                                 }`}
                         >
                             {images[mainImageIndex] ? (
@@ -150,11 +150,18 @@ const reportScreen = () => {
                             ))}
                         </View>
 
-                        {images[mainImageIndex] !== undefined && (
+                        {images.length > 0 && (
                             <Text className='text-sm italic text-red-700'>
                                 * Tekan gambar bila anda ingin mengganti gambar utama
                             </Text>
                         )}
+
+                        {images.length > 4 && (
+                            <Text className="text-sm italic text-red-700">
+                                * Bukti laporan maksimal 4
+                            </Text>
+                        )}
+
 
 
                         <View className="flex-row flex-wrap justify-between -mx-1">
