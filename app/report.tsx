@@ -1,11 +1,10 @@
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { Feather } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 // Dummy data
 const dummyData = [
@@ -20,6 +19,7 @@ const dummyData = [
 
 const reportScreen = () => {
     const [images, setImages] = useState<any[]>([]);
+    const [mainImageIndex, setMainImageIndex] = useState(0); // default gambar utama index 0
     const [searchText, setSearchText] = useState('');
     const [activePage, setActivePage] = useState<'regular' | 'prioritas' | 'laporan'>('regular');
 
@@ -59,6 +59,39 @@ const reportScreen = () => {
         }
     };
 
+    const pickImage = async (index: number) => {
+        const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (!permission.granted) {
+            alert('Permission to access gallery is required!');
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            const newImage = result.assets[0];
+
+            setImages(prev => {
+                const updated = [...prev];
+                updated[index] = newImage;
+                return updated;
+            });
+        }
+    };
+
+    const deleteImage = (index: number) => {
+        setImages(prev => {
+            const updated = [...prev];
+            updated.splice(index, 1);
+            // Sesuaikan index utama jika dihapus
+            if (mainImageIndex === index) setMainImageIndex(0);
+            return updated;
+        });
+    };
+
     const renderContent = () => {
         switch (activePage) {
             case 'regular':
@@ -68,6 +101,58 @@ const reportScreen = () => {
             case 'laporan':
                 return (
                     <View >
+
+                        <View
+                            className={`w-full h-40  justify-center items-center rounded-lg ${images[mainImageIndex] ? '' : 'border-2 border-dotted'
+                                }`}
+                        >
+                            {images[mainImageIndex] ? (
+                                <Image
+                                    source={{ uri: images[mainImageIndex].uri }}
+                                    className="w-full h-full rounded-lg"
+                                    resizeMode="cover"
+                                />
+                            ) : (
+                                <AntDesign name="plus" size={24} color="black" />
+                            )}
+                        </View>
+
+
+
+                        <View className="flex-row flex-wrap justify-start -mx-1 mt-2">
+                            {[0, 1, 2, 3].map(index => (
+                                <View key={index} className="basis-1/4 px-1 mb-2">
+                                    <TouchableOpacity
+                                        className="relative"
+                                        onPress={() =>
+                                            images[index]
+                                                ? setMainImageIndex(index)
+                                                : pickImage(index)
+                                        }
+                                        onLongPress={() => deleteImage(index)}
+                                    >
+                                        <View
+                                            className={`aspect-square rounded-lg justify-center items-center overflow-hidden ${images[index] ? '' : 'border-2 border-dotted'
+                                                }`}
+                                        >
+                                            {images[index] ? (
+                                                <Image
+                                                    source={{ uri: images[index].uri }}
+                                                    className="w-full h-full"
+                                                    resizeMode="cover"
+                                                />
+                                            ) : (
+                                                <AntDesign name="plus" size={24} color="black" />
+                                            )}
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            ))}
+                        </View>
+
+                        {images[mainImageIndex] && (
+                            <Text className='text-sm italic text-red-700'>Tekan gambar bila anda ingin mengganti gambar utama</Text>
+                        )}
 
                         <View className="flex-row flex-wrap justify-between -mx-1">
                             <View className="w-1/2 px-1">
@@ -79,7 +164,7 @@ const reportScreen = () => {
                         </View>
 
 
-                        <ScrollView horizontal style={styles.imageScroll}>
+                        {/* <ScrollView horizontal style={styles.imageScroll}>
                             {images.map((img, index) => (
                                 <Image
                                     key={index}
@@ -87,7 +172,7 @@ const reportScreen = () => {
                                     style={styles.image}
                                 />
                             ))}
-                        </ScrollView>
+                        </ScrollView> */}
                     </View>
                 )
             default:
