@@ -150,9 +150,12 @@ const reportScreen = () => {
                             ))}
                         </View>
 
-                        {images[mainImageIndex] && (
-                            <Text className='text-sm italic text-red-700'>Tekan gambar bila anda ingin mengganti gambar utama</Text>
+                        {images[mainImageIndex] !== undefined && (
+                            <Text className='text-sm italic text-red-700'>
+                                * Tekan gambar bila anda ingin mengganti gambar utama
+                            </Text>
                         )}
+
 
                         <View className="flex-row flex-wrap justify-between -mx-1">
                             <View className="w-1/2 px-1">
