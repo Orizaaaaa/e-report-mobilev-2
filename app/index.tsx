@@ -52,7 +52,7 @@ export default function Index() {
 
 
   return (
-    <ScrollView className='pt-4 px-3 bg-white' style={{ height: height }} >
+    <ScrollView className='pt-4 px-3 bg-white ' style={{ height: height }} >
       <View className="mb-40">
         <View className='flex-row items-center w-full justify-between  p-1   ' >
 

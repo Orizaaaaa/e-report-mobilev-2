@@ -174,15 +174,32 @@ const reportScreen = () => {
                         </View>
 
 
-                        {/* <ScrollView horizontal style={styles.imageScroll}>
-                            {images.map((img, index) => (
-                                <Image
-                                    key={index}
-                                    source={{ uri: img.uri }}
-                                    style={styles.image}
-                                />
-                            ))}
-                        </ScrollView> */}
+                        <View>
+                            <TextInput
+                                className="border-2 border-black rounded-lg p-3 mt-3"
+                                placeholder="Judul laporan..."
+                                value={searchText}
+                                onChangeText={setSearchText}
+                                multiline
+                                numberOfLines={4} // Mengatur jumlah baris awal
+                            />
+                        </View>
+
+                        <View>
+                            <TextInput
+                                className="border-2 border-black rounded-lg p-3 mt-3"
+                                placeholder="Masukkan deskripsi laporan..."
+                                multiline
+                                numberOfLines={6} // Mengatur tinggi area input dengan 6 baris
+                                style={{
+                                    textAlignVertical: 'top', // Menjaga teks tetap di atas pada multiline
+                                    height: 150, // Menentukan tinggi area input
+                                }}
+                            />
+                            <ButtonPrimary text="Cek Prioritas" className=" p-2 mt-2 rounded-lg" onPress={openCamera} />
+                        </View>
+
+
                     </View>
                 )
             default:
