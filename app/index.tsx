@@ -1,8 +1,8 @@
-import CaraoselReport from '@/components/fragments/CaraoselReport/CaraoselReport';
+import CardReport from '@/components/fragments/CardReport/CardReport';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "expo-router";
 import React, { useState } from "react";
-import { Dimensions, Image, ScrollView, Text, TextInput, View } from "react-native";
+import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import {
   ICarouselInstance
@@ -129,8 +129,21 @@ export default function Index() {
         </View>
 
 
-        <CaraoselReport margin='mt-5 mb-3' textTitle='laporan prioritas' dataCaraosel={data} />
-        {/* <CaraoselReport margin='mt-5 mb-2' textTitle='laporan reguler' dataCaraosel={data} /> */}
+        <View className='flex-row justify-between items-center mt-7 '>
+          <Text>Laporan prioritas</Text>
+          <TouchableOpacity
+            onPress={handlePress}
+          >
+            <Text className='text-blueCustom'>Lihat Semua</Text>
+          </TouchableOpacity>
+
+        </View>
+
+        <ScrollView className='mt-5 overflow-x-hidden' horizontal={true}>
+          <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
+          <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
+          <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
+        </ScrollView>
 
 
 

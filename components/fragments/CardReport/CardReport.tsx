@@ -9,7 +9,7 @@ type Props = {
 
 const CardReport = ({ image, handlepres }: Props) => {
     return (
-        <View className={`rounded-2xl flex-1`}>
+        <View className={`rounded-2xl flex-1 mr-3`}>
             <Image
                 className=' rounded-tl-3xl  rounded-br-3xl w-full h-40'
                 source={image}
