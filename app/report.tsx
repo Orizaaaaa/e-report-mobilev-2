@@ -1,8 +1,10 @@
+import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
+import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
 import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 // Dummy data
@@ -64,24 +66,30 @@ const reportScreen = () => {
             case 'prioritas':
                 return <Text className="p-4">Ini halaman Prioritas</Text>;
             case 'laporan':
-                return <View style={styles.container}>
-                    <Text style={styles.title}>Building</Text>
+                return (
+                    <View >
 
-                    <View style={styles.buttonGroup}>
-                        <Button title="Ambil Foto dari Kamera" onPress={openCamera} />
-                        <Button title="Pilih dari Galeri" onPress={openGallery} />
+                        <View className="flex-row flex-wrap justify-between -mx-1">
+                            <View className="w-1/2 px-1">
+                                <ButtonPrimary text="Buka Kamera" className=" p-2 mt-2 rounded-lg" onPress={openCamera} />
+                            </View>
+                            <View className="w-1/2 px-1">
+                                <ButtonSecondary text="Buka Galeri" className=" p-2 mt-2 rounded-lg" onPress={openGallery} />
+                            </View>
+                        </View>
+
+
+                        <ScrollView horizontal style={styles.imageScroll}>
+                            {images.map((img, index) => (
+                                <Image
+                                    key={index}
+                                    source={{ uri: img.uri }}
+                                    style={styles.image}
+                                />
+                            ))}
+                        </ScrollView>
                     </View>
-
-                    <ScrollView horizontal style={styles.imageScroll}>
-                        {images.map((img, index) => (
-                            <Image
-                                key={index}
-                                source={{ uri: img.uri }}
-                                style={styles.image}
-                            />
-                        ))}
-                    </ScrollView>
-                </View>
+                )
             default:
                 return null;
         }
