@@ -129,7 +129,7 @@ export default function Index() {
         </View>
 
 
-        <View className='flex-row justify-between items-center mt-7 '>
+        <View className='flex-row justify-between items-center mt-7 px-1'>
           <Text>Laporan prioritas</Text>
           <TouchableOpacity
             onPress={handlePress}
