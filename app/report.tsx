@@ -1,3 +1,4 @@
+import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
@@ -91,6 +92,14 @@ const reportScreen = () => {
             return updated;
         });
     };
+
+    const predict = () => {
+        const inputText = "lampu taman sudah mulai ada yang rusak ";
+        PostPredict(inputText, (result: any) => {
+            console.log("Prediction result:", result);
+        });
+    };
+
 
     const renderContent = () => {
         switch (activePage) {
@@ -196,7 +205,7 @@ const reportScreen = () => {
                                     height: 150, // Menentukan tinggi area input
                                 }}
                             />
-                            <ButtonPrimary text="Cek Prioritas" className=" p-2 mt-2 rounded-lg" onPress={openCamera} />
+                            <ButtonPrimary text="Cek Prioritas" className=" p-2 mt-2 rounded-lg" onPress={predict} />
                         </View>
 
 
