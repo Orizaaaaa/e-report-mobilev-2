@@ -1,6 +1,6 @@
 import axios from "axios";
 export const PostPredict = (text: any, callback: any) => {
-    axios.post(`http://192.168.9.85:5000/predict`, { text })
+    axios.post(`https://oryza22.pythonanywhere.com/predict`, { text })
         .then((result) => {
             callback(result.data)
         }).catch((err) => {

@@ -23,6 +23,7 @@ const reportScreen = () => {
     const [mainImageIndex, setMainImageIndex] = useState(0); // default gambar utama index 0
     const [searchText, setSearchText] = useState('');
     const [activePage, setActivePage] = useState<'regular' | 'prioritas' | 'laporan'>('regular');
+    console.log(images);
 
 
     const openCamera = async () => {
