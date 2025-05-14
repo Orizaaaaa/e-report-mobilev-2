@@ -74,11 +74,7 @@ export default function Index() {
 
         </View>
 
-        <View className=" flex-row justify-end  ">
-          <View className="p-2 border-2 border-gray-300 rounded-xl">
-            <MaterialIcons name="notifications-none" size={25} color="black" />
-          </View>
-        </View>
+
 
 
         <View className="mt-5 flex-row items-center gap-2">
@@ -92,9 +88,16 @@ export default function Index() {
             />
           </View>
 
+          <View className=" flex-row justify-end  ">
+            <View className="p-3 border-2 border-gray-300 rounded-xl">
+              <MaterialIcons name="notifications-none" size={25} color="black" />
+            </View>
+          </View>
           <View className="w-14 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
             <Feather name="menu" size={24} color="black" />
           </View>
+
+
         </View>
 
 

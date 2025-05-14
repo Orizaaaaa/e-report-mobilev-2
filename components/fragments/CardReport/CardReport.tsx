@@ -9,14 +9,14 @@ type Props = {
 
 const CardReport = ({ image, handlepres }: Props) => {
     return (
-        <View className={`rounded-2xl flex-1 mr-5 w-72`}>
+        <View className={`rounded-2xl flex-1 mr-5 w-72  `}>
             <Image
-                className=' rounded-tl-3xl  rounded-br-3xl w-full h-40'
+                className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
                 source={image}
                 resizeMode='cover'
             />
 
-            <View className='py-3 flex-1' >
+            <View className='py-3 ' >
                 <Text className={` text-lg text font-semibold`}>Demo Mahasiswa</Text>
                 <Text className={`  text-primary text-base `}>beberapa mahasiswa berdemo tent...</Text>
                 <View className='flex-row items-center gap-2 mt-3' >
