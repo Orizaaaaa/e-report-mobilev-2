@@ -144,7 +144,7 @@ export default function Index() {
 
         </View>
 
-        <ScrollView className='mt-5 overflow-x-hidden' horizontal={true} style={{ overflowX: 'hidden' }}>
+        <ScrollView className='mt-5 overflow-x-hidden' showsHorizontalScrollIndicator={false} horizontal={true} >
           <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
           <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
           <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
