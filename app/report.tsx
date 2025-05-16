@@ -220,24 +220,24 @@ const reportScreen = () => {
     return (
         <LayoutPage padding='p-0'>
             {/* multipages */}
-            <View className="bg-primary pb-14 px-3">
+            <View className="bg-primaryOrange pb-14 px-3">
 
                 {/* Tab Navigation */}
-                <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-[#EBEEF0]  rounded-lg ">
+                <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite  rounded-full ">
                     <TouchableOpacity
-                        className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'regular' ? 'bg-white' : ''}`}
+                        className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'regular' ? 'bg-primaryGreen' : ''}`}
                         onPress={() => setActivePage('regular')}
                     >
                         <Text>REGULER</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'prioritas' ? 'bg-white' : ''}`}
+                        className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'prioritas' ? 'bg-primaryGreen' : ''}`}
                         onPress={() => setActivePage('prioritas')}
                     >
                         <Text>PRIORITAS</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        className={`py-2 px-4 rounded-lg shadow-2xl ${activePage === 'laporan' ? 'bg-white' : ''}`}
+                        className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'laporan' ? 'bg-primaryGreen' : ''}`}
                         onPress={() => setActivePage('laporan')}
                     >
                         <Text>BUAT LAPORAN</Text>

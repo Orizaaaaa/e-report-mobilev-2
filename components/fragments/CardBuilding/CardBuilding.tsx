@@ -16,7 +16,7 @@ const CardBuilding = ({ title, desc, location }: Props) => {
                 </View>
                 <Text className="font-medium">{title}</Text>
                 <Text className="text-sm text-gray-600">{desc}</Text>
-                <TouchableOpacity className="bg-primary p-2 mt-2 rounded-lg">
+                <TouchableOpacity className="bg-primaryOrange p-2 mt-2 rounded-lg">
                     <Text onPress={() => { location() }} className="text-sm text-center text-white">Selengkap nya</Text>
                 </TouchableOpacity>
             </View>

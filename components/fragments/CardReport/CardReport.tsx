@@ -19,7 +19,7 @@ const CardReport = ({ image, handlepres }: Props) => {
 
             <View className='py-3 ' >
                 <Text className={` text-lg text font-semibold`}>Demo Mahasiswa</Text>
-                <Text className={`  text-primary text-base `}>beberapa mahasiswa berdemo...</Text>
+                <Text className={`  text-base `}>beberapa mahasiswa berdemo...</Text>
                 <View className='flex-row items-center gap-2 mt-3' >
                     <Entypo name="location-pin" size={15} color="red" />
                     <Text className='text-sm text-gray-500' >Bandung, pasir kaliki</Text>

@@ -88,7 +88,7 @@ export default function Index() {
             />
           </View>
 
-          <View className=" flex-row justify-end  ">
+          <View className=" flex-row justify-end">
             <View className="p-3 border-2 border-gray-300 rounded-xl">
               <MaterialIcons name="notifications-none" size={25} color="black" />
             </View>
@@ -137,7 +137,7 @@ export default function Index() {
           <TouchableOpacity
             onPress={handlePress}
           >
-            <Text className='text-blueCustom'>Lihat Semua</Text>
+            <Text className='text-primaryOrange'>Lihat Semua</Text>
           </TouchableOpacity>
 
         </View>

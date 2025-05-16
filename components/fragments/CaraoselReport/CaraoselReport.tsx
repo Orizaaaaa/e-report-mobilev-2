@@ -77,7 +77,7 @@ const CaraoselReport = ({ dataCaraosel, textTitle, margin }: Props) => {
 
                                 <View className='py-3 flex-1' >
                                     <Text className={` text-lg text font-semibold`}>Demo Mahasiswa</Text>
-                                    <Text className={`  text-primary text-base `}>beberapa mahasiswa berdemo tentang hak asasin... </Text>
+                                    <Text className={` text-base `}>beberapa mahasiswa berdemo tentang hak asasin... </Text>
                                     <View className='flex-row items-center gap-2 mt-3' >
                                         <Entypo name="location-pin" size={15} color="red" />
                                         <Text className='text-sm text-gray-500' >Bandung, pasir kaliki</Text>
@@ -91,7 +91,7 @@ const CaraoselReport = ({ dataCaraosel, textTitle, margin }: Props) => {
 
                                 <TouchableOpacity
                                     onPress={handlePress}
-                                    className=' p-2 rounded-lg  bg-primary '
+                                    className=' p-2 rounded-lg  bg-primaryOrange '
                                 >
                                     <Text className={`text-base text-center  text-white `}>Selengkapnya</Text>
                                 </TouchableOpacity>

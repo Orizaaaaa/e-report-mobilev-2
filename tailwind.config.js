@@ -23,7 +23,9 @@ module.exports = {
       textColors: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
-        primaryGreen: '#E2FA49'
+        primaryGreen: '#E2FA49',
+        primaryWhite: '#fbfafa',
+        primaryBlack: '#141414'
       },
       fontFamily: {
         Geometric: ['Geometric', 'sans-serif'],
@@ -33,7 +35,9 @@ module.exports = {
       backgroundColor: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
-        primaryGreen: '#E2FA49'
+        primaryGreen: '#E2FA49',
+        primaryWhite: '#fbfafa',
+        primaryBlack: '#141414'
       },
       borderColor: {
         primaryOrange: '#FF840C',
@@ -43,6 +47,8 @@ module.exports = {
       colors: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
+        primaryWhite: '#fbfafa',
+        primaryBlack: '#141414',
         primaryGreen: '#E2FA49'
       }
     },
