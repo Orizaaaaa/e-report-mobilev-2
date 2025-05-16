@@ -61,7 +61,7 @@ const TabButton = ({ item, onPress }: any) => {
   const circleRef = useRef<any>(null);
   const textRef = useRef<any>(null);
 
-  const bgColor = Colors.primaryWhite;
+  const bgColor = Colors.primaryBlack;
 
   useEffect(() => {
     if (focused) {
@@ -97,7 +97,7 @@ const TabButton = ({ item, onPress }: any) => {
         </View>
         <Animatable.Text
           ref={textRef}
-          style={[styles.text, { color: Colors.primaryBlack }]}>
+          style={[styles.text, { color: Colors.primaryWhite }]}>
           {item.title}
         </Animatable.Text>
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     borderRadius: 16,
-    backgroundColor: Colors.primaryWhite,
+    backgroundColor: Colors.primaryBlack,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 4,
-    borderColor: Colors.primaryWhite,
+    borderColor: Colors.primaryBlack,
     backgroundColor: Colors.primaryWhite,
     justifyContent: 'center',
     alignItems: 'center'
