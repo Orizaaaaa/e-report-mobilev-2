@@ -220,44 +220,55 @@ const reportScreen = () => {
     return (
         <LayoutPage padding='p-0'>
             {/* multipages */}
-            <View className="bg-primaryOrange pb-14 px-3">
+            <View className="bg-primaryOrange pb-14 px-3 relative overflow-hidden">
+                {/* Lapisan Lingkaran Dekoratif */}
+                <View className="absolute z-0 w-[400px] h-[400px] rounded-full bg-white/10 left-1/2 -translate-x-1/2 top-10" />
 
-                {/* Tab Navigation */}
-                <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite  rounded-full ">
-                    <TouchableOpacity
-                        className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'regular' ? 'bg-primaryGreen' : ''}`}
-                        onPress={() => setActivePage('regular')}
-                    >
-                        <Text>REGULER</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'prioritas' ? 'bg-primaryGreen' : ''}`}
-                        onPress={() => setActivePage('prioritas')}
-                    >
-                        <Text>PRIORITAS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'laporan' ? 'bg-primaryGreen' : ''}`}
-                        onPress={() => setActivePage('laporan')}
-                    >
-                        <Text>BUAT LAPORAN</Text>
-                    </TouchableOpacity>
-                </View>
-                {/* search */}
-                <View className="mt-7 flex-row items-center gap-2">
-                    <View className="flex-1 border-2 border-white h-14 px-2 rounded-lg flex-row items-center gap-2">
-                        <Feather name="search" size={24} color="white" />
-                        <TextInput
-                            className="flex-1 text-white"
-                            placeholder="Cari apa saja..."
-                            placeholderTextColor="#FFFFFF"
-                            value={searchText}
-                            onChangeText={setSearchText}
-                        />
+                {/* Lingkaran besar di pojok kanan */}
+                <View className="absolute z-0 w-[300px] h-[300px] rounded-full bg-white/10 -right-20 top-1/3" />
+
+                {/* Konten Utama */}
+                <View className="relative z-10">
+                    {/* Tombol Tab */}
+                    <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite rounded-full">
+                        <TouchableOpacity
+                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'regular' ? 'bg-primaryGreen' : ''}`}
+                            onPress={() => setActivePage('regular')}
+                        >
+                            <Text>REGULER</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'prioritas' ? 'bg-primaryGreen' : ''}`}
+                            onPress={() => setActivePage('prioritas')}
+                        >
+                            <Text>PRIORITAS</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'laporan' ? 'bg-primaryGreen' : ''}`}
+                            onPress={() => setActivePage('laporan')}
+                        >
+                            <Text>BUAT LAPORAN</Text>
+                        </TouchableOpacity>
                     </View>
 
-                    <View className="w-14 border-2 border-white h-14 justify-center items-center rounded-lg">
-                        <Feather name="menu" size={24} color="white" />
+                    {/* Search Bar */}
+                    <View className="mt-7 flex-row items-center gap-2">
+                        <View className="flex-1 border-2 border-white h-14 px-2 rounded-lg flex-row items-center gap-2">
+                            <Feather name="search" size={24} color="white" />
+                            <TextInput
+                                className="flex-1 text-white"
+                                placeholder="Cari apa saja..."
+                                placeholderTextColor="#FFFFFF"
+                                value={searchText}
+                                onChangeText={setSearchText}
+                            />
+                        </View>
+
+                        <View className="w-14 border-2 border-white h-14 justify-center items-center rounded-lg">
+                            <Feather name="menu" size={24} color="white" />
+                        </View>
                     </View>
                 </View>
             </View>

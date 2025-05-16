@@ -27,7 +27,7 @@ const CardReport = ({ image, handlepres }: Props) => {
             </View>
 
 
-            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlepres} ></ButtonPrimary>
+            <ButtonPrimary className='p-2 rounded-full' text='Selengkapnya' onPress={handlepres} ></ButtonPrimary>
         </View>
     )
 }
