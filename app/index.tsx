@@ -54,10 +54,12 @@ export default function Index() {
   return (
     <ScrollView className='pt-4 px-3 bg-white ' style={{ height: height }} >
       <View className="mb-40">
-        <View className='flex-row items-center w-full justify-between  p-1   ' >
+        <View>
+
+        </View>
+        <View className='flex-row items-center w-full justify-between p-1    ' >
 
           <View className="gap-3 flex-col" >
-            {/* <Text className="text-2xl">Hello !   </Text> */}
             <View className="flex-col gap-1">
               <Text className="text-xl font-semibold text-primaryBlack">Hi, Oriza Sativa 👋 </Text>
               <Text className="text-sm text-gray-500">Pamulang, Benda Baru, Tangerang Selatan </Text>
