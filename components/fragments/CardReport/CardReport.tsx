@@ -18,21 +18,16 @@ const CardReport = ({ image, handlepres }: Props) => {
             />
 
             <View className='py-3 ' >
-                <Text className={` text-lg text font-semibold`}>Demo Mahasiswa</Text>
-                <Text className={`  text-base `}>beberapa mahasiswa berdemo...</Text>
-                <View className='flex-row items-center gap-2 mt-3' >
-                    <Entypo name="location-pin" size={15} color="red" />
-                    <Text className='text-sm text-gray-500' >Bandung, pasir kaliki</Text>
+                {/* <Text className={`  text-base font-medium text-primaryOrange`}>Demo Mahasiswa</Text> */}
+                <Text className={`  text-sm font-light `}>Beberapa mahasiswa berdemo...</Text>
+                <View className='flex-row items-center gap-1 mt-1' >
+                    <Entypo name="location-pin" size={10} color="red" />
+                    <Text className='text-sm font-light text-gray-500' >bandung, pasir kaliki</Text>
                 </View>
-                {/* <View className='flex-row items-center gap-2 mt-2' >
-                    <Entypo name="time-slot" size={15} color="black" />
-                    <Text className='text-sm text-gray-500' >29 Maret 2023</Text>
-                </View> */}
-
             </View>
 
 
-            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={() => { }} ></ButtonPrimary>
+            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlepres} ></ButtonPrimary>
         </View>
     )
 }

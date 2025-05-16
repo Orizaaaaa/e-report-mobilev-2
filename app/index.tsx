@@ -57,10 +57,10 @@ export default function Index() {
         <View className='flex-row items-center w-full justify-between  p-1   ' >
 
           <View className="gap-3 flex-col" >
-            <Text className="text-2xl">👋 Hello !  </Text>
+            {/* <Text className="text-2xl">Hello !   </Text> */}
             <View className="flex-col gap-1">
-              <Text className="text-3xl font-semibold text-primary">Ahmad Kautsar </Text>
-              <Text className="text-sm text-gray-500">📍Pamulang, Benda Baru, Tangerang Selatan </Text>
+              <Text className="text-xl font-semibold text-primaryBlack">Hi, Oriza Sativa 👋 </Text>
+              <Text className="text-sm text-gray-500">Pamulang, Benda Baru, Tangerang Selatan </Text>
             </View>
           </View>
 
@@ -79,10 +79,10 @@ export default function Index() {
 
         <View className="mt-5 flex-row items-center gap-2">
           <View className="flex-1 border-2 border-gray-300 h-14 px-2 rounded-lg flex-row items-center gap-2">
-            <Feather name="search" size={24} color="gray" />
+            <Feather name="search" size={24} color="#FF840C" />
             <TextInput
               className="flex-1 text-gray-800"
-              placeholder="Cari apa saja..."
+              placeholder="Cari..."
               value={searchText}
               onChangeText={setSearchText}
             />
@@ -90,11 +90,11 @@ export default function Index() {
 
           <View className=" flex-row justify-end">
             <View className="p-3 border-2 border-gray-300 rounded-xl">
-              <MaterialIcons name="notifications-none" size={25} color="black" />
+              <MaterialIcons name="notifications-none" size={25} color="#FF840C" />
             </View>
           </View>
           <View className="w-14 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
-            <Feather name="menu" size={24} color="black" />
+            <Feather name="menu" size={24} color="#FF840C" />
           </View>
 
 
@@ -102,7 +102,7 @@ export default function Index() {
 
 
 
-
+        {/* buat di sini memiliki lengkungan sampai menutupi */}
         <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative'>
           {/* Gambar */}
           <Image
@@ -142,7 +142,7 @@ export default function Index() {
 
         </View>
 
-        <ScrollView className='mt-5 overflow-x-hidden' horizontal={true}>
+        <ScrollView className='mt-5 overflow-x-hidden' horizontal={true} style={{ overflowX: 'hidden' }}>
           <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
           <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
           <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
