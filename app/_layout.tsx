@@ -8,9 +8,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 
 const Colors = {
-  white: '#ffffff',
-  primary: '#102E50',
-  black: '#000000',
+
+  primaryOrange: '#FF840C',
+  primaryBlue: '#40D8D4',
+  primaryGreen: '#E2FA49',
+  primaryWhite: 'white',
+  primaryBlack: '#141414'
 };
 
 const animate1 = {
@@ -58,8 +61,7 @@ const TabButton = ({ item, onPress }: any) => {
   const circleRef = useRef<any>(null);
   const textRef = useRef<any>(null);
 
-  const color = Colors.black;
-  const bgColor = Colors.white;
+  const bgColor = Colors.primaryWhite;
 
   useEffect(() => {
     if (focused) {
@@ -85,19 +87,20 @@ const TabButton = ({ item, onPress }: any) => {
         <View style={[styles.btn, { backgroundColor: bgColor }]}>
           <Animatable.View
             ref={circleRef}
-            style={[styles.circle, { backgroundColor: Colors.primary }]}
+            style={[styles.circle, { backgroundColor: Colors.primaryGreen }]}
           />
           <Ionicons
             name={item.icon}
             size={24}
-            color={focused ? Colors.white : Colors.primary}
+            color={focused ? Colors.primaryBlack : Colors.primaryOrange}
           />
         </View>
         <Animatable.Text
           ref={textRef}
-          style={[styles.text, { color }]}>
+          style={[styles.text, { color: Colors.primaryBlack }]}>
           {item.title}
         </Animatable.Text>
+
       </Animatable.View>
     </TouchableOpacity>
   );
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     borderRadius: 16,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.primaryWhite,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -156,8 +159,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 4,
-    borderColor: Colors.white,
-    backgroundColor: Colors.white,
+    borderColor: Colors.primaryWhite,
+    backgroundColor: Colors.primaryWhite,
     justifyContent: 'center',
     alignItems: 'center'
   },

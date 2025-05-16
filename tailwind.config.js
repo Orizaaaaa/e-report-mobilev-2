@@ -21,9 +21,9 @@ module.exports = {
     },
     extend: {
       textColors: {
-        primary: '#020E22',
-        secondary: '#1B1E28',
-        blueCustom: '#1C3BA4'
+        primaryOrange: '#FF840C',
+        primaryBlue: '#40D8D4',
+        primaryGreen: '#E2FA49'
       },
       fontFamily: {
         Geometric: ['Geometric', 'sans-serif'],
@@ -31,17 +31,19 @@ module.exports = {
         Gil: ['Gil', 'sans-serif'],
       },
       backgroundColor: {
-        primary: '#020E22',
-        light: '#F7F7F9',
-        blueCustom: '#1C3BA4'
+        primaryOrange: '#FF840C',
+        primaryBlue: '#40D8D4',
+        primaryGreen: '#E2FA49'
       },
       borderColor: {
-        primary: '#020E22',
+        primaryOrange: '#FF840C',
+        primaryBlue: '#40D8D4',
+        primaryGreen: '#E2FA49'
       },
       colors: {
-        primary: '#020E22',
-        secondary: '#1B1E28',
-        blueCustom: '#1C3BA4'
+        primaryOrange: '#FF840C',
+        primaryBlue: '#40D8D4',
+        primaryGreen: '#E2FA49'
       }
     },
   },
