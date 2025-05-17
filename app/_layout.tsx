@@ -6,7 +6,6 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
-
 const Colors = {
 
   primaryOrange: '#FF840C',

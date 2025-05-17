@@ -104,7 +104,7 @@ export default function Index() {
 
 
 
-        {/* buat di sini memiliki lengkungan sampai menutupi */}
+
         <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative'>
           {/* Gambar */}
           <Image
@@ -114,11 +114,11 @@ export default function Index() {
           />
 
           {/* Overlay hitam */}
-          <View className='absolute inset-0 bg-black/30' />
+          <View className='absolute inset-0 bg-black/35' />
 
           {/* Konten di bawah */}
           <View className='absolute bottom-0 left-0 right-0 p-5'>
-            <Text className='text-white text-lg'>Lomba Koding 3 April</Text>
+            <Text className='text-white text-lg'>Lomba Koding <Text className='text-primaryGreen' >3</Text>  April</Text>
             <Text className='text-white text-sm'>Terbuka untuk umum</Text>
 
             <View className='flex-row justify-between items-center mt-3'>
@@ -134,21 +134,47 @@ export default function Index() {
         </View>
 
 
-        <View className='flex-row justify-between items-center mt-7 px-1'>
-          <Text>Laporan prioritas</Text>
-          <TouchableOpacity
-            onPress={handlePress}
-          >
-            <Text className='text-primaryOrange'>Lihat Semua</Text>
-          </TouchableOpacity>
+        <View className="w-full rounded-3xl mt-5">
+          <View className="flex-row gap-3 w-full h-40">
+            {/* Kiri */}
+            <View className="flex-1 bg-primaryOrange rounded-2xl justify-center items-center">
+              <Text className="text-white">Hallo</Text>
+            </View>
 
+            {/* Kanan */}
+            <View className="flex-1 justify-between">
+              <View className="flex-1 bg-primaryBlue rounded-2xl justify-center items-center mb-2">
+                <Text className="text-white">Hallo</Text>
+              </View>
+              <View className="flex-1 bg-primaryGreen rounded-2xl justify-center items-center mt-2">
+                <Text className="text-primaryBlack">Hallo</Text>
+              </View>
+            </View>
+          </View>
         </View>
 
-        <ScrollView className='mt-5 overflow-x-hidden' showsHorizontalScrollIndicator={false} horizontal={true} >
-          <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
-          <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
-          <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
-        </ScrollView>
+        {/* laporan */}
+        <View>
+          <View className='flex-row justify-between items-center mt-7 px-1'>
+            <Text>Laporan prioritas</Text>
+            <TouchableOpacity
+              onPress={handlePress}
+            >
+              <Text className='text-primaryOrange'>Lihat Semua</Text>
+            </TouchableOpacity>
+
+          </View>
+
+
+
+          <ScrollView className='mt-5 overflow-x-hidden' showsHorizontalScrollIndicator={false} horizontal={true} >
+            <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
+            <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
+            <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
+          </ScrollView>
+        </View>
+
+
 
 
 
