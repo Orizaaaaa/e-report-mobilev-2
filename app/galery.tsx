@@ -1,16 +1,21 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView from 'react-native-maps';
 
-type Props = {}
-
-const galery = (props: Props) => {
+export default function galery() {
     return (
-        <View>
-            <Text>galery</Text>
+        <View style={styles.container}>
+            <MapView style={styles.map} />
         </View>
-    )
+    );
 }
 
-export default galery
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    map: {
+        width: '100%',
+        height: '100%',
+    },
+});
