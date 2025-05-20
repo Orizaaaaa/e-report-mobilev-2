@@ -5,7 +5,8 @@ import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 
 // Dummy data
 const dummyData = [
@@ -19,6 +20,11 @@ const dummyData = [
 
 
 const reportScreen = () => {
+    const [selectedLocation, setSelectedLocation] = useState<{
+        latitude: number;
+        longitude: number;
+    } | null>(null);
+    const [fullScreen, setFullScreen] = useState(false);
     const [images, setImages] = useState<any[]>([]);
     const [mainImageIndex, setMainImageIndex] = useState(0); // default gambar utama index 0
     const [searchText, setSearchText] = useState('');
@@ -100,6 +106,14 @@ const reportScreen = () => {
             console.log("Prediction result:", result);
         });
     };
+
+    const handleMapPress = (event: MapPressEvent) => {
+        const { latitude, longitude } = event.nativeEvent.coordinate;
+        setSelectedLocation({ latitude, longitude });
+    };
+
+    console.log(selectedLocation);
+
 
 
     const renderContent = () => {
@@ -210,6 +224,67 @@ const reportScreen = () => {
                         </View>
 
 
+                        {/* Tampilan Map Kecil */}
+                        <View className="h-40 w-full rounded-xl overflow-hidden relative mt-4">
+                            <MapView
+                                style={{ flex: 1 }}
+                                initialRegion={{
+                                    latitude: -6.914744,
+                                    longitude: 107.60981,
+                                    latitudeDelta: 0.01,
+                                    longitudeDelta: 0.01,
+                                }}
+                                onPress={handleMapPress}
+                            >
+                                {selectedLocation && (
+                                    <Marker
+                                        coordinate={selectedLocation}
+                                        title="Lokasi dipilih"
+                                        description={`Lat: ${selectedLocation.latitude}, Lng: ${selectedLocation.longitude}`}
+                                    />
+                                )}
+                            </MapView>
+                            <TouchableOpacity
+                                className="absolute bottom-2 right-2 bg-black bg-opacity-60 px-3 py-1 rounded-md"
+                                onPress={() => setFullScreen(true)}
+                            >
+                                <Text className="text-white text-sm">Zoom</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Tampilkan Koordinat */}
+                        {selectedLocation && (
+                            <Text className="mt-3 text-sm text-gray-700">
+                                Koordinat: {selectedLocation.latitude.toFixed(6)}, {selectedLocation.longitude.toFixed(6)}
+                            </Text>
+                        )}
+
+                        {/* Modal Fullscreen Map */}
+                        <Modal visible={fullScreen} animationType="slide">
+                            <View className="flex-1 relative">
+                                <MapView
+                                    style={{ flex: 1 }}
+                                    initialRegion={{
+                                        latitude: selectedLocation?.latitude || -6.914744,
+                                        longitude: selectedLocation?.longitude || 107.60981,
+                                        latitudeDelta: 0.01,
+                                        longitudeDelta: 0.01,
+                                    }}
+                                    onPress={handleMapPress}
+                                >
+                                    {selectedLocation && (
+                                        <Marker coordinate={selectedLocation} title="Lokasi dipilih" />
+                                    )}
+                                </MapView>
+                                <TouchableOpacity
+                                    className="absolute top-10 right-4 bg-black bg-opacity-70 px-4 py-2 rounded-md"
+                                    onPress={() => setFullScreen(false)}
+                                >
+                                    <Text className="text-white text-base">Tutup</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </Modal>
+
                     </View>
                 )
             default:
@@ -306,5 +381,49 @@ const styles = StyleSheet.create({
         height: 100,
         marginRight: 10,
         borderRadius: 8,
+    },
+    mapWrapper: {
+        borderRadius: 16,
+        overflow: 'hidden',
+        height: 150,
+        width: '100%',
+        position: 'relative',
+    },
+    map: {
+        flex: 1,
+    },
+    zoomButton: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        backgroundColor: '#000',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 8,
+        opacity: 0.7,
+    },
+    zoomText: {
+        color: '#fff',
+        fontSize: 14,
+    },
+    fullScreenMapContainer: {
+        flex: 1,
+    },
+    fullScreenMap: {
+        flex: 1,
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 40,
+        right: 20,
+        backgroundColor: '#000',
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 8,
+        opacity: 0.8,
+    },
+    closeText: {
+        color: '#fff',
+        fontSize: 16,
     },
 });
