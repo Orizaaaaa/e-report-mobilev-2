@@ -10,7 +10,7 @@ type Props = {
 const ButtonSecondary = ({ className, text, onPress }: Props) => {
     return (
         <TouchableOpacity className={` border-2 border-primaryOrange ${className}`} onPress={onPress} >
-            <Text className='text-border-primaryOrange text-center' >{text}</Text>
+            <Text className='text-primaryOrange text-center' >{text}</Text>
         </TouchableOpacity>
     )
 }

@@ -176,7 +176,7 @@ const reportScreen = () => {
 
                         <View className="flex-row flex-wrap justify-between -mx-1">
                             <View className="w-1/2 px-1">
-                                <ButtonPrimary text="Buka Kamera" className=" p-2 mt-2 rounded-lg" onPress={openCamera} />
+                                <ButtonPrimary text="Buka Kamera" className=" p-2 mt-2 rounded-lg border-2 border-primaryGreen" onPress={openCamera} />
                             </View>
                             <View className="w-1/2 px-1">
                                 <ButtonSecondary text="Buka Galeri" className=" p-2 mt-2 rounded-lg" onPress={openGallery} />
