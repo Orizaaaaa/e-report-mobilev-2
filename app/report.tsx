@@ -6,7 +6,12 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
+import Kat1 from '../assets/images/kat1.svg';
+import Kat2 from '../assets/images/kat2.svg';
+import Kat3 from '../assets/images/kat3.svg';
+import Kat4 from '../assets/images/kat4.svg';
 
 // Dummy data
 const dummyData = [
@@ -220,7 +225,6 @@ const reportScreen = () => {
                                     height: 150, // Menentukan tinggi area input
                                 }}
                             />
-                            <ButtonPrimary text="Cek Prioritas" className=" p-2 mt-2 rounded-lg" onPress={predict} />
                         </View>
 
 
@@ -284,6 +288,35 @@ const reportScreen = () => {
                                 </TouchableOpacity>
                             </View>
                         </Modal>
+
+                        <ScrollView className='mt-5 overflow-x-hidden ' showsHorizontalScrollIndicator={false} horizontal={true} >
+                            <View className='mr-5'>
+                                <Kat1 />
+                            </View>
+
+                            <View className='mr-5'>
+                                <Kat2 />
+                            </View>
+
+                            <View className='mr-5'>
+                                <Kat3 />
+                            </View>
+
+                            <View className='mr-5'>
+                                <Kat4 />
+                            </View>
+                            <View className='mr-5'>
+                                <Kat4 />
+                            </View>
+                            <View className='mr-5'>
+                                <Kat4 />
+                            </View>
+                            <View className='mr-5'>
+                                <Kat4 />
+                            </View>
+                        </ScrollView>
+
+                        <ButtonPrimary text="Kirim Laporan" className=" p-3 mt-4 rounded-lg" onPress={predict} />
 
                     </View>
                 )
