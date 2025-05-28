@@ -41,8 +41,8 @@ const circle2 = {
 
 const tabs = [
   { name: 'index', title: 'Beranda', icon: 'home' },
-  { name: 'galery', title: 'Galeri', icon: 'images-outline' },
-  { name: 'report', title: 'Laporan', icon: 'camera-outline' },
+  { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'report', title: 'Laporan', icon: 'newspaper-outline' },
   { name: 'building', title: 'Bangunan', icon: 'business-outline' },
   { name: 'profile', title: 'Profile', icon: 'person-outline' },
 ];
