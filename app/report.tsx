@@ -328,7 +328,7 @@ const reportScreen = () => {
     return (
         <LayoutPage padding='p-0'>
             {/* multipages */}
-            <View className="bg-primaryOrange pb-14 px-3 relative overflow-hidden">
+            <View className="bg-primaryOrange pb-14 pt-12 px-3 relative overflow-hidden">
                 {/* Lapisan Lingkaran Dekoratif */}
                 <View className="absolute z-0 w-[400px] h-[400px] rounded-full bg-white/10 left-1/2 -translate-x-1/2 top-10" />
 
