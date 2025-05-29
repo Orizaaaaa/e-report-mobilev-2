@@ -43,7 +43,6 @@ const tabs = [
   { name: 'index', title: 'Beranda', icon: 'home' },
   { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'report', title: 'Laporan', icon: 'newspaper-outline' },
-  { name: 'building', title: 'Bangunan', icon: 'business-outline' },
   { name: 'profile', title: 'Profile', icon: 'person-outline' },
 ];
 

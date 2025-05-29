@@ -1,5 +1,5 @@
 import CardReport from '@/components/fragments/CardReport/CardReport';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -137,21 +137,47 @@ export default function Index() {
         <View className="w-full rounded-3xl mt-5">
           <View className="flex-row gap-3 w-full h-40">
             {/* Kiri */}
-            <View className="flex-1 bg-primaryOrange rounded-2xl justify-center items-center">
-              <Text className="text-white">Hallo</Text>
+            <View className="flex-1 bg-primaryOrange rounded-2xl p-5 justify-between overflow-hidden relative">
+              {/* Dekorasi Lingkaran */}
+              <View className="absolute -top-5 -left-5 w-32 h-32 bg-white/10 rounded-full" />
+              <View className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full" />
+              <View className="absolute top-10 right-5 w-16 h-16 bg-white/10 rounded-full" />
+
+              {/* Konten Utama */}
+              <View className="bg-white/30 rounded-md self-start p-2">
+                <FontAwesome name="file-text-o" size={24} color="white" />
+              </View>
+              <Text className="text-3xl font-semibold text-white">177</Text>
+              <Text className="text-sm text-white">aduan yang masuk</Text>
             </View>
 
+
             {/* Kanan */}
-            <View className="flex-1 justify-between">
-              <View className="flex-1 bg-primaryBlue rounded-2xl justify-center items-center mb-2">
-                <Text className="text-white">Hallo</Text>
+            <View className="flex-1 h-full justify-between ">
+              <View className="h-[46%] border-2 border-primaryOrange rounded-2xl p-2 justify-between">
+                <View className="flex-row items-center gap-2">
+                  <View className="bg-primaryBlue rounded-md self-start p-1">
+                    <MaterialIcons name="sync-problem" size={20} color="black" />
+                  </View>
+                  <Text className=" text-xl ">44</Text>
+                </View>
+                <Text className="text-sm ">aduan yang di proses</Text>
               </View>
-              <View className="flex-1 bg-primaryGreen rounded-2xl justify-center items-center mt-2">
-                <Text className="text-primaryBlack">Hallo</Text>
+
+              <View className="h-[46%] border-2 border-primaryOrange rounded-2xl p-2 justify-between mt-0">
+                <View className="flex-row items-center gap-2">
+                  <View className="bg-primaryGreen self-start p-1 rounded-md">
+                    <FontAwesome name="flag-checkered" size={20} color="black" />
+                  </View>
+                  <Text className="text-xl  ">44</Text>
+                </View>
+                <Text className="text-sm ">aduan yang selesai</Text>
               </View>
             </View>
           </View>
         </View>
+
+
 
         {/* laporan */}
         <View>
