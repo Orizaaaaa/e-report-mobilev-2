@@ -80,7 +80,7 @@ export default function Index() {
 
 
         <View className="mt-5 flex-row items-center gap-2">
-          <View className="flex-1 border-2 border-gray-200 h-14 px-2 rounded-lg flex-row items-center gap-2">
+          <View className="flex-1 border-2 border-primaryNavy h-14 px-2 rounded-lg flex-row items-center gap-2">
             <Feather name="search" size={24} color="#1E2A38" />
             <TextInput
               className="flex-1 text-gray-800"
@@ -91,11 +91,11 @@ export default function Index() {
           </View>
 
           <View className=" flex-row justify-end">
-            <View className="p-3 border-2 border-gray-200 rounded-xl">
+            <View className="p-3 border-2 border-primaryNavy rounded-xl">
               <MaterialIcons name="notifications-none" size={25} color="#1E2A38" />
             </View>
           </View>
-          <View className="w-14 border-2 border-gray-200 h-14 justify-center items-center rounded-lg">
+          <View className="w-14 border-2 border-primaryNavy h-14 justify-center items-center rounded-lg">
             <Feather name="menu" size={24} color="#1E2A38" />
           </View>
 
@@ -137,7 +137,7 @@ export default function Index() {
         <View className="w-full rounded-3xl mt-5">
           <View className="flex-row gap-3 w-full h-40">
             {/* Kiri */}
-            <View className="flex-1 bg-primaryOrange rounded-2xl p-5 justify-between overflow-hidden relative">
+            <View className="flex-1 bg-primaryNavy rounded-2xl p-5 justify-between overflow-hidden relative">
               {/* Dekorasi Lingkaran */}
               <View className="absolute -top-5 -left-5 w-32 h-32 bg-white/10 rounded-full" />
               <View className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full" />
@@ -154,7 +154,7 @@ export default function Index() {
 
             {/* Kanan */}
             <View className="flex-1 h-full justify-between ">
-              <View className="h-[47%] border-2 border-gray-300 rounded-2xl p-2 justify-between">
+              <View className="h-[47%] border-2 border-primaryNavy rounded-2xl p-2 justify-between">
                 <View className="flex-row items-center gap-2">
                   <View className="bg-primaryNavy rounded-md self-start p-1">
                     <MaterialIcons name="sync-problem" size={20} color="white" />
@@ -164,7 +164,7 @@ export default function Index() {
                 <Text className="text-sm ">aduan yang di proses</Text>
               </View>
 
-              <View className="h-[47%] border-2 border-gray-300 rounded-2xl p-2 justify-between mt-0">
+              <View className="h-[47%] border-2 border-primaryNavy rounded-2xl p-2 justify-between mt-0">
                 <View className="flex-row items-center gap-2">
                   <View className="bg-primaryNavy self-start p-1 rounded-md">
                     <FontAwesome name="flag-checkered" size={20} color="white" />
