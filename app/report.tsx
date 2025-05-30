@@ -5,7 +5,7 @@ import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
 import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 import Kat1 from '../assets/images/kat1.svg';
@@ -135,17 +135,24 @@ const reportScreen = () => {
                                 resizeMode='cover'
                             />
 
-                            <View className='py-3 ' >
-                                {/* <Text className={`  text-base font-medium text-primaryOrange`}>Demo Mahasiswa</Text> */}
-                                <Text className={`  text-sm  `}>Beberapa mahasiswa berdemo...</Text>
-                                <View className='flex-row items-center gap-1 mt-1' >
-                                    <Entypo name="location-pin" size={10} color="red" />
-                                    <Text className='text-sm font-light text-gray-500' >Bandung, pasir kaliki</Text>
+                            <View className='py-3 w-full' >
+                                <View className='flex-row justify-between'>
+                                    <View>
+                                        <Text className={`  text-sm  `}>Beberapa mahasiswa berdemo...</Text>
+                                        <View className='flex-row items-center gap-1 mt-1' >
+                                            <Entypo name="location-pin" size={10} color="red" />
+                                            <Text className='text-sm font-light text-gray-500' >Bandung, pasir kaliki</Text>
+                                        </View>
+                                    </View>
+                                    <View className='w-24'>
+                                        <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
+                                    </View>
                                 </View>
+
                             </View>
 
 
-                            <ButtonPrimary className='p-2 rounded-full' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary>
+                            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary>
                         </View>
                     </View>)
             case 'prioritas':
@@ -168,14 +175,14 @@ const reportScreen = () => {
                                         </View>
                                     </View>
                                     <View className='w-24'>
-                                        <Text className={`  text-sm border-2 border-red-500 text-red-700 p-1 rounded-xl text-center  `}>PRIORITAS</Text>
+                                        <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange p-1 rounded-xl text-center  `}>PRIORITAS</Text>
                                     </View>
                                 </View>
 
                             </View>
 
 
-                            <ButtonPrimary className='p-2 rounded-full' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary>
+                            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary>
                         </View>
                     </View>)
             case 'laporan':
@@ -444,70 +451,4 @@ const reportScreen = () => {
 
 export default reportScreen;
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 12,
-    },
-    buttonGroup: {
-        gap: 10,
-        marginBottom: 16,
-    },
-    imageScroll: {
-        marginTop: 10,
-    },
-    image: {
-        width: 100,
-        height: 100,
-        marginRight: 10,
-        borderRadius: 8,
-    },
-    mapWrapper: {
-        borderRadius: 16,
-        overflow: 'hidden',
-        height: 150,
-        width: '100%',
-        position: 'relative',
-    },
-    map: {
-        flex: 1,
-    },
-    zoomButton: {
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-        backgroundColor: '#000',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderRadius: 8,
-        opacity: 0.7,
-    },
-    zoomText: {
-        color: '#fff',
-        fontSize: 14,
-    },
-    fullScreenMapContainer: {
-        flex: 1,
-    },
-    fullScreenMap: {
-        flex: 1,
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 40,
-        right: 20,
-        backgroundColor: '#000',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 8,
-        opacity: 0.8,
-    },
-    closeText: {
-        color: '#fff',
-        fontSize: 16,
-    },
-});
+
