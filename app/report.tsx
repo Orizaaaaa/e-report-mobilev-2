@@ -5,26 +5,21 @@ import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
 import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
+import Carousel from 'react-native-reanimated-carousel';
 import Kat1 from '../assets/images/kat1.svg';
 import Kat2 from '../assets/images/kat2.svg';
 import Kat3 from '../assets/images/kat3.svg';
 import Kat4 from '../assets/images/kat4.svg';
 
 // Dummy data
-const dummyData = [
-    { id: '1', name: 'Baju Katun' },
-    { id: '2', name: 'Celana Jeans' },
-    { id: '3', name: 'Sepatu Sneakers' },
-    { id: '4', name: 'Jaket Hoodie' },
-    { id: '5', name: 'Kaos Polos' },
-];
 
 
 
 const reportScreen = () => {
+    const { width } = Dimensions.get('window');
     const [selectedLocation, setSelectedLocation] = useState<{
         latitude: number;
         longitude: number;
@@ -121,6 +116,12 @@ const reportScreen = () => {
     const handlePress = () => {
         console.log('Tombol custom ditekan!');
     };
+    const imagesCaraosel = [
+        require('../assets/images/demo.png'),
+        require('../assets/images/study1.png'),
+        require('../assets/images/demo.png'),
+    ];
+    const [activeIndex, setActiveIndex] = useState(0);
 
 
     const renderContent = () => {
@@ -157,32 +158,91 @@ const reportScreen = () => {
                     </View>)
             case 'prioritas':
                 return (
+
                     <View>
-                        <View className={`rounded-2xl flex-1 mr-5 w-full  `}>
-                            <Image
-                                className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
-                                source={require('../assets/images/demo.png')}
-                                resizeMode='cover'
-                            />
+                        <View className="rounded-2xl flex-1 w-full">
+                            {/* Carousel langsung di sini */}
+                            <View style={{ position: 'relative', width: width - 29, height: 125 }}>
+                                <Carousel
+                                    loop
+                                    width={width - 29}
+                                    height={125}
+                                    data={imagesCaraosel}
+                                    scrollAnimationDuration={100}
+                                    onSnapToItem={(index) => setActiveIndex(index)}
+                                    renderItem={({ item }) => (
+                                        <Image
+                                            source={item}
+                                            style={{
+                                                width: '100%',
+                                                height: 125,
+                                                borderTopLeftRadius: 24,
+                                                borderBottomRightRadius: 24,
+                                            }}
+                                            resizeMode="cover"
+                                        />
+                                    )}
+                                />
 
-                            <View className='py-3 w-full' >
-                                <View className='flex-row justify-between'>
-                                    <View>
-                                        <Text className={`  text-sm  `}>Beberapa mahasiswa berdemo...</Text>
-                                        <View className='flex-row items-center gap-1 mt-1' >
-                                            <Entypo name="location-pin" size={10} color="red" />
-                                            <Text className='text-sm font-light text-gray-500' >Bandung, pasir kaliki</Text>
-                                        </View>
-                                    </View>
-                                    <View className='w-24'>
-                                        <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange p-1 rounded-xl text-center  `}>PRIORITAS</Text>
-                                    </View>
+                                {/* Pagination bullet, posisi absolute di dalam gambar */}
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 10,
+                                        left: 0,
+                                        right: 0,
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {imagesCaraosel.map((_, index) => (
+                                        <View
+                                            key={index}
+                                            style={{
+                                                width: index === activeIndex ? 16 : 8,
+                                                height: 8,
+                                                borderRadius: 4,
+                                                marginHorizontal: 4,
+                                                backgroundColor: index === activeIndex ? '#FB923C' : '#D1D5DB',
+                                                // shadow agar bullet terlihat lebih jelas di atas gambar
+                                                shadowColor: '#000',
+                                                shadowOffset: { width: 0, height: 1 },
+                                                shadowOpacity: 0.3,
+                                                shadowRadius: 1,
+                                                elevation: 2,
+                                            }}
+                                        />
+                                    ))}
                                 </View>
-
                             </View>
 
+                            {/* Detail konten */}
+                            <View className="py-3 w-full px-2">
+                                <View className="flex-row justify-between">
+                                    <View>
+                                        <Text className="text-sm">Beberapa mahasiswa berdemo...</Text>
+                                        <View className="flex-row items-center gap-1 mt-1">
+                                            <Entypo name="location-pin" size={10} color="red" />
+                                            <Text className="text-sm font-light text-gray-500">
+                                                Bandung, pasir kaliki
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View className="w-24">
+                                        <Text className="text-sm border-2 border-orange-500 text-orange-500 p-1 rounded-xl text-center">
+                                            PRIORITAS
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
 
-                            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary>
+                            {/* Tombol */}
+                            <ButtonPrimary
+                                className="p-2 rounded-lg"
+                                text="Selengkapnya"
+                                onPress={handlePress}
+                            />
                         </View>
                     </View>)
             case 'laporan':
