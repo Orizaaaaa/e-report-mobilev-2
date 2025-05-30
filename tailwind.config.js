@@ -23,6 +23,7 @@ module.exports = {
       textColors: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
+        primaryNavy: '#1E2A38',
         primaryGreen: '#E2FA49',
         primaryWhite: '#fbfafa',
         primaryBlack: '#141414'
@@ -35,6 +36,7 @@ module.exports = {
       backgroundColor: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
+        primaryNavy: '#1E2A38',
         primaryGreen: '#E2FA49',
         primaryWhite: '#fbfafa',
         primaryBlack: '#141414'
@@ -42,11 +44,13 @@ module.exports = {
       borderColor: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
+        primaryNavy: '#1E2A38',
         primaryGreen: '#E2FA49'
       },
       colors: {
         primaryOrange: '#FF840C',
         primaryBlue: '#40D8D4',
+        primaryNavy: '#1E2A38',
         primaryWhite: '#fbfafa',
         primaryBlack: '#141414',
         primaryGreen: '#E2FA49'

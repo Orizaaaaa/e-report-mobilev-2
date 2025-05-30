@@ -20,7 +20,7 @@ const Contest = (props: Props) => {
         <View className="flex-1 bg-white">
             {/* Bagian Atas */}
             <View className="pb-14 pt-12 px-3 relative overflow-hidden">
-                <View className="absolute inset-0 bg-primaryGreen opacity-100 z-0" />
+                <View className="absolute inset-0 bg-primaryNavy opacity-100 z-0" />
 
                 <View className="relative z-10 mt-5 flex-row items-center gap-2 bg-white rounded-full px-2">
                     <View className="flex-1 h-14 px-2 rounded-lg flex-row items-center gap-2">
@@ -45,8 +45,8 @@ const Contest = (props: Props) => {
 
                 <View className="relative z-10 flex justify-center items-center mt-4">
                     <MaterialCommunityIcons name="trophy-award" size={70} color="#FF840C" />
-                    <Text className="text-3xl">700</Text>
-                    <Text className="text-slate-500">Lomba Tersedia</Text>
+                    <Text className="text-3xl text-white">700</Text>
+                    <Text className="text-slate-200">Lomba Tersedia</Text>
 
                 </View>
             </View>

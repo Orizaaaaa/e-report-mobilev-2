@@ -246,7 +246,7 @@ const reportScreen = () => {
 
                         <View className="flex-row flex-wrap justify-between -mx-1">
                             <View className="w-1/2 px-1">
-                                <ButtonPrimary text="Buka Kamera" className=" p-2 mt-2 rounded-lg border-2 border-primaryGreen" onPress={openCamera} />
+                                <ButtonPrimary text="Buka Kamera" className=" p-2 mt-2 rounded-lg border-2 border-primaryNavy" onPress={openCamera} />
                             </View>
                             <View className="w-1/2 px-1">
                                 <ButtonSecondary text="Buka Galeri" className=" p-2 mt-2 rounded-lg" onPress={openGallery} />
@@ -379,7 +379,7 @@ const reportScreen = () => {
     return (
         <LayoutPage padding='p-0'>
             {/* multipages */}
-            <View className="bg-primaryOrange pb-14 pt-12 px-3 relative overflow-hidden">
+            <View className="bg-primaryNavy pb-14 pt-12 px-3 relative overflow-hidden">
                 {/* Lapisan Lingkaran Dekoratif */}
                 <View className="absolute z-0 w-[400px] h-[400px] rounded-full bg-white/10 left-1/2 -translate-x-1/2 top-10" />
 
@@ -391,30 +391,30 @@ const reportScreen = () => {
                     {/* Tombol Tab */}
                     <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite rounded-full">
                         <TouchableOpacity
-                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'regular' ? 'bg-primaryGreen' : ''}`}
+                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'regular' ? 'bg-primaryOrange' : ''}`}
                             onPress={() => setActivePage('regular')}
                         >
-                            <Text>REGULER</Text>
+                            <Text className={`${activePage === 'regular' ? 'text-white' : ''}`}  >REGULER</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'prioritas' ? 'bg-primaryGreen' : ''}`}
+                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'prioritas' ? 'bg-primaryOrange' : ''}`}
                             onPress={() => setActivePage('prioritas')}
                         >
-                            <Text>PRIORITAS</Text>
+                            <Text className={`${activePage === 'prioritas' ? 'text-white' : ''}`} >PRIORITAS</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'laporan' ? 'bg-primaryGreen' : ''}`}
+                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'laporan' ? 'bg-primaryOrange' : ''}`}
                             onPress={() => setActivePage('laporan')}
                         >
-                            <Text>BUAT LAPORAN</Text>
+                            <Text className={`${activePage === 'laporan' ? 'text-white' : ''}`} >BUAT LAPORAN</Text>
                         </TouchableOpacity>
                     </View>
 
                     {/* Search Bar */}
                     <View className="mt-7 flex-row items-center gap-2">
-                        <View className="flex-1 border-2 border-white h-14 px-2 rounded-lg flex-row items-center gap-2">
+                        <View className="flex-1 border-2 border-gray-200 h-14 px-2 rounded-lg flex-row items-center gap-2">
                             <Feather name="search" size={24} color="white" />
                             <TextInput
                                 className="flex-1 text-white"
@@ -425,7 +425,7 @@ const reportScreen = () => {
                             />
                         </View>
 
-                        <View className="w-14 border-2 border-white h-14 justify-center items-center rounded-lg">
+                        <View className="w-14 border-2 border-gray-200 h-14 justify-center items-center rounded-lg">
                             <Feather name="menu" size={24} color="white" />
                         </View>
                     </View>

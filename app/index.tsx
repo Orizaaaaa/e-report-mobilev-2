@@ -80,8 +80,8 @@ export default function Index() {
 
 
         <View className="mt-5 flex-row items-center gap-2">
-          <View className="flex-1 border-2 border-gray-300 h-14 px-2 rounded-lg flex-row items-center gap-2">
-            <Feather name="search" size={24} color="#FF840C" />
+          <View className="flex-1 border-2 border-gray-200 h-14 px-2 rounded-lg flex-row items-center gap-2">
+            <Feather name="search" size={24} color="#1E2A38" />
             <TextInput
               className="flex-1 text-gray-800"
               placeholder="Cari..."
@@ -91,12 +91,12 @@ export default function Index() {
           </View>
 
           <View className=" flex-row justify-end">
-            <View className="p-3 border-2 border-gray-300 rounded-xl">
-              <MaterialIcons name="notifications-none" size={25} color="#FF840C" />
+            <View className="p-3 border-2 border-gray-200 rounded-xl">
+              <MaterialIcons name="notifications-none" size={25} color="#1E2A38" />
             </View>
           </View>
-          <View className="w-14 border-2 border-gray-300 h-14 justify-center items-center rounded-lg">
-            <Feather name="menu" size={24} color="#FF840C" />
+          <View className="w-14 border-2 border-gray-200 h-14 justify-center items-center rounded-lg">
+            <Feather name="menu" size={24} color="#1E2A38" />
           </View>
 
 
@@ -118,16 +118,16 @@ export default function Index() {
 
           {/* Konten di bawah */}
           <View className='absolute bottom-0 left-0 right-0 p-5'>
-            <Text className='text-white text-lg'>Lomba Koding <Text className='text-primaryGreen' >3</Text>  April</Text>
+            <Text className='text-white text-lg'>Lomba Koding <Text className='text-primaryOrange' >3</Text>  April</Text>
             <Text className='text-white text-sm'>Terbuka untuk umum</Text>
 
             <View className='flex-row justify-between items-center mt-3'>
               <View>
-                <Text className='text-black text-sm py-2 px-3 bg-slate-200 rounded-2xl'>Gabung</Text>
+                <Text className=' text-sm py-2 px-3 bg-primaryNavy text-white rounded-2xl'>Gabung</Text>
               </View>
 
-              <View className='p-2 bg-slate-200 rounded-full'>
-                <MaterialIcons name="keyboard-double-arrow-right" size={20} color="black" />
+              <View className='p-2 bg-primaryNavy rounded-full'>
+                <MaterialIcons name="keyboard-double-arrow-right" size={20} color="white" />
               </View>
             </View>
           </View>
@@ -154,20 +154,20 @@ export default function Index() {
 
             {/* Kanan */}
             <View className="flex-1 h-full justify-between ">
-              <View className="h-[46%] border-2 border-primaryOrange rounded-2xl p-2 justify-between">
+              <View className="h-[47%] border-2 border-gray-300 rounded-2xl p-2 justify-between">
                 <View className="flex-row items-center gap-2">
-                  <View className="bg-primaryBlue rounded-md self-start p-1">
-                    <MaterialIcons name="sync-problem" size={20} color="black" />
+                  <View className="bg-primaryNavy rounded-md self-start p-1">
+                    <MaterialIcons name="sync-problem" size={20} color="white" />
                   </View>
                   <Text className=" text-xl ">44</Text>
                 </View>
                 <Text className="text-sm ">aduan yang di proses</Text>
               </View>
 
-              <View className="h-[46%] border-2 border-primaryOrange rounded-2xl p-2 justify-between mt-0">
+              <View className="h-[47%] border-2 border-gray-300 rounded-2xl p-2 justify-between mt-0">
                 <View className="flex-row items-center gap-2">
-                  <View className="bg-primaryGreen self-start p-1 rounded-md">
-                    <FontAwesome name="flag-checkered" size={20} color="black" />
+                  <View className="bg-primaryNavy self-start p-1 rounded-md">
+                    <FontAwesome name="flag-checkered" size={20} color="white" />
                   </View>
                   <Text className="text-xl  ">44</Text>
                 </View>

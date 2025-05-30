@@ -6,7 +6,7 @@ export default function Profile() {
     return (
         <View  >
             <View className="bg-white">
-                <View className="bg-primaryOrange py-12  rounded-bl-[60px]" >
+                <View className="bg-primaryNavy py-12  rounded-bl-[60px]" >
                     <View className="flex-row justify-between items-center px-3">
                         <ButtonBack colorIcon="white" />
                         <Octicons name="gear" size={24} color="white" />
@@ -14,23 +14,23 @@ export default function Profile() {
                     <View className="flex justify-center items-center">
                         <View className='w-28 h-28  rounded-xl   '>
                             <Image
-                                className='w-full h-full rounded-3xl'
+                                className='w-full h-full rounded-full'
                                 source={require('../assets/images/human.png')}
                                 resizeMode='cover'
                             />
                         </View>
                         <View className="mt-5" >
-                            <Text className="text-white">Gabriel Yonathan</Text>
+                            <Text className="text-white text-xl">Gabriel Yonathan</Text>
 
                         </View>
                     </View>
                 </View>
             </View>
 
-            <View className="bg-primaryOrange">
+            <View className="bg-primaryNavy">
                 <View className="bg-white rounded-tr-[60px] p-4  -mt-0 h-full" >
                     <View className="mt-9 flex-row justify-between px-2" >
-                        <Text className="text-lg font-semibold">Informasi Pribadi</Text>
+                        <Text className="text-lg font-medium">Informasi Pribadi</Text>
                         <AntDesign name="edit" size={24} color="#FF840C" />
                     </View>
 
