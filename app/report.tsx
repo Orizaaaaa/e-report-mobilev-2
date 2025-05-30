@@ -2,7 +2,7 @@ import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { AntDesign, Entypo, Feather, Octicons } from '@expo/vector-icons';
+import { AntDesign, Feather, Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Dimensions, Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -130,34 +130,6 @@ const reportScreen = () => {
                 return (
                     <View>
                         <View className={`rounded-2xl flex-1  w-full `}>
-                            <Image
-                                className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
-                                source={require('../assets/images/demo.png')}
-                                resizeMode='cover'
-                            />
-
-                            <View className='py-3 w-full' >
-                                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
-                                    sehingga kendaraan tidak bisa masuk...</Text>
-
-                                <View className='mt-3 flex-row justify-between items-center'>
-                                    <View className='w-24'>
-                                        <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
-                                    </View>
-                                    <Octicons name="report" size={24} color="gray" />
-                                </View>
-                            </View>
-
-
-                            {/* <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary> */}
-                        </View>
-                    </View>)
-            case 'prioritas':
-                return (
-
-                    <View>
-                        <View className="rounded-2xl flex-1 w-full">
-                            {/* Carousel langsung di sini */}
                             <View style={{ position: 'relative', width: width - 29, height: 125 }}>
                                 <Carousel
                                     loop
@@ -213,32 +185,95 @@ const reportScreen = () => {
                                 </View>
                             </View>
 
-                            {/* Detail konten */}
-                            <View className="py-3 w-full px-2">
-                                <View className="flex-row justify-between">
-                                    <View>
-                                        <Text className="text-sm">Beberapa mahasiswa berdemo...</Text>
-                                        <View className="flex-row items-center gap-1 mt-1">
-                                            <Entypo name="location-pin" size={10} color="red" />
-                                            <Text className="text-sm font-light text-gray-500">
-                                                Bandung, pasir kaliki
-                                            </Text>
-                                        </View>
+                            <View className='py-3 w-full' >
+                                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
+                                    sehingga kendaraan tidak bisa masuk...</Text>
+
+                                <View className='mt-3 flex-row justify-between items-center'>
+                                    <View className='w-24'>
+                                        <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
                                     </View>
-                                    <View className="w-24">
-                                        <Text className="text-sm border-2 border-orange-500 text-orange-500 p-1 rounded-xl text-center">
-                                            PRIORITAS
-                                        </Text>
-                                    </View>
+                                    <Octicons name="report" size={24} color="gray" />
                                 </View>
                             </View>
 
-                            {/* Tombol */}
-                            <ButtonPrimary
-                                className="p-2 rounded-lg"
-                                text="Selengkapnya"
-                                onPress={handlePress}
-                            />
+
+                            {/* <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary> */}
+                        </View>
+                    </View>)
+            case 'prioritas':
+                return (
+                    <View>
+                        <View className={`rounded-2xl flex-1  w-full `}>
+                            <View style={{ position: 'relative', width: width - 29, height: 125 }}>
+                                <Carousel
+                                    loop
+                                    width={width - 29}
+                                    height={125}
+                                    data={imagesCaraosel}
+                                    scrollAnimationDuration={100}
+                                    onSnapToItem={(index) => setActiveIndex(index)}
+                                    renderItem={({ item }) => (
+                                        <Image
+                                            source={item}
+                                            style={{
+                                                width: '100%',
+                                                height: 125,
+                                                borderTopLeftRadius: 24,
+                                                borderBottomRightRadius: 24,
+                                            }}
+                                            resizeMode="cover"
+                                        />
+                                    )}
+                                />
+
+                                {/* Pagination bullet, posisi absolute di dalam gambar */}
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 10,
+                                        left: 0,
+                                        right: 0,
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {imagesCaraosel.map((_, index) => (
+                                        <View
+                                            key={index}
+                                            style={{
+                                                width: index === activeIndex ? 16 : 8,
+                                                height: 8,
+                                                borderRadius: 4,
+                                                marginHorizontal: 4,
+                                                backgroundColor: index === activeIndex ? '#FB923C' : '#D1D5DB',
+                                                // shadow agar bullet terlihat lebih jelas di atas gambar
+                                                shadowColor: '#000',
+                                                shadowOffset: { width: 0, height: 1 },
+                                                shadowOpacity: 0.3,
+                                                shadowRadius: 1,
+                                                elevation: 2,
+                                            }}
+                                        />
+                                    ))}
+                                </View>
+                            </View>
+
+                            <View className='py-3 w-full' >
+                                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
+                                    sehingga kendaraan tidak bisa masuk...</Text>
+
+                                <View className='mt-3 flex-row justify-between items-center'>
+                                    <View className='w-24'>
+                                        <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange p-1 rounded-xl text-center  `}>PRIORITAS</Text>
+                                    </View>
+                                    <Octicons name="report" size={24} color="gray" />
+                                </View>
+                            </View>
+
+
+                            {/* <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary> */}
                         </View>
                     </View>)
             case 'laporan':
