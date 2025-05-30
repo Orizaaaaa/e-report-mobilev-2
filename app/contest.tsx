@@ -52,7 +52,7 @@ const Contest = (props: Props) => {
             </View>
 
             {/* Scrollable Content */}
-            <View className="flex-1 rounded-tr-[40px] -mt-8 bg-white overflow-hidden pb-12">
+            <View className="flex-1 rounded-tr-[37px] -mt-9 bg-white overflow-hidden pb-12">
                 <ScrollView
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}

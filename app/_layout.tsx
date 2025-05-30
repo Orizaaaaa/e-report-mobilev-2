@@ -12,7 +12,7 @@ const Colors = {
   primaryBlue: '#40D8D4',
   primaryGreen: '#E2FA49',
   primaryWhite: 'white',
-  primaryBlack: '#141414'
+  primaryBlack: '#1E2A38'
 };
 
 const animate1 = {
@@ -85,7 +85,7 @@ const TabButton = ({ item, onPress }: any) => {
         <View style={[styles.btn, { backgroundColor: bgColor }]}>
           <Animatable.View
             ref={circleRef}
-            style={[styles.circle, { backgroundColor: Colors.primaryGreen }]}
+            style={[styles.circle, { backgroundColor: Colors.primaryOrange }]}
           />
           <Ionicons
             name={item.icon}
