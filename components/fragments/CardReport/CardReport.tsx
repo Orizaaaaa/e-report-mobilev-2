@@ -1,5 +1,4 @@
-import ButtonPrimary from '@/components/elements/Button/ButtonPrimary'
-import { Entypo } from '@expo/vector-icons'
+import { Octicons } from '@expo/vector-icons'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 
@@ -17,17 +16,16 @@ const CardReport = ({ image, handlepres }: Props) => {
                 resizeMode='cover'
             />
 
-            <View className='py-3 ' >
-                {/* <Text className={`  text-base font-medium text-primaryOrange`}>Demo Mahasiswa</Text> */}
-                <Text className={`  text-sm  `}>Beberapa mahasiswa berdemo...</Text>
-                <View className='flex-row items-center gap-1 mt-1' >
-                    <Entypo name="location-pin" size={10} color="red" />
-                    <Text className='text-sm font-light text-gray-500' >Bandung, pasir kaliki</Text>
+            <View className='py-3 w-full' >
+                <Text className='font-light'>Beberapa mahasiswa berdem...</Text>
+
+                <View className='mt-3 flex-row justify-between items-center'>
+                    <View className='w-24'>
+                        <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
+                    </View>
+                    <Octicons name="report" size={24} color="gray" />
                 </View>
             </View>
-
-
-            <ButtonPrimary className='p-2 rounded-xl' text='Selengkapnya' onPress={handlepres} ></ButtonPrimary>
         </View>
     )
 }
