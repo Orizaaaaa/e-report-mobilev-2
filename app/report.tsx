@@ -2,7 +2,7 @@ import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Dimensions, Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -129,7 +129,7 @@ const reportScreen = () => {
             case 'regular':
                 return (
                     <View>
-                        <View className={`rounded-2xl flex-1 mr-5 w-full  `}>
+                        <View className={`rounded-2xl flex-1  w-full `}>
                             <Image
                                 className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
                                 source={require('../assets/images/demo.png')}
@@ -137,23 +137,19 @@ const reportScreen = () => {
                             />
 
                             <View className='py-3 w-full' >
-                                <View className='flex-row justify-between'>
-                                    <View>
-                                        <Text className={`  text-sm  `}>Beberapa mahasiswa berdemo...</Text>
-                                        <View className='flex-row items-center gap-1 mt-1' >
-                                            <Entypo name="location-pin" size={10} color="red" />
-                                            <Text className='text-sm font-light text-gray-500' >Bandung, pasir kaliki</Text>
-                                        </View>
-                                    </View>
+                                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
+                                    sehingga kendaraan tidak bisa masuk...</Text>
+
+                                <View className='mt-3 flex-row justify-between items-center'>
                                     <View className='w-24'>
                                         <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
                                     </View>
+                                    <Octicons name="report" size={24} color="gray" />
                                 </View>
-
                             </View>
 
 
-                            <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary>
+                            {/* <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary> */}
                         </View>
                     </View>)
             case 'prioritas':
