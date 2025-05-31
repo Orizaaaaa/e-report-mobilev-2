@@ -4,7 +4,8 @@ import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
 import { AntDesign, Feather, Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import * as Location from 'expo-location';
+import { useEffect, useState } from 'react';
 import { Dimensions, Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
@@ -13,7 +14,6 @@ import Kat1 from '../../assets/images/kat1.svg';
 import Kat2 from '../../assets/images/kat2.svg';
 import Kat3 from '../../assets/images/kat3.svg';
 import Kat4 from '../../assets/images/kat4.svg';
-
 // Dummy data
 
 
@@ -107,10 +107,6 @@ const reportScreen = () => {
         });
     };
 
-    const handleMapPress = (event: MapPressEvent) => {
-        const { latitude, longitude } = event.nativeEvent.coordinate;
-        setSelectedLocation({ latitude, longitude });
-    };
 
     console.log(selectedLocation);
 
@@ -121,6 +117,43 @@ const reportScreen = () => {
     ];
     const [activeIndex, setActiveIndex] = useState(0);
 
+
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Aplikasi membutuhkan izin lokasi untuk menampilkan alamat');
+            }
+        })();
+    }, []);
+
+    const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+    // Fungsi saat user klik di peta
+    const handleMapPress = async (event: MapPressEvent) => {
+        const { latitude, longitude } = event.nativeEvent.coordinate;
+        setSelectedLocation({ latitude, longitude });
+
+        const { status } = await Location.getForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Izin lokasi belum diberikan. Tidak bisa mengambil alamat.');
+            return;
+        }
+
+        try {
+            const [address] = await Location.reverseGeocodeAsync({ latitude, longitude });
+            if (address) {
+                const fullAddress = `${address.street || ''}, ${address.city || ''}, ${address.region || ''}, ${address.country || ''}`;
+                setSelectedAddress(fullAddress);
+            }
+        } catch (error) {
+            console.error('Gagal reverse geocode:', error);
+            setSelectedAddress(null);
+        }
+    };
+
+    console.log(selectedAddress);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const renderContent = () => {
         switch (activePage) {
@@ -403,14 +436,19 @@ const reportScreen = () => {
                             </TouchableOpacity>
                         </View>
 
-                        {/* Tampilkan Koordinat */}
+                        {/* Koordinat */}
                         {selectedLocation && (
                             <Text className="mt-3 text-sm text-gray-700">
                                 Koordinat: {selectedLocation.latitude.toFixed(6)}, {selectedLocation.longitude.toFixed(6)}
                             </Text>
                         )}
 
-                        {/* Modal Fullscreen Map */}
+                        {/* Alamat */}
+                        {selectedAddress && (
+                            <Text className="mt-1 text-sm text-gray-700">Alamat: {selectedAddress}</Text>
+                        )}
+
+                        {/* Modal fullscreen */}
                         <Modal visible={fullScreen} animationType="slide">
                             <View className="flex-1 relative">
                                 <MapView
