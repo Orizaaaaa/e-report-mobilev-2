@@ -458,12 +458,20 @@ const reportScreen = () => {
                         <View className="h-40 w-full rounded-xl overflow-hidden relative mt-4">
                             <MapView
                                 style={{ flex: 1 }}
-                                initialRegion={{
-                                    latitude: -6.914744,
-                                    longitude: 107.60981,
-                                    latitudeDelta: 0.01,
-                                    longitudeDelta: 0.01,
-                                }}
+                                region={
+                                    selectedLocation
+                                        ? {
+                                            ...selectedLocation,
+                                            latitudeDelta: 0.01,
+                                            longitudeDelta: 0.01,
+                                        }
+                                        : {
+                                            latitude: -6.914744,
+                                            longitude: 107.60981,
+                                            latitudeDelta: 0.01,
+                                            longitudeDelta: 0.01,
+                                        }
+                                }
                                 onPress={handleMapPress}
                             >
                                 {selectedLocation && (
