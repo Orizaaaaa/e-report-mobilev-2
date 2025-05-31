@@ -21,9 +21,9 @@ const CardReport = ({ image, handlepres }: Props) => {
 
                 <View className='mt-3 flex-row justify-between items-center'>
                     <View className='w-24'>
-                        <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
+                        <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange  rounded-xl text-center  `}>PRIORITAS</Text>
                     </View>
-                    <Octicons name="report" size={24} color="gray" />
+                    <Octicons name="report" size={20} color="gray" />
                 </View>
             </View>
         </View>
