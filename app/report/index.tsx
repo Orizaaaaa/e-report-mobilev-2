@@ -132,18 +132,41 @@ const reportScreen = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     // Fungsi saat user klik di peta
-    const handleMapPress = (event: any) => {
+    const handleMapPress = async (event: any) => {
         const { latitude, longitude } = event.nativeEvent.coordinate;
         setSelectedLocation({ latitude, longitude });
         setSuggestions([]);
         setSearchQuery('');
+
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+                {
+                    headers: {
+                        'User-Agent': 'ReactNativeApp/1.0'
+                    }
+                }
+            );
+            const data = await response.json();
+            setSelectedAddress(data.display_name);
+        } catch (error) {
+            console.error('Gagal reverse geocode:', error);
+            setSelectedAddress(null);
+        }
     };
 
+
     const handleSuggestionPress = (item: any) => {
-        setSelectedLocation({ latitude: parseFloat(item.lat), longitude: parseFloat(item.lon) });
+        setSelectedLocation({
+            latitude: parseFloat(item.lat),
+            longitude: parseFloat(item.lon)
+        });
+
         setSearchQuery(item.display_name);
+        setSelectedAddress(item.display_name); // ✅ Tambahkan ini
         setSuggestions([]);
     };
+
 
     useEffect(() => {
         const fetchSuggestions = async () => {
