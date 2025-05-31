@@ -432,17 +432,6 @@ const reportScreen = () => {
                         <View>
                             <TextInput
                                 className="border-2 border-black rounded-lg p-3 mt-3"
-                                placeholder="Judul laporan..."
-                                value={searchText}
-                                onChangeText={setSearchText}
-                                multiline
-                                numberOfLines={4} // Mengatur jumlah baris awal
-                            />
-                        </View>
-
-                        <View>
-                            <TextInput
-                                className="border-2 border-black rounded-lg p-3 mt-3"
                                 placeholder="Masukkan deskripsi laporan..."
                                 multiline
                                 numberOfLines={6} // Mengatur tinggi area input dengan 6 baris
