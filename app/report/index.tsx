@@ -6,9 +6,9 @@ import { AntDesign, Feather, Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
-import { Dimensions, Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import MapView, { MapPressEvent, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
 import Kat1 from '../../assets/images/kat1.svg';
 import Kat2 from '../../assets/images/kat2.svg';
@@ -116,7 +116,7 @@ const reportScreen = () => {
         require('../../assets/images/demo.png'),
     ];
     const [activeIndex, setActiveIndex] = useState(0);
-
+    const [suggestions, setSuggestions] = useState<any[]>([]);
 
 
     useEffect(() => {
@@ -129,31 +129,54 @@ const reportScreen = () => {
     }, []);
 
     const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
     // Fungsi saat user klik di peta
-    const handleMapPress = async (event: MapPressEvent) => {
+    const handleMapPress = (event: any) => {
         const { latitude, longitude } = event.nativeEvent.coordinate;
         setSelectedLocation({ latitude, longitude });
-
-        const { status } = await Location.getForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Izin lokasi belum diberikan. Tidak bisa mengambil alamat.');
-            return;
-        }
-
-        try {
-            const [address] = await Location.reverseGeocodeAsync({ latitude, longitude });
-            if (address) {
-                const fullAddress = `${address.street || ''}, ${address.city || ''}, ${address.region || ''}, ${address.country || ''}`;
-                setSelectedAddress(fullAddress);
-            }
-        } catch (error) {
-            console.error('Gagal reverse geocode:', error);
-            setSelectedAddress(null);
-        }
+        setSuggestions([]);
+        setSearchQuery('');
     };
 
+    const handleSuggestionPress = (item: any) => {
+        setSelectedLocation({ latitude: parseFloat(item.lat), longitude: parseFloat(item.lon) });
+        setSearchQuery(item.display_name);
+        setSuggestions([]);
+    };
+
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            if (searchQuery.length < 3) {
+                setSuggestions([]);
+                return;
+            }
+
+            try {
+                const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=6`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'User-Agent': 'ReactNativeApp/1.0' // penting untuk Nominatim
+                    }
+                });
+
+                const data = await response.json();
+
+                setSuggestions(data);
+                console.log('berhasil', data);
+
+            } catch (error) {
+                console.error('Gagal fetch lokasi:', error);
+            }
+        };
+
+        const delayDebounce = setTimeout(fetchSuggestions, 200); // debounce
+        return () => clearTimeout(delayDebounce);
+    }, [searchQuery]);
+
     console.log(selectedAddress);
-    const [searchQuery, setSearchQuery] = useState('');
+    console.log(suggestions);
 
     const renderContent = () => {
         switch (activePage) {
@@ -450,10 +473,32 @@ const reportScreen = () => {
 
                         {/* Modal fullscreen */}
                         <Modal visible={fullScreen} animationType="slide">
-                            <View className="flex-1 relative">
+                            <View className="flex-1">
+                                {/* 🔍 Input Pencarian */}
+                                <View className="absolute top-10 left-4 right-4 z-10 bg-white p-2 rounded-md shadow">
+                                    <TextInput
+                                        placeholder="Cari lokasi..."
+                                        value={searchQuery}
+                                        onChangeText={setSearchQuery}
+                                        className="border p-2 rounded"
+                                    />
+                                    {suggestions.length > 0 && (
+                                        <FlatList
+                                            data={suggestions}
+                                            keyExtractor={(item, index) => index.toString()}
+                                            renderItem={({ item }) => (
+                                                <Pressable onPress={() => handleSuggestionPress(item)} className="p-2 border-b border-gray-200">
+                                                    <Text className="text-sm text-gray-700">{item.display_name}</Text>
+                                                </Pressable>
+                                            )}
+                                        />
+                                    )}
+                                </View>
+
+                                {/* MapView */}
                                 <MapView
                                     style={{ flex: 1 }}
-                                    initialRegion={{
+                                    region={{
                                         latitude: selectedLocation?.latitude || -6.914744,
                                         longitude: selectedLocation?.longitude || 107.60981,
                                         latitudeDelta: 0.01,
@@ -465,6 +510,8 @@ const reportScreen = () => {
                                         <Marker coordinate={selectedLocation} title="Lokasi dipilih" />
                                     )}
                                 </MapView>
+
+                                {/* ❌ Tombol tutup */}
                                 <TouchableOpacity
                                     className="absolute top-10 right-4 bg-black bg-opacity-70 px-4 py-2 rounded-md"
                                     onPress={() => setFullScreen(false)}
