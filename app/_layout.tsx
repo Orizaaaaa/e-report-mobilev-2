@@ -108,10 +108,16 @@ export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tabs
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: styles.tabBar,
-          tabBarHideOnKeyboard: true
+        screenOptions={({ route }) => {
+          const hideTabBarRoutes = ['report/[id]']; // daftar halaman yang harus sembunyikan tab bar
+
+          const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
+
+          return {
+            headerShown: false,
+            tabBarStyle: shouldHideTabBar ? { display: 'none' } : styles.tabBar,
+            tabBarHideOnKeyboard: true,
+          };
         }}
       >
         {tabs.map((tab, index) => (
