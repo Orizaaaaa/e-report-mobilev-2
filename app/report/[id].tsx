@@ -2,7 +2,7 @@ import ButtonBack from '@/components/elements/buttonBack/ButtonBack';
 import { Octicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Dimensions, Image, ScrollView, View } from 'react-native';
+import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
 export default function ReportDetail() {
@@ -74,6 +74,16 @@ export default function ReportDetail() {
                     ))}
                 </View>
             </View>
+            <View>
+                <View>
+                    <Text className='text-gray-500 font-light mb-1'>Permasalahan</Text>
+                    <Text className='font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente sequi temporibus delectus, corupti atque consectetur, optio consequuntur repellat molestias maiores dolorum commodi modi? Pariatur harum quaerat nobis, exercitationem incidunt ut?</Text>
+                </View>
+                <View className='my-7'>
+                    <Text className='text-lg font-medium' >Lokasi Aduan</Text>
+                </View>
+            </View>
+
         </ScrollView>
     );
 }
