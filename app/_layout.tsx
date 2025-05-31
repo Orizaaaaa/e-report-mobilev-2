@@ -42,7 +42,7 @@ const circle2 = {
 const tabs = [
   { name: 'index', title: 'Beranda', icon: 'home' },
   { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
-  { name: 'report', title: 'Laporan', icon: 'newspaper-outline' },
+  { name: 'report/index', title: 'Laporan', icon: 'newspaper-outline' },
   { name: 'profile', title: 'Profile', icon: 'person-outline' },
 ];
 
@@ -53,8 +53,8 @@ const tabs = [
 const TabButton = ({ item, onPress }: any) => {
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
-  const focused = currentRoute === item.name;
-
+  const isReportDetail = currentRoute.startsWith('report/index') && currentRoute !== 'report/index';
+  const focused = !isReportDetail && currentRoute === item.name;
   const viewRef = useRef<any>(null);
   const circleRef = useRef<any>(null);
   const textRef = useRef<any>(null);
@@ -124,11 +124,24 @@ export default function Layout() {
             }}
           />
         ))}
+
+        {/* Tambahkan screen untuk route dinamis */}
+        <Tabs.Screen
+          name="report/[id]"
+          options={{
+            // Cara 1: Sembunyikan dari tab bar
+            tabBarItemStyle: { display: 'none' },
+
+            // Cara 2: Atau gunakan ini sebagai alternatif
+            tabBarButton: () => null,
+
+            // Pastikan tidak ada href yang digunakan
+          }}
+        />
       </Tabs>
     </GestureHandlerRootView>
   );
 }
-
 // Styles tetap sama
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import CardReport from '@/components/fragments/CardReport/CardReport';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
@@ -45,7 +45,8 @@ export default function Index() {
   ];
 
   const handlePress = () => {
-    console.log('Tombol custom ditekan!');
+    // Navigasi ke halaman detail dengan ID
+    router.push(`/report/22`);
   };
 
 

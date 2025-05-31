@@ -9,10 +9,10 @@ import { Dimensions, Image, Modal, Text, TextInput, TouchableOpacity, View } fro
 import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 import Carousel from 'react-native-reanimated-carousel';
-import Kat1 from '../assets/images/kat1.svg';
-import Kat2 from '../assets/images/kat2.svg';
-import Kat3 from '../assets/images/kat3.svg';
-import Kat4 from '../assets/images/kat4.svg';
+import Kat1 from '../../assets/images/kat1.svg';
+import Kat2 from '../../assets/images/kat2.svg';
+import Kat3 from '../../assets/images/kat3.svg';
+import Kat4 from '../../assets/images/kat4.svg';
 
 // Dummy data
 
@@ -113,13 +113,11 @@ const reportScreen = () => {
     };
 
     console.log(selectedLocation);
-    const handlePress = () => {
-        console.log('Tombol custom ditekan!');
-    };
+
     const imagesCaraosel = [
-        require('../assets/images/demo.png'),
-        require('../assets/images/study1.png'),
-        require('../assets/images/demo.png'),
+        require('../../assets/images/demo.png'),
+        require('../../assets/images/study1.png'),
+        require('../../assets/images/demo.png'),
     ];
     const [activeIndex, setActiveIndex] = useState(0);
 

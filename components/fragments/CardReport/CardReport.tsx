@@ -1,6 +1,6 @@
 import { Octicons } from '@expo/vector-icons'
 import React from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {
     image: any
@@ -9,24 +9,27 @@ type Props = {
 
 const CardReport = ({ image, handlepres }: Props) => {
     return (
-        <View className={`rounded-2xl flex-1 mr-5 w-64  `}>
-            <Image
-                className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
-                source={image}
-                resizeMode='cover'
-            />
+        <TouchableOpacity onPress={handlepres}>
+            <View className={`rounded-2xl flex-1 mr-5 w-64  `}>
+                <Image
+                    className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
+                    source={image}
+                    resizeMode='cover'
+                />
 
-            <View className='py-3 w-full' >
-                <Text className='font-light'>Beberapa mahasiswa berdem...</Text>
+                <View className='py-3 w-full' >
+                    <Text className='font-light'>Beberapa mahasiswa berdem...</Text>
 
-                <View className='mt-3 flex-row justify-between items-center'>
-                    <View className='w-24'>
-                        <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange  rounded-xl text-center  `}>PRIORITAS</Text>
+                    <View className='mt-3 flex-row justify-between items-center'>
+                        <View className='w-24'>
+                            <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange  rounded-xl text-center  `}>PRIORITAS</Text>
+                        </View>
+                        <Octicons name="report" size={20} color="gray" />
                     </View>
-                    <Octicons name="report" size={20} color="gray" />
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
+
     )
 }
 
