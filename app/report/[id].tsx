@@ -2,7 +2,7 @@ import ButtonBack from '@/components/elements/buttonBack/ButtonBack';
 import { Octicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
+import { Dimensions, Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
 export default function ReportDetail() {
@@ -14,6 +14,20 @@ export default function ReportDetail() {
         require('../../assets/images/study1.png'),
         require('../../assets/images/demo.png'),
     ];
+    const selectedLocation = {
+        latitude: -6.175392,
+        longitude: 106.827153,
+    };
+    const openInGoogleMaps = () => {
+        if (selectedLocation) {
+            const { latitude, longitude } = selectedLocation;
+            const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+            Linking.openURL(url).catch(err => console.error('Gagal membuka Google Maps:', err));
+        } else {
+            alert('Lokasi belum dipilih');
+        }
+    };
+
     return (
         <ScrollView className='pt-16 px-3'>
             <View className="flex-row justify-between items-center px-3 bg-slate-200 p-3 rounded-full">
@@ -83,6 +97,12 @@ export default function ReportDetail() {
                     <Text className='text-lg font-medium' >Lokasi Aduan</Text>
                 </View>
             </View>
+            <TouchableOpacity
+                className="bg-blue-600 px-4 py-2 rounded-md mt-3"
+                onPress={openInGoogleMaps}
+            >
+                <Text className="text-white font-bold">Buka di Google Maps</Text>
+            </TouchableOpacity>
 
         </ScrollView>
     );
