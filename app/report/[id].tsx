@@ -1,5 +1,5 @@
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack';
-import { Octicons } from '@expo/vector-icons';
+import { FontAwesome5, Octicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -30,9 +30,9 @@ export default function ReportDetail() {
 
     return (
         <ScrollView className='pt-16 px-3'>
-            <View className="flex-row justify-between items-center px-3 bg-slate-200 p-3 rounded-full">
+            <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full">
                 <ButtonBack colorIcon="#FF840C" />
-                <Octicons name="gear" size={24} color="#FF840C" />
+                <Octicons name="report" size={20} color="gray" />
             </View>
 
             <View className='my-7' style={{ position: 'relative', width: width - 29, height: 190 }}>
@@ -93,16 +93,69 @@ export default function ReportDetail() {
                     <Text className='text-gray-500 font-light mb-1'>Permasalahan</Text>
                     <Text className='font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente sequi temporibus delectus, corupti atque consectetur, optio consequuntur repellat molestias maiores dolorum commodi modi? Pariatur harum quaerat nobis, exercitationem incidunt ut?</Text>
                 </View>
-                <View className='my-7'>
+                <View className='my-3'>
                     <Text className='text-lg font-medium' >Lokasi Aduan</Text>
                 </View>
             </View>
-            <TouchableOpacity
-                className="bg-blue-600 px-4 py-2 rounded-md mt-3"
-                onPress={openInGoogleMaps}
-            >
-                <Text className="text-white font-bold">Buka di Google Maps</Text>
-            </TouchableOpacity>
+
+            <View className='flex-row justify-between items-start'>
+                <View className='flex-row justify-between items-start'>
+                    <View className="flex-1 pr-2">
+                        <Text className='font-light'>
+                            Jalan Astana Anyar, Bandung, Jawa Barat, Indonesia, RT 04 RW 08
+                        </Text>
+                        <Text className='font-light text-sm mt-1 text-gray-400'>
+                            Lat: -6.932977, Long: 107.599216
+                        </Text>
+                    </View>
+
+                    <TouchableOpacity
+                        className="ml-2"
+                        onPress={openInGoogleMaps}
+                    >
+                        <FontAwesome5 name="map-marked-alt" size={20} color="#1E2A38" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+
+
+            {/* <View className='flex-row justify-between mt-7 mb-5 items-center' >
+                <Text className='text-lg font-medium'>
+                    Tipe Laporan
+                </Text>
+                <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange' >
+                    PRIORITAS
+                </Text>
+            </View> */}
+
+
+
+            <View className='my-3'>
+                <Text className='text-lg font-medium' >Riwayat Status</Text>
+            </View>
+
+
+            <View className='flex-row justify-between items-end' >
+                <View>
+                    <Text className='text-sm font-thin'>Aduan ini telah</Text>
+                    <Text className='text-sm font-medium' >Menunggu di Proses <Text className='font-light' >oleh</Text>  tim pemerintah</Text>
+                    <Text className='text-sm font-light'>Minggu 01 Juni 2025 - 21-36, <Text className='text-primaryOrange font-medium' >Lihat Riwayat</Text> </Text>
+                </View>
+
+                <View>
+                    <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange' >
+                        PRIORITAS
+                    </Text>
+                </View>
+
+            </View>
+
+
+
+
+
+
 
         </ScrollView>
     );
