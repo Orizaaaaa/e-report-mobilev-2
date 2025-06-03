@@ -1,20 +1,21 @@
 import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
+import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { AntDesign, Feather, Octicons } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
-import Carousel from 'react-native-reanimated-carousel';
 import Kat1 from '../../assets/images/kat1.svg';
 import Kat2 from '../../assets/images/kat2.svg';
 import Kat3 from '../../assets/images/kat3.svg';
 import Kat4 from '../../assets/images/kat4.svg';
 // Dummy data
+
 
 
 
@@ -200,158 +201,23 @@ const reportScreen = () => {
 
     console.log(selectedAddress);
     console.log(suggestions);
+    const pages = [
+        { label: 'REGULER', value: 'regular' },
+        { label: 'PRIORITAS', value: 'prioritas' },
+        { label: 'BUAT LAPORAN', value: 'laporan' },
+    ];
 
     const renderContent = () => {
         switch (activePage) {
             case 'regular':
                 return (
                     <View>
-                        <View className={`rounded-2xl flex-1  w-full `}>
-                            <View style={{ position: 'relative', width: width - 29, height: 125 }}>
-                                <Carousel
-                                    loop
-                                    width={width - 29}
-                                    height={125}
-                                    data={imagesCaraosel}
-                                    scrollAnimationDuration={100}
-                                    onSnapToItem={(index) => setActiveIndex(index)}
-                                    renderItem={({ item }) => (
-                                        <Image
-                                            source={item}
-                                            style={{
-                                                width: '100%',
-                                                height: 125,
-                                                borderTopLeftRadius: 24,
-                                                borderBottomRightRadius: 24,
-                                            }}
-                                            resizeMode="cover"
-                                        />
-                                    )}
-                                />
-
-                                {/* Pagination bullet, posisi absolute di dalam gambar */}
-                                <View
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: 10,
-                                        left: 0,
-                                        right: 0,
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    {imagesCaraosel.map((_, index) => (
-                                        <View
-                                            key={index}
-                                            style={{
-                                                width: index === activeIndex ? 16 : 8,
-                                                height: 8,
-                                                borderRadius: 4,
-                                                marginHorizontal: 4,
-                                                backgroundColor: index === activeIndex ? '#FB923C' : '#D1D5DB',
-                                                // shadow agar bullet terlihat lebih jelas di atas gambar
-                                                shadowColor: '#000',
-                                                shadowOffset: { width: 0, height: 1 },
-                                                shadowOpacity: 0.3,
-                                                shadowRadius: 1,
-                                                elevation: 2,
-                                            }}
-                                        />
-                                    ))}
-                                </View>
-                            </View>
-
-                            <View className='py-3 w-full' >
-                                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
-                                    sehingga kendaraan tidak bisa masuk...</Text>
-
-                                <View className='mt-3 flex-row justify-between items-center'>
-                                    <View className='w-24'>
-                                        <Text className={`  text-sm border-2 border-primaryNavy text-primborder-primaryNavy p-1 rounded-xl text-center  `}>REGULAR</Text>
-                                    </View>
-                                    <Octicons name="report" size={24} color="gray" />
-                                </View>
-                            </View>
-
-
-                            {/* <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary> */}
-                        </View>
+                        <CaraoselCard imageCaraosel={imagesCaraosel} typeReport='REGULAR' />
                     </View>)
             case 'prioritas':
                 return (
                     <View>
-                        <View className={`rounded-2xl flex-1  w-full `}>
-                            <View style={{ position: 'relative', width: width - 29, height: 125 }}>
-                                <Carousel
-                                    loop
-                                    width={width - 29}
-                                    height={125}
-                                    data={imagesCaraosel}
-                                    scrollAnimationDuration={100}
-                                    onSnapToItem={(index) => setActiveIndex(index)}
-                                    renderItem={({ item }) => (
-                                        <Image
-                                            source={item}
-                                            style={{
-                                                width: '100%',
-                                                height: 125,
-                                                borderTopLeftRadius: 24,
-                                                borderBottomRightRadius: 24,
-                                            }}
-                                            resizeMode="cover"
-                                        />
-                                    )}
-                                />
-
-                                {/* Pagination bullet, posisi absolute di dalam gambar */}
-                                <View
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: 10,
-                                        left: 0,
-                                        right: 0,
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    {imagesCaraosel.map((_, index) => (
-                                        <View
-                                            key={index}
-                                            style={{
-                                                width: index === activeIndex ? 16 : 8,
-                                                height: 8,
-                                                borderRadius: 4,
-                                                marginHorizontal: 4,
-                                                backgroundColor: index === activeIndex ? '#FB923C' : '#D1D5DB',
-                                                // shadow agar bullet terlihat lebih jelas di atas gambar
-                                                shadowColor: '#000',
-                                                shadowOffset: { width: 0, height: 1 },
-                                                shadowOpacity: 0.3,
-                                                shadowRadius: 1,
-                                                elevation: 2,
-                                            }}
-                                        />
-                                    ))}
-                                </View>
-                            </View>
-
-                            <View className='py-3 w-full' >
-                                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
-                                    sehingga kendaraan tidak bisa masuk...</Text>
-
-                                <View className='mt-3 flex-row justify-between items-center'>
-                                    <View className='w-24'>
-                                        <Text className={`  text-sm border-2 border-primaryOrange text-primaryOrange p-1 rounded-xl text-center  `}>PRIORITAS</Text>
-                                    </View>
-                                    <Octicons name="report" size={24} color="gray" />
-                                </View>
-                            </View>
-
-
-                            {/* <ButtonPrimary className='p-2 rounded-lg' text='Selengkapnya' onPress={handlePress} ></ButtonPrimary> */}
-                        </View>
+                        <CaraoselCard imageCaraosel={imagesCaraosel} typeReport='PRIORITAS' />
                     </View>)
             case 'laporan':
                 return (
@@ -589,28 +455,21 @@ const reportScreen = () => {
 
                 {/* Konten Utama */}
                 <View className="relative z-10">
+
                     {/* Tombol Tab */}
                     <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite rounded-full">
-                        <TouchableOpacity
-                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'regular' ? 'bg-primaryOrange' : ''}`}
-                            onPress={() => setActivePage('regular')}
-                        >
-                            <Text className={`${activePage === 'regular' ? 'text-white' : ''}`}  >REGULER</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'prioritas' ? 'bg-primaryOrange' : ''}`}
-                            onPress={() => setActivePage('prioritas')}
-                        >
-                            <Text className={`${activePage === 'prioritas' ? 'text-white' : ''}`} >PRIORITAS</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            className={`py-2 px-4 rounded-full shadow-2xl ${activePage === 'laporan' ? 'bg-primaryOrange' : ''}`}
-                            onPress={() => setActivePage('laporan')}
-                        >
-                            <Text className={`${activePage === 'laporan' ? 'text-white' : ''}`} >BUAT LAPORAN</Text>
-                        </TouchableOpacity>
+                        {pages.map((page: any) => (
+                            <TouchableOpacity
+                                key={page.value}
+                                className={`py-2 px-4 rounded-full shadow-2xl ${activePage === page.value ? 'bg-primaryOrange' : ''
+                                    }`}
+                                onPress={() => setActivePage(page.value)}
+                            >
+                                <Text className={activePage === page.value ? 'text-white' : ''}>
+                                    {page.label}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
                     </View>
 
                     {/* Search Bar */}
@@ -619,7 +478,7 @@ const reportScreen = () => {
                             <Feather name="search" size={24} color="white" />
                             <TextInput
                                 className="flex-1 text-white"
-                                placeholder="Cari apa saja..."
+                                placeholder="Cari Laporan..."
                                 placeholderTextColor="#FFFFFF"
                                 value={searchText}
                                 onChangeText={setSearchText}
