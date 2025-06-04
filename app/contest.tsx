@@ -1,7 +1,7 @@
-import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
-import { EvilIcons, Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import CardContest from '@/components/fragments/CardContest/CardContest';
+import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 type Props = {}
@@ -57,51 +57,7 @@ const Contest = (props: Props) => {
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <View className="w-full space-y-5 mb-10">
-                        {/* Gambar */}
-                        <View className="h-32">
-                            <Image
-                                className="w-full h-full rounded-t-3xl"
-                                source={require('../assets/images/study1.png')}
-                                resizeMode="cover"
-                            />
-                            <View className="absolute bottom-2 right-3">
-                                <View className="flex-row justify-center items-center bg-slate-50 py-1 px-2 rounded-xl">
-                                    <EvilIcons name="location" size={15} color="black" />
-                                    <Text className="text-sm font-light">Kopo, Margahayu</Text>
-                                </View>
-                            </View>
-                        </View>
-
-                        {/* Konten Dengan Shadow */}
-                        <View className="bg-white rounded-b-3xl px-3 pt-3 pb-5 shadow-md shadow-black/30">
-                            <Text className="text-lg font-semibold">Lomba Mancing</Text>
-                            <Text className="text-sm font-light">lomba mancing berhadiah motor</Text>
-                            <View className="w-full mt-4">
-                                <View className="flex-row justify-between mb-1">
-                                    <Text className="text-sm text-gray-800">
-                                        Peserta: {pesertaSaatIni} / {totalPeserta}
-                                    </Text>
-                                    <Text className="text-sm text-gray-800">
-                                        {Math.round(progress * 100)}%
-                                    </Text>
-                                </View>
-
-                                <View className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                                    <View
-                                        className="h-full bg-primaryOrange"
-                                        style={{ width: `${progress * 100}%` }}
-                                    />
-                                </View>
-
-                                <ButtonPrimary
-                                    className="mt-4 py-2 rounded-xl"
-                                    text="Ikuti lomba"
-                                    onPress={handlePress}
-                                />
-                            </View>
-                        </View>
-                    </View>
+                    <CardContest title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
                 </ScrollView>
             </View>
         </View>
