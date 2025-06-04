@@ -12,9 +12,6 @@ const Contest = (props: Props) => {
     const pesertaSaatIni = 700;
     const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
 
-    const handlePress = () => {
-        console.log('Tombol custom ditekan!');
-    };
 
     return (
         <View className="flex-1 bg-white">
