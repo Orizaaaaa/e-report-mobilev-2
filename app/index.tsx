@@ -1,48 +1,15 @@
 import CardReport from '@/components/fragments/CardReport/CardReport';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import IndicatorInfo from '@/components/fragments/IndicatorInfo/IndicatorInfo';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { router, useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
-import {
-  ICarouselInstance
-} from "react-native-reanimated-carousel";
 const { height } = Dimensions.get('window');
 
-
-const width = Dimensions.get("window").width;
 export default function Index() {
   const navigation: any = useNavigation()
   const [searchText, setSearchText] = useState('');
 
-  const ref = React.useRef<ICarouselInstance>(null);
-  const progress = useSharedValue<number>(0);
-  const data = [
-    {
-      id: '1',
-      title: 'Jalan Rusak',
-      desc: 'lorem ipsum dolor sit amet...',
-      image: require('../assets/images/demo.png')
-    },
-    {
-      id: '2',
-      title: 'title 1',
-      desc: 'lorem ipsum dolor sit amet',
-      image: require('../assets/images/demo.png')
-    },
-    {
-      id: '3',
-      title: 'title 1',
-      desc: 'lorem ipsum dolor sit amet',
-      image: require('../assets/images/demo.png')
-    },
-    {
-      id: '4',
-      title: 'title 1',
-      desc: 'lorem ipsum dolor sit amet',
-      image: require('../assets/images/demo.png')
-    },
-  ];
 
   const handlePress = () => {
     // Navigasi ke halaman detail dengan ID
@@ -135,49 +102,7 @@ export default function Index() {
         </View>
 
 
-        <View className="w-full rounded-3xl mt-5">
-          <View className="flex-row gap-3 w-full h-40">
-            {/* Kiri */}
-            <View className="flex-1 bg-primaryNavy rounded-2xl p-5 justify-between overflow-hidden relative">
-              {/* Dekorasi Lingkaran */}
-              <View className="absolute -top-5 -left-5 w-32 h-32 bg-white/10 rounded-full" />
-              <View className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full" />
-              <View className="absolute top-10 right-5 w-16 h-16 bg-white/10 rounded-full" />
-
-              {/* Konten Utama */}
-              <View className="bg-white/30 rounded-md self-start p-2">
-                <FontAwesome name="file-text-o" size={24} color="white" />
-              </View>
-              <Text className="text-3xl font-semibold text-white">177</Text>
-              <Text className="text-sm text-white">aduan yang masuk</Text>
-            </View>
-
-
-            {/* Kanan */}
-            <View className="flex-1 h-full justify-between ">
-              <View className="h-[47%] border-2 border-primaryNavy rounded-2xl p-2 justify-between">
-                <View className="flex-row items-center gap-2">
-                  <View className="bg-primaryNavy rounded-md self-start p-1">
-                    <MaterialIcons name="sync-problem" size={20} color="white" />
-                  </View>
-                  <Text className=" text-xl ">44</Text>
-                </View>
-                <Text className="text-sm ">aduan yang di proses</Text>
-              </View>
-
-              <View className="h-[47%] border-2 border-primaryNavy rounded-2xl p-2 justify-between mt-0">
-                <View className="flex-row items-center gap-2">
-                  <View className="bg-primaryNavy self-start p-1 rounded-md">
-                    <FontAwesome name="flag-checkered" size={20} color="white" />
-                  </View>
-                  <Text className="text-xl  ">44</Text>
-                </View>
-                <Text className="text-sm ">aduan yang selesai</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
+        <IndicatorInfo finised='177' onProgress='44' total='221' />
 
 
         {/* laporan */}
