@@ -23,6 +23,7 @@ import CategorySelection from '@/components/fragments/CategorySelection/Category
 import FullScreenMapModalView from '@/components/fragments/FullScreenMapModalView/FullScreenMapModalView';
 import ImageUploadSection from '@/components/fragments/ImageUpload/ImageUploadSection';
 import LocationPicker from '@/components/fragments/LocationPicker/LocationPicker';
+import { Category, FormState, SelectedLocationType } from '@/utils/helper';
 import Kat1Icon from '../../assets/images/kat1.svg';
 import Kat2Icon from '../../assets/images/kat2.svg';
 import Kat3Icon from '../../assets/images/kat3.svg';
@@ -30,23 +31,6 @@ import Kat4Icon from '../../assets/images/kat4.svg';
 
 const { width: windowWidth } = Dimensions.get('window');
 
-// --- Helper Types ---
-interface FormState {
-    desc: string;
-    images: ImagePicker.ImagePickerAsset[];
-    location: Array<{ lat: number; long: number; adress: string }>;
-    category: string;
-}
-interface SelectedLocationType { // Diberi nama yang lebih spesifik
-    latitude: number;
-    longitude: number;
-}
-interface Category {
-    id: string;
-    name: string;
-    Icon: React.FC<any>;
-    value: string;
-}
 
 // --- Data Kategori ---
 const CATEGORIES_DATA: Category[] = [
