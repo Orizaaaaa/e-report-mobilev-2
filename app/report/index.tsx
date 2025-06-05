@@ -2,30 +2,27 @@
 
 import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
-import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
     Alert,
-    Dimensions,
-    FlatList,
-    Image,
-    Modal,
-    Pressable,
-    ScrollView as RNScrollView,
-    StyleSheet, // StyleSheet tetap digunakan untuk style yang bukan dari className (mis. deleteImageIcon)
+    Dimensions, // StyleSheet tetap digunakan untuk style yang bukan dari className (mis. deleteImageIcon)
     Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 
 // Import SVG sebagai komponen React
+import DescriptionInput from '@/components/elements/Input/DescriptionInput';
+import CategorySelection from '@/components/fragments/CategorySelection/CategorySelection';
+import FullScreenMapModalView from '@/components/fragments/FullScreenMapModalView/FullScreenMapModalView';
+import ImageUploadSection from '@/components/fragments/ImageUpload/ImageUploadSection';
+import LocationPicker from '@/components/fragments/LocationPicker/LocationPicker';
 import Kat1Icon from '../../assets/images/kat1.svg';
 import Kat2Icon from '../../assets/images/kat2.svg';
 import Kat3Icon from '../../assets/images/kat3.svg';
@@ -61,318 +58,7 @@ const CATEGORIES_DATA: Category[] = [
 
 // --- Sub-Komponen ---
 
-interface ReportDescriptionInputProps {
-    value: string;
-    onChangeText: (text: string) => void;
-}
-const ReportDescriptionInput: React.FC<ReportDescriptionInputProps> = ({ value, onChangeText }) => (
-    <View className="mt-4">
-        <Text className="text-base font-semibold mb-1 text-gray-700">Deskripsi Laporan</Text>
-        <TextInput
-            className="border-2 border-gray-300 rounded-lg p-3" // className dari user
-            placeholder="Masukkan deskripsi laporan..."
-            multiline
-            numberOfLines={6}
-            value={value}
-            onChangeText={onChangeText}
-            style={{ textAlignVertical: 'top', height: 120 }} // style inline dari user
-        />
-    </View>
-);
 
-interface ImageUploadSectionProps {
-    images: ImagePicker.ImagePickerAsset[];
-    mainImageIndex: number;
-    onSetMainImageIndex: (index: number) => void;
-    onOpenCamera: () => void;
-    onOpenGallery: () => void;
-    onDeleteImage: (index: number) => void;
-}
-const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
-    images,
-    mainImageIndex,
-    onSetMainImageIndex,
-    onOpenCamera,
-    onOpenGallery,
-    onDeleteImage,
-}) => {
-    const imageSlots = [0, 1, 2, 3];
-
-    const handleThumbnailPress = (index: number) => {
-        if (images[index]) {
-            onSetMainImageIndex(index);
-        } else {
-            if (images.length < 4) {
-                Alert.alert(
-                    "Pilih Sumber Gambar",
-                    "Ambil gambar dari kamera atau galeri?",
-                    [
-                        { text: "Kamera", onPress: onOpenCamera },
-                        { text: "Galeri", onPress: onOpenGallery },
-                        { text: "Batal", style: "cancel" }
-                    ]
-                );
-            } else {
-                Alert.alert("Penuh", "Anda sudah mengunggah 4 gambar.");
-            }
-        }
-    };
-
-    return (
-        <View>
-            <View
-                className={`w-full h-40 rounded-xl justify-center items-center ${images[mainImageIndex] ? '' : 'border-2 border-dotted  border-gray-400'}`}
-            >
-                {images.length > 0 && images[mainImageIndex] ? (
-                    <Image
-                        source={{ uri: images[mainImageIndex].uri }}
-                        className="w-full h-full rounded-lg" // className dari user
-                        resizeMode="cover"
-                    />
-                ) : (
-                    <AntDesign name="pluscircleo" size={30} color="gray" />
-                )}
-            </View>
-
-            <View className="flex-row flex-wrap justify-start -mx-1 mt-2">
-                {imageSlots.map(index => (
-                    <View key={index} className="basis-1/4 px-1 mb-2">
-                        <TouchableOpacity
-                            className="relative" // className dari user
-                            onPress={() => handleThumbnailPress(index)}
-                            onLongPress={() => {
-                                if (images[index]) onDeleteImage(index);
-                            }}
-                        >
-                            <View
-                                className={`aspect-square rounded-lg justify-center items-center overflow-hidden ${images[index] ? '' : 'border-2 border-dotted border-gray-300'}`}
-                            >
-                                {images[index] ? (
-                                    <Image
-                                        source={{ uri: images[index].uri }}
-                                        className="w-full h-full" // className dari user
-                                        resizeMode="cover"
-                                    />
-                                ) : (
-                                    <AntDesign name="plus" size={24} color="gray" />
-                                )}
-                            </View>
-                            {images[index] && (
-                                <TouchableOpacity
-                                    style={styles.deleteImageIcon} // Ini adalah style inline asli, dipertahankan atau di StyleSheet
-                                    onPress={() => onDeleteImage(index)}
-                                >
-                                    <AntDesign name="closecircle" size={18} color="white" />
-                                </TouchableOpacity>
-                            )}
-                        </TouchableOpacity>
-                    </View>
-                ))}
-            </View>
-
-            {images.length > 0 && (
-                <>
-                    <Text className='text-xs italic text-gray-600 mt-1'>
-                        * Tekan thumbnail untuk mengganti gambar utama.
-                    </Text>
-                    <Text className='text-xs italic text-red-600'>
-                        * Tekan lama thumbnail atau ikon (x) untuk menghapus gambar.
-                    </Text>
-                </>
-            )}
-            {images.length >= 4 && (
-                <Text className="text-xs italic text-red-700 mt-1">
-                    * Bukti laporan maksimal 4 gambar.
-                </Text>
-            )}
-
-            <View className="flex-row justify-between mt-3">
-                <View className="w-[48%]">
-                    {/* Menggunakan `className` sesuai dengan kode asli user untuk ButtonPrimary */}
-                    <ButtonPrimary text="Buka Kamera" className="p-2 rounded-lg border-2 border-primaryNavy" onPress={onOpenCamera} />
-                </View>
-                <View className="w-[48%]">
-                    {/* Menggunakan `className` sesuai dengan kode asli user untuk ButtonSecondary */}
-                    <ButtonSecondary text="Buka Galeri" className="p-2 rounded-lg" onPress={onOpenGallery} />
-                </View>
-            </View>
-        </View>
-    );
-};
-
-interface LocationPickerProps {
-    selectedLocation: SelectedLocationType | null;
-    selectedAddress: string | null;
-    onMapPress: (event: any) => void;
-    onOpenFullScreenMap: () => void;
-}
-const LocationPicker: React.FC<LocationPickerProps> = ({
-    selectedLocation,
-    selectedAddress,
-    onMapPress,
-    onOpenFullScreenMap,
-}) => {
-    const defaultMapRegion = { // Lokasi default jika belum ada yang dipilih
-        latitude: -2.548926,
-        longitude: 118.014863,
-        latitudeDelta: 20,
-        longitudeDelta: 20,
-    };
-    const currentRegion = selectedLocation
-        ? { ...selectedLocation, latitudeDelta: 0.005, longitudeDelta: 0.005 }
-        : defaultMapRegion;
-
-    return (
-        <View className="mt-4">
-            <Text className="text-base font-semibold mb-1 text-gray-700">Lokasi Laporan</Text>
-            <View className="h-40 w-full rounded-xl overflow-hidden relative border-2 border-gray-300">
-                <MapView style={{ flex: 1 }} region={currentRegion} onPress={onMapPress}>
-                    {selectedLocation && <Marker coordinate={selectedLocation} title="Lokasi laporan" />}
-                </MapView>
-                <TouchableOpacity
-                    className="absolute bottom-2 right-2 bg-primaryNavy bg-opacity-80 px-3 py-1.5 rounded-md shadow-md" // className dari user
-                    onPress={onOpenFullScreenMap}
-                >
-                    <Text className="text-white text-sm font-medium">Pilih di Peta Besar</Text>
-                </TouchableOpacity>
-            </View>
-            {selectedLocation && (
-                <Text className="mt-2 text-sm text-gray-600">
-                    Koordinat: {selectedLocation.latitude.toFixed(6)}, {selectedLocation.longitude.toFixed(6)}
-                </Text>
-            )}
-            {selectedAddress && (
-                <Text className="mt-1 text-sm text-gray-600">Alamat: {selectedAddress}</Text>
-            )}
-        </View>
-    );
-};
-
-interface FullScreenMapModalViewProps {
-    visible: boolean;
-    onClose: () => void;
-    searchQuery: string;
-    onSearchQueryChange: (query: string) => void;
-    suggestions: any[];
-    onSuggestionPress: (item: any) => void;
-    selectedLocation: SelectedLocationType | null;
-    onMapPress: (event: any) => void;
-    onConfirmLocation: () => void;
-}
-const FullScreenMapModalView: React.FC<FullScreenMapModalViewProps> = ({
-    visible,
-    onClose,
-    searchQuery,
-    onSearchQueryChange,
-    suggestions,
-    onSuggestionPress,
-    selectedLocation,
-    onMapPress,
-    onConfirmLocation
-}) => {
-    const initialModalRegion = selectedLocation
-        ? { ...selectedLocation, latitudeDelta: 0.005, longitudeDelta: 0.005 }
-        : { latitude: -6.914744, longitude: 107.60981, latitudeDelta: 0.0922, longitudeDelta: 0.0421 };
-
-    return (
-        <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
-            <View className="flex-1">
-                <View className="absolute top-4 left-4 right-4 z-10 bg-white p-2 rounded-xl shadow-lg">
-                    <TextInput
-                        placeholder="Cari nama jalan atau tempat..."
-                        value={searchQuery}
-                        onChangeText={onSearchQueryChange}
-                        className="border border-gray-300 p-2.5 rounded-lg text-sm" // className dari user
-                    />
-                    {suggestions.length > 0 && (
-                        <FlatList
-                            data={suggestions}
-                            keyExtractor={(item) => item.place_id?.toString() || Math.random().toString()}
-                            renderItem={({ item }) => (
-                                <Pressable onPress={() => onSuggestionPress(item)} className="p-2.5 border-b border-gray-200">
-                                    <Text className="text-sm text-gray-700">{item.display_name}</Text>
-                                </Pressable>
-                            )}
-                            style={{ maxHeight: 200 }}
-                        />
-                    )}
-                </View>
-
-                <MapView
-                    style={{ flex: 1 }}
-                    initialRegion={initialModalRegion}
-                    region={selectedLocation ? { ...selectedLocation, latitudeDelta: 0.005, longitudeDelta: 0.005 } : undefined}
-                    onPress={onMapPress}
-                    showsUserLocation={true}
-                >
-                    {selectedLocation && <Marker coordinate={selectedLocation} title="Lokasi laporan" />}
-                </MapView>
-
-                <TouchableOpacity
-                    className="absolute bottom-6 right-4 bg-red-500 px-4 py-2 rounded-lg shadow-md" // className dari user
-                    onPress={onClose}
-                >
-                    <Text className="text-white text-base font-medium">Tutup Peta</Text>
-                </TouchableOpacity>
-                {selectedLocation && (
-                    <TouchableOpacity
-                        className="absolute bottom-6 left-4 bg-green-500 px-4 py-2 rounded-lg shadow-md" // className dari user
-                        onPress={onConfirmLocation}
-                    >
-                        <Text className="text-white text-base font-medium">Konfirmasi Lokasi Ini</Text>
-                    </TouchableOpacity>
-                )}
-            </View>
-        </Modal>
-    );
-};
-
-interface CategoryItemProps {
-    category: Category;
-    isActive: boolean;
-    onPress: () => void;
-}
-const CategoryItem: React.FC<CategoryItemProps> = ({ category, isActive, onPress }) => (
-    // Wrapper View untuk className dari kode asli user di ScrollView
-    <View className="px-1">
-        <TouchableOpacity
-            onPress={onPress}
-            // className untuk styling tombol kategori individual
-            className={`p-3 border-2 rounded-lg items-center w-24 h-24 justify-center 
-                        ${isActive ? 'border-primaryOrange bg-orange-50' : 'border-gray-300 bg-white'}`}
-        >
-            <category.Icon width={32} height={32} />
-            <Text
-                className={`mt-1 text-xs text-center ${isActive ? 'text-primaryOrange font-semibold' : 'text-gray-700'}`}
-                numberOfLines={2}
-            >
-                {category.name}
-            </Text>
-        </TouchableOpacity>
-    </View>
-);
-
-interface CategorySelectionProps {
-    categories: Category[];
-    activeCategoryValue: string | null;
-    onSelectCategory: (categoryValue: string) => void;
-}
-const CategorySelection: React.FC<CategorySelectionProps> = ({ categories, activeCategoryValue, onSelectCategory }) => (
-    <View className="mt-4">
-        <Text className="text-base font-semibold mb-2 text-gray-700">Kategori Laporan</Text>
-        {/* className -mx-1 dari kode asli user untuk ScrollView */}
-        <RNScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1">
-            {categories.map((cat) => (
-                <CategoryItem
-                    key={cat.id}
-                    category={cat}
-                    isActive={activeCategoryValue === cat.value}
-                    onPress={() => onSelectCategory(cat.value)}
-                />
-            ))}
-        </RNScrollView>
-    </View>
-);
 
 
 // --- Komponen Layar Utama ---
@@ -562,7 +248,7 @@ const ReportScreen = () => {
                 onOpenGallery={openGallery}
                 onDeleteImage={deleteImage}
             />
-            <ReportDescriptionInput
+            <DescriptionInput
                 value={form.desc}
                 onChangeText={(text) => setForm(prev => ({ ...prev, desc: text }))}
             />
@@ -643,24 +329,12 @@ const ReportScreen = () => {
 
             {/* View pembungkus konten dari kode asli Anda */}
             <View className="bg-white rounded-t-3xl p-4 -mt-6">
-                {/* Jika konten 'laporan' bisa panjang, ScrollView mungkin diperlukan di sini atau di dalam renderLaporanForm */}
-                {/* Untuk saat ini, saya akan mengikuti struktur asli dimana renderContent() langsung di dalam View ini. */}
-                {/* Jika Anda menemukan masalah scrolling, bungkus output renderLaporanForm dengan ScrollView. */}
                 {renderContent()}
             </View>
         </LayoutPage>
     );
 };
 
-const styles = StyleSheet.create({
-    deleteImageIcon: { // Style ini adalah style inline asli, jadi aman di StyleSheet
-        position: 'absolute',
-        top: -5,
-        right: -5,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        borderRadius: 10,
-        padding: 2,
-    },
-});
+
 
 export default ReportScreen;
