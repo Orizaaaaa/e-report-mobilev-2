@@ -238,6 +238,9 @@ const ReportScreen = () => {
         { label: 'BUAT LAPORAN', value: 'laporan' as const },
     ];
 
+    console.log(form);
+
+
     const renderLaporanForm = () => (
         <View>
             <ImageUploadSection

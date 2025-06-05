@@ -48,7 +48,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
     return (
         <View>
             <View
-                className={`w-full h-40 rounded-lg justify-center items-center ${images[mainImageIndex] ? '' : 'border-2 border-dotted border-gray-400'}`}
+                className={`w-full h-40 rounded-xl justify-center items-center ${images[mainImageIndex] ? '' : 'border-2 border-dotted border-gray-400'}`}
             >
                 {images.length > 0 && images[mainImageIndex] ? (
                     <Image
