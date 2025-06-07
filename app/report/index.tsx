@@ -319,12 +319,12 @@ const ReportScreen = () => {
                                 </View>
 
                                 <View >
-                                    <View className=" border-white rounded-xl">
-                                        <MaterialIcons name="notifications-none" size={30} color="#FF840C" />
+                                    <View className=" mx-2 border-white rounded-xl">
+                                        <MaterialIcons name="notifications-none" size={25} color="#FF840C" />
                                     </View>
                                 </View>
                                 <View >
-                                    <Feather name="menu" size={30} color="#FF840C" />
+                                    <Feather name="menu" size={25} color="#FF840C" />
                                 </View>
                             </View>
 
