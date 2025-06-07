@@ -1,7 +1,7 @@
 // File: screens/report/components/ImageUploadSection.tsx
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React from 'react';
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -57,7 +57,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                         resizeMode="cover"
                     />
                 ) : (
-                    <AntDesign name="pluscircleo" size={30} color="gray" />
+                    <FontAwesome name="image" size={24} color="gray" />
                 )}
             </View>
 
@@ -81,7 +81,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                                         resizeMode="cover"
                                     />
                                 ) : (
-                                    <AntDesign name="plus" size={24} color="gray" />
+                                    <FontAwesome name="image" size={24} color="gray" />
                                 )}
                             </View>
                             {images[index] && (
