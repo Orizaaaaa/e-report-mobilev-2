@@ -34,9 +34,9 @@ export default function Index() {
             </View>
           </View>
 
-          <View className='w-16 h-16  rounded-xl   '>
+          <View className='w-16 h-16  rounded-full   '>
             <Image
-              className='w-full h-full rounded-3xl'
+              className='w-full h-full rounded-full'
               source={require('../assets/images/human.png')}
               resizeMode='cover'
             />
@@ -48,7 +48,7 @@ export default function Index() {
 
 
         <View className="mt-5 flex-row items-center gap-2">
-          <View className="flex-1 border-2 border-primaryNavy h-14 px-2 rounded-lg flex-row items-center gap-2">
+          <View className="flex-1 bg-gray-200  h-14 px-4 rounded-full flex-row items-center gap-2">
             <Feather name="search" size={24} color="#1E2A38" />
             <TextInput
               className="flex-1 text-gray-800"
@@ -59,11 +59,11 @@ export default function Index() {
           </View>
 
           <View className=" flex-row justify-end">
-            <View className="p-3 border-2 border-primaryNavy rounded-xl">
+            <View className="p-3  ">
               <MaterialIcons name="notifications-none" size={25} color="#1E2A38" />
             </View>
           </View>
-          <View className="w-14 border-2 border-primaryNavy h-14 justify-center items-center rounded-lg">
+          <View className="w-14   h-14 justify-center items-center rounded-lg">
             <Feather name="menu" size={24} color="#1E2A38" />
           </View>
 
