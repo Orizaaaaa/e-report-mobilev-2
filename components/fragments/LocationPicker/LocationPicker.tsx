@@ -32,7 +32,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         : bandungRegion; // Default ke area Bandung
 
     return (
-        <View className="mt-4">
+        <View className="mt-7">
             <Text className="text-base font-medium mb-1 text-gray-700">Lokasi Laporan</Text>
             <View className="h-40 w-full rounded-xl overflow-hidden relative border-2 border-gray-300">
                 <MapView

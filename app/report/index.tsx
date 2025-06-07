@@ -239,6 +239,13 @@ const ReportScreen = () => {
                 value={form.desc}
                 onChangeText={(text) => setForm(prev => ({ ...prev, desc: text }))}
             />
+
+            <CategorySelection
+                categories={CATEGORIES_DATA}
+                activeCategoryValue={activeCategory}
+                onSelectCategory={handleCategorySelect}
+            />
+
             <LocationPicker
                 selectedLocation={selectedLocation}
                 selectedAddress={selectedAddress}
@@ -256,13 +263,11 @@ const ReportScreen = () => {
                 onMapPress={handleMapPress}
                 onConfirmLocation={() => setFullScreenMapVisible(false)}
             />
-            <CategorySelection
-                categories={CATEGORIES_DATA}
-                activeCategoryValue={activeCategory}
-                onSelectCategory={handleCategorySelect}
-            />
+
             {/* Menggunakan `className` sesuai dengan kode asli user untuk ButtonPrimary */}
-            <ButtonPrimary text="Kirim Laporan" className="p-3 mt-8 mb-6 rounded-lg bg-green-600" onPress={handleSubmitReport} />
+            <View className='flex-row justify-end '>
+                <ButtonPrimary text="Kirim Laporan" className="p-3 mt-6 mb-6 rounded-lg " onPress={handleSubmitReport} />
+            </View>
         </View>
     );
 

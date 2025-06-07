@@ -6,7 +6,7 @@ type Props = {}
 const LayoutPage = ({ children, padding = 'pt-4 px-2' }: any) => {
     return (
         <ScrollView keyboardShouldPersistTaps="handled" className={` ${padding} bg-white`} style={{ height: height }} >
-            <View className="mb-32">
+            <View className="mb-24">
                 {children}
             </View>
         </ScrollView>

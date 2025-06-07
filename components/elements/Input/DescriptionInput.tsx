@@ -6,7 +6,7 @@ type Props = {}
 
 const DescriptionInput: React.FC<ReportDescriptionInputProps> = ({ value, onChangeText }) => {
     return (
-        <View className="mt-4">
+        <View className="mt-7">
             <Text className="text-base font-medium mb-1 text-gray-700">Deskripsi Laporan</Text>
             <TextInput
                 className="border-2 border-gray-300 rounded-lg p-3" // className dari user
