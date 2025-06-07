@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Tabs } from 'expo-router';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -39,18 +39,25 @@ const circle2 = {
   1: { scale: 0 }
 };
 
-const tabs = [
+const tabsUser = [
   { name: 'index', title: 'Beranda', icon: 'home' },
   { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'report/index', title: 'Laporan', icon: 'newspaper-outline' },
-  { name: 'profile', title: 'Profile', icon: 'person-outline' },
+  { name: 'profile', title: 'Profile', icon: 'person-circle-outline' },
 ];
 
+
+const tabsAdmin = [
+  { name: 'admin/index', title: 'Beranda', icon: 'home' },
+  { name: 'admin/contest', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/report/index', title: 'Laporan', icon: 'newspaper-outline' },
+]
 
 
 // ... (Warna dan animasi tetap sama)
 
 const TabButton = ({ item, onPress }: any) => {
+
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
   const isReportDetail = currentRoute.startsWith('report/index') && currentRoute !== 'report/index';
@@ -105,11 +112,14 @@ const TabButton = ({ item, onPress }: any) => {
 };
 
 export default function Layout() {
+  // nanti role di ambil dari local storage
+  const [role, setRole] = useState('user');
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tabs
         screenOptions={({ route }) => {
-          const hideTabBarRoutes = ['report/[id]']; // daftar halaman yang harus sembunyikan tab bar
+          const hideTabBarRoutes = ['report/[id]', 'admin/report/[id]']; // daftar halaman yang harus sembunyikan tab bar
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
@@ -120,20 +130,44 @@ export default function Layout() {
           };
         }}
       >
-        {tabs.map((tab, index) => (
-          <Tabs.Screen
-            key={index}
-            name={tab.name}
-            options={{
-              title: tab.title,
-              tabBarButton: (props) => <TabButton {...props} item={tab} />
-            }}
-          />
-        ))}
+
+        {[...tabsUser, ...tabsAdmin].map((tab, index) => {
+          const isUserTab = tabsUser.find(t => t.name === tab.name);
+          const isAdminTab = tabsAdmin.find(t => t.name === tab.name);
+
+          const shouldHide =
+            (role === 'admin' && isUserTab) ||
+            (role !== 'admin' && isAdminTab);
+
+          return (
+            <Tabs.Screen
+              key={index}
+              name={tab.name}
+              options={{
+                tabBarItemStyle: shouldHide ? { display: 'none' } : undefined,
+                tabBarButton: shouldHide ? () => null : (props) => <TabButton {...props} item={tab} />,
+                title: tab.title,
+              }}
+            />
+          );
+        })}
+
 
         {/* Tambahkan screen untuk route dinamis */}
         <Tabs.Screen
           name="report/[id]"
+          options={{
+            // Cara 1: Sembunyikan dari tab bar
+            tabBarItemStyle: { display: 'none' },
+
+            // Cara 2: Atau gunakan ini sebagai alternatif
+            tabBarButton: () => null,
+
+            // Pastikan tidak ada href yang digunakan
+          }}
+        />
+        <Tabs.Screen
+          name="admin/report/[id]"
           options={{
             // Cara 1: Sembunyikan dari tab bar
             tabBarItemStyle: { display: 'none' },
