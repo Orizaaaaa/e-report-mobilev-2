@@ -303,19 +303,22 @@ const ReportScreen = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
-                    <View className="mt-7 flex-row items-center gap-2">
-                        <View className="flex-1 border-2 border-gray-200 h-14 px-2 rounded-lg flex-row items-center gap-2">
-                            <Feather name="search" size={24} color="white" />
-                            <TextInput
-                                className="flex-1 text-white"
-                                placeholder="Cari Laporan..."
-                                placeholderTextColor="#FFFFFF"
-                            />
-                        </View>
-                        <View className="w-14 border-2 border-gray-200 h-14 justify-center items-center rounded-lg">
-                            <Feather name="menu" size={24} color="white" />
-                        </View>
-                    </View>
+                    {
+                        activePage !== 'laporan' ? (<View className="mt-7 flex-row items-center gap-2">
+                            <View className="flex-1 border-2 border-gray-200 h-14 px-2 rounded-lg flex-row items-center gap-2">
+                                <Feather name="search" size={24} color="white" />
+                                <TextInput
+                                    className="flex-1 text-white"
+                                    placeholder="Cari Laporan..."
+                                    placeholderTextColor="#FFFFFF"
+                                />
+                            </View>
+                            <View className="w-14 border-2 border-gray-200 h-14 justify-center items-center rounded-lg">
+                                <Feather name="menu" size={24} color="white" />
+                            </View>
+                        </View>) : null
+                    }
+
                 </View>
             </View>
 
