@@ -33,7 +33,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
 
     return (
         <View className="mt-4">
-            <Text className="text-base font-semibold mb-1 text-gray-700">Lokasi Laporan</Text>
+            <Text className="text-base font-medium mb-1 text-gray-700">Lokasi Laporan</Text>
             <View className="h-40 w-full rounded-xl overflow-hidden relative border-2 border-gray-300">
                 <MapView
                     style={{ flex: 1 }}
