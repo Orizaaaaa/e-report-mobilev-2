@@ -4,7 +4,7 @@ import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard';
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -290,7 +290,8 @@ const ReportScreen = () => {
                 <View className="absolute z-0 w-[300px] h-[300px] rounded-full bg-white/10 -right-20 top-1/3" />
 
                 <View className="relative z-10">
-                    <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite rounded-full">
+
+                    <View className="flex-row justify-between items-center mt-3 py-3 px-5 bg-primaryWhite rounded-2xl">
                         {pages.map((page) => (
                             <TouchableOpacity
                                 key={page.value}
@@ -303,20 +304,31 @@ const ReportScreen = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
+
                     {
-                        activePage !== 'laporan' ? (<View className="mt-7 flex-row items-center gap-2">
-                            <View className="flex-1 border-2 border-gray-200 h-14 px-2 rounded-lg flex-row items-center gap-2">
-                                <Feather name="search" size={24} color="white" />
-                                <TextInput
-                                    className="flex-1 text-white"
-                                    placeholder="Cari Laporan..."
-                                    placeholderTextColor="#FFFFFF"
-                                />
+                        activePage !== 'laporan' ? (
+
+                            <View className="relative z-10 mt-5 flex-row items-center justify-between gap-2  ">
+                                <View className="flex-1 h-14 px-3  flex-row items-center gap-2 bg-white rounded-full">
+                                    <Feather name="search" size={24} color="#FF840C" />
+                                    <TextInput
+                                        className="flex-1 text-gray-800"
+                                        placeholder="Cari..."
+
+                                    />
+                                </View>
+
+                                <View >
+                                    <View className=" border-white rounded-xl">
+                                        <MaterialIcons name="notifications-none" size={30} color="#FF840C" />
+                                    </View>
+                                </View>
+                                <View >
+                                    <Feather name="menu" size={30} color="#FF840C" />
+                                </View>
                             </View>
-                            <View className="w-14 border-2 border-gray-200 h-14 justify-center items-center rounded-lg">
-                                <Feather name="menu" size={24} color="white" />
-                            </View>
-                        </View>) : null
+
+                        ) : null
                     }
 
                 </View>
