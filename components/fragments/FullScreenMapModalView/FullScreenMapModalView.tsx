@@ -1,5 +1,6 @@
 // File: screens/report/components/FullScreenMapModalView.tsx
 import { NominatimSuggestion, SelectedLocationType } from '@/utils/helper';
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { FlatList, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
@@ -35,13 +36,17 @@ const FullScreenMapModalView: React.FC<FullScreenMapModalViewProps> = ({
     return (
         <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
             <View className="flex-1">
-                <View className="absolute top-4 left-4 right-4 z-10 bg-white p-2 rounded-xl shadow-lg">
-                    <TextInput
-                        placeholder="Cari nama jalan atau tempat..."
-                        value={searchQuery}
-                        onChangeText={onSearchQueryChange}
-                        className="border border-gray-300 p-2.5 rounded-lg text-sm"
-                    />
+                <View className="absolute top-16 left-4 right-4 z-10 bg-white p-2 rounded-xl shadow-lg">
+                    <View className='flex-row items-center' >
+                        <Ionicons name="search" size={24} color="gray" />
+                        <TextInput
+                            placeholder="Cari nama jalan atau tempat..."
+                            value={searchQuery}
+                            onChangeText={onSearchQueryChange}
+                            className=" p-2.5 rounded-lg text-sm"
+                        />
+                    </View>
+
                     {suggestions.length > 0 && (
                         <FlatList
                             data={suggestions}
