@@ -1,4 +1,5 @@
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 
@@ -8,7 +9,7 @@ const setting = (props: Props) => {
     return (
         <View className='py-12 px-3'>
             <View className='flex-row items-center gap-6'>
-                <AntDesign name="arrowleft" size={24} color="black" />
+                <AntDesign onPress={() => router.back()} name="arrowleft" size={24} color="black" />
                 <Text className='font-medium text-lg'>Pengaturan dan aktifitas</Text>
             </View>
 
