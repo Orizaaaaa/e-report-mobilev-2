@@ -1,10 +1,10 @@
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { AntDesign, Entypo, FontAwesome5, Fontisto, Ionicons, Octicons } from "@expo/vector-icons";
-import { Image, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 
 export default function Profile() {
     return (
-        <View  >
+        <ScrollView >
             <View className="bg-white">
                 <View className="bg-primaryNavy py-12  rounded-bl-[60px]" >
                     <View className="flex-row justify-between items-center px-3">
@@ -21,63 +21,100 @@ export default function Profile() {
                         </View>
                         <View className="mt-5" >
                             <Text className="text-white text-xl">Gabriel Yonathan</Text>
-
                         </View>
                     </View>
+
+                    {/* <View className=" px-6 mt-5" >
+                        <View className="bg-white py-3 px-7  rounded-full flex-row items-center gap-2 justify-between">
+                            <View >
+                                <Ionicons name="newspaper-outline" size={24} color="black" />
+                                <Text className="text-center">4</Text>
+                            </View>
+                            <View >
+                                <Ionicons name="medal-outline" size={24} color="black" />
+                                <Text className="text-center">6</Text>
+                            </View>
+                            <View >
+                                <Octicons name="report" size={22} color="black" />
+                                <Text className="text-center">11</Text>
+                            </View>
+                        </View>
+
+                    </View> */}
+
                 </View>
             </View>
 
             <View className="bg-primaryNavy">
                 <View className="bg-white rounded-tr-[60px] p-4  -mt-0 h-full" >
-                    <View className="mt-9 flex-row justify-between px-2" >
+                    <View className="mt-5 flex-row justify-between pr-2" >
                         <Text className="text-lg font-medium">Informasi Pribadi</Text>
                         <AntDesign name="edit" size={24} color="#FF840C" />
                     </View>
 
-                    <View className=" w-full bg-slate-200 py-3 mt-6  rounded-2xl" >
-                        <View className="border-b-2 border-white pb-2 mb-2" >
-                            <View className="flex-row justify-between px-4 py-2">
-                                <View className="flex-row justify-center items-center gap-2">
+                    <View className="w-full py-3  rounded-2xl">
+
+                        {/* Nama */}
+                        <View className="mt-3">
+                            <Text className="text-gray-400 mb-1">Nama</Text>
+                            <View className="py-2 bg-gray-200 rounded-xl">
+                                <View className="flex-row justify-between px-4 py-2 items-center">
+                                    <Text>Oriza Sativa Cikal .M</Text>
                                     <Ionicons name="person-circle-outline" size={24} color="gray" />
-                                    <Text className="text-gray-500">NIK</Text>
                                 </View>
-                                <Text>23332121212121</Text>
                             </View>
                         </View>
-                        <View className="border-b-2 border-white pb-2 mb-2" >
-                            <View className="flex-row justify-between px-4 py-2">
-                                <View className="flex-row justify-center items-center gap-2">
+
+                        <View className="mt-3">
+                            <Text className="text-gray-400 mb-1">NIK</Text>
+                            <View className="py-2 bg-gray-200 rounded-xl">
+                                <View className="flex-row justify-between px-4 py-2 items-center">
+                                    <Text>23332121212121</Text>
+                                    <AntDesign name="idcard" size={24} color="gray" />
+                                </View>
+                            </View>
+                        </View>
+
+                        {/* Email */}
+                        <View className="mt-3">
+                            <Text className="text-gray-400 mb-1">Email</Text>
+                            <View className="py-2 bg-gray-200 rounded-xl">
+                                <View className="flex-row justify-between px-4 py-2 items-center">
+                                    <Text>oryza@gmail.com</Text>
                                     <Fontisto name="email" size={24} color="gray" />
-                                    <Text className="text-gray-500" >email</Text>
                                 </View>
-                                <Text>gabrielmonyet@gmail.com</Text>
                             </View>
                         </View>
-                        <View className="border-b-2 border-white pb-2 mb-2" >
-                            <View className="flex-row justify-between px-4 py-2">
-                                <View className="flex-row justify-center items-center gap-2">
+
+                        {/* Nomor Handphone */}
+                        <View className="mt-3">
+                            <Text className="text-gray-400 mb-1">Nomor Handphone</Text>
+                            <View className="py-2 bg-gray-200 rounded-xl">
+                                <View className="flex-row justify-between px-4 py-2 items-center">
+                                    <Text>085150586363</Text>
                                     <FontAwesome5 name="whatsapp" size={24} color="gray" />
-                                    <Text className="text-gray-500">nomor handphone</Text>
                                 </View>
-                                <Text>085150586363</Text>
                             </View>
                         </View>
-                        <View className="border-b-2 border-white pb-2 mb-2" >
-                            <View className="flex-row justify-between px-4 py-2">
-                                <View className="flex-row justify-center items-center gap-2">
+
+                        {/* Lokasi */}
+                        <View className="mt-3">
+                            <Text className="text-gray-400 mb-1">Lokasi</Text>
+                            <View className="py-2 bg-gray-200 rounded-xl">
+                                <View className="flex-row justify-between px-4 py-2 items-center">
+                                    <Text>Garut, Jawa Barat, Indonesia</Text>
                                     <Entypo name="location-pin" size={22} color="gray" />
-                                    <Text className="text-gray-500">lokasi</Text>
                                 </View>
-                                <Text>Garut, Jawa Barat, Indonesia</Text>
                             </View>
                         </View>
+
 
                     </View>
+
+
                 </View>
             </View>
-
-
-        </View>
+        </ScrollView>
 
     );
 }
