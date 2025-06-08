@@ -144,6 +144,7 @@ export default function Layout() {
               key={index}
               name={tab.name}
               options={{
+                animation: 'shift',
                 tabBarItemStyle: shouldHide ? { display: 'none' } : undefined,
                 tabBarButton: shouldHide ? () => null : (props) => <TabButton {...props} item={tab} />,
                 title: tab.title,

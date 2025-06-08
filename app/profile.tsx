@@ -24,24 +24,6 @@ export default function Profile() {
                         </View>
                     </View>
 
-                    {/* <View className=" px-6 mt-5" >
-                        <View className="bg-white py-3 px-7  rounded-full flex-row items-center gap-2 justify-between">
-                            <View >
-                                <Ionicons name="newspaper-outline" size={24} color="black" />
-                                <Text className="text-center">4</Text>
-                            </View>
-                            <View >
-                                <Ionicons name="medal-outline" size={24} color="black" />
-                                <Text className="text-center">6</Text>
-                            </View>
-                            <View >
-                                <Octicons name="report" size={22} color="black" />
-                                <Text className="text-center">11</Text>
-                            </View>
-                        </View>
-
-                    </View> */}
-
                 </View>
             </View>
 
