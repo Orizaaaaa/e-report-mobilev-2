@@ -22,7 +22,7 @@ export default function Profile() {
                             />
                         </View>
                         <View className="mt-5" >
-                            <Text className="text-white text-xl">Gabriel Yonathan</Text>
+                            <Text className="text-white text-xl">Oriza Sativa Cikal Mulyana</Text>
                         </View>
                     </View>
 
