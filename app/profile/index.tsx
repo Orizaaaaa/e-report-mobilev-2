@@ -1,21 +1,23 @@
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { AntDesign, Entypo, FontAwesome5, Fontisto, Ionicons, Octicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { Image, ScrollView, Text, View } from "react-native";
 
 export default function Profile() {
+
     return (
         <ScrollView >
             <View className="bg-white">
                 <View className="bg-primaryNavy py-12  rounded-bl-[60px]" >
                     <View className="flex-row justify-between items-center px-3">
                         <ButtonBack colorIcon="white" />
-                        <Octicons name="gear" size={24} color="white" />
+                        <Octicons onPress={() => router.push("/profile/setting")} name="gear" size={24} color="white" />
                     </View>
                     <View className="flex justify-center items-center">
                         <View className='w-28 h-28  rounded-xl   '>
                             <Image
                                 className='w-full h-full rounded-full'
-                                source={require('../assets/images/human.png')}
+                                source={require('../../assets/images/human.png')}
                                 resizeMode='cover'
                             />
                         </View>

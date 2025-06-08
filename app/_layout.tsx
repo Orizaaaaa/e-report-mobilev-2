@@ -43,7 +43,8 @@ const tabsUser = [
   { name: 'index', title: 'Beranda', icon: 'home' },
   { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'report/index', title: 'Laporan', icon: 'newspaper-outline' },
-  { name: 'profile', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'profile/index', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'profile/setting', title: 'Profile', icon: 'person-circle-outline' },
 ];
 
 
@@ -61,7 +62,11 @@ const TabButton = ({ item, onPress }: any) => {
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
   const isReportDetail = currentRoute.startsWith('report/index') && currentRoute !== 'report/index';
-  const focused = !isReportDetail && currentRoute === item.name;
+  const isProfileSetting = currentRoute.startsWith('profile/');
+  const focused =
+    !isReportDetail &&
+    (currentRoute === item.name ||
+      (item.name === 'profile/index' && isProfileSetting));
   const viewRef = useRef<any>(null);
   const circleRef = useRef<any>(null);
   const textRef = useRef<any>(null);
@@ -136,6 +141,7 @@ export default function Layout() {
           const isAdminTab = tabsAdmin.find(t => t.name === tab.name);
 
           const shouldHide =
+            tab.name === 'profile/setting' || // selalu disembunyikan
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);
 
