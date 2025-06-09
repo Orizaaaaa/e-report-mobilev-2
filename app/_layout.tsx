@@ -119,7 +119,7 @@ const TabButton = ({ item, onPress }: any) => {
 
 export default function Layout() {
   // nanti role di ambil dari local storage
-  const [role, setRole] = useState('user');
+  const [role, setRole] = useState('admin');
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
