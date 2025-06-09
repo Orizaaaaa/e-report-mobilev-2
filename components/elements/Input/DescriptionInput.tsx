@@ -4,13 +4,14 @@ import { Text, TextInput, View } from 'react-native'
 
 type Props = {}
 
-const DescriptionInput: React.FC<ReportDescriptionInputProps> = ({ value, onChangeText }) => {
+const DescriptionInput: React.FC<ReportDescriptionInputProps> = ({ value, onChangeText, title, placeholderText }) => {
     return (
         <View className="mt-7">
-            <Text className="text-base font-medium mb-1 text-gray-700">Deskripsi Laporan</Text>
+            <Text className="text-gray-500 mb-2">{title}</Text>
             <TextInput
                 className="border-2 border-gray-300 rounded-lg p-3" // className dari user
-                placeholder="Masukkan deskripsi laporan..."
+                placeholder={placeholderText}
+                placeholderTextColor={'gray'}
                 multiline
                 numberOfLines={6}
                 value={value}

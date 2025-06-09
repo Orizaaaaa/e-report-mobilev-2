@@ -20,6 +20,8 @@ export interface Category {
 export interface ReportDescriptionInputProps {
     value: string;
     onChangeText: (text: string) => void;
+    title: string
+    placeholderText?: string
 }
 
 // File: screens/report/types/helper.ts

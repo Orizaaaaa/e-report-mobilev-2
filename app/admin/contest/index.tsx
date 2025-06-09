@@ -65,7 +65,7 @@ const Contest = (props: Props) => {
 
                     <View className='flex-row gap-3 mb-4' >
                         <ButtonPrimary className='py-2 px-3 rounded-full' text='Tambah Lomba'
-                            onPress={handlePress} />
+                            onPress={() => { router.push(`/admin/contest/addContest`) }} />
                     </View>
 
                     <TouchableOpacity onPress={handlePress} >

@@ -236,6 +236,8 @@ const ReportScreen = () => {
                 onDeleteImage={deleteImage}
             />
             <DescriptionInput
+                title='Deskripsi Laporan'
+                placeholderText='Masukkan deskripsi laporan...'
                 value={form.desc}
                 onChangeText={(text) => setForm(prev => ({ ...prev, desc: text }))}
             />
