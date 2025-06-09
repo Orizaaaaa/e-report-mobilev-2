@@ -13,7 +13,7 @@ interface CategorySelectionProps {
 
 const CategorySelection: React.FC<CategorySelectionProps> = ({ categories, activeCategoryValue, onSelectCategory }) => (
     <View className="mt-7">
-        <Text className="text-base font-medium mb-2 text-gray-700">Kategori Laporan</Text>
+        <Text className=" mb-2 text-gray-500">Kategori Laporan</Text>
         <RNScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1">
             {categories.map((cat) => (
                 <CategoryItem

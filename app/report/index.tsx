@@ -267,8 +267,8 @@ const ReportScreen = () => {
             />
 
             {/* Menggunakan `className` sesuai dengan kode asli user untuk ButtonPrimary */}
-            <View className='flex-row justify-end '>
-                <ButtonPrimary text="Kirim Laporan" className="p-3 mt-6 mb-6 rounded-lg " onPress={handleSubmitReport} />
+            <View className='flex-row  '>
+                <ButtonPrimary text="Buat Laporan" className="px-3 py-2 mt-6 mb-6 rounded-lg " onPress={handleSubmitReport} />
             </View>
         </View>
     );

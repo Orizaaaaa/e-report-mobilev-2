@@ -47,6 +47,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
 
     return (
         <View>
+            <Text className='mb-2 text-gray-500'>Masukan Bukti Laporan</Text>
             <View
                 className={`w-full h-40 rounded-xl justify-center items-center ${images[mainImageIndex] ? '' : 'border-2 border-dotted border-gray-400'}`}
             >
