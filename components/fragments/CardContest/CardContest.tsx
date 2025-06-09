@@ -1,5 +1,5 @@
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary'
-import { EvilIcons } from '@expo/vector-icons'
+import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Image, Text, View } from 'react-native'
 
@@ -30,6 +30,7 @@ const CardContest = ({ handlePres, location, title, desc, textButton }: Props) =
                     <View className="flex-row justify-center items-center bg-slate-50 py-1 px-2 rounded-xl">
                         <EvilIcons name="location" size={15} color="black" />
                         <Text className="text-sm font-light">{location}</Text>
+
                     </View>
                 </View>
             </View>
@@ -38,11 +39,19 @@ const CardContest = ({ handlePres, location, title, desc, textButton }: Props) =
             <View className="bg-white rounded-b-3xl px-3 pt-3 pb-5 shadow-md shadow-black/30">
                 <Text className="text-lg font-semibold">{title}</Text>
                 <Text className="text-sm font-light">{desc}</Text>
+
+
                 <View className="w-full mt-4">
+                    <View className='flex-row items-center gap-1'>
+                        <Text className="text-sm font-light text-gray-500">24 05 2023</Text>
+                        <Ionicons name="time-outline" size={15} color="gray" />
+                    </View>
                     <View className="flex-row justify-between mb-1">
+
                         <Text className="text-sm text-gray-800">
                             Peserta: {pesertaSaatIni} / {totalPeserta}
                         </Text>
+
                         <Text className="text-sm text-gray-800">
                             {Math.round(progress * 100)}%
                         </Text>
