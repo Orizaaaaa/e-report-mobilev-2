@@ -1,7 +1,9 @@
+import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import CardContest from '@/components/fragments/CardContest/CardContest';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { RelativePathString, router } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 type Props = {}
@@ -12,6 +14,11 @@ const Contest = (props: Props) => {
     const pesertaSaatIni = 700;
     const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
 
+
+    const handlePress = () => {
+        // Navigasi ke halaman detail dengan ID
+        router.push(`/admin/contest/22` as RelativePathString);
+    };
 
     return (
         <View className="flex-1 bg-white">
@@ -50,11 +57,21 @@ const Contest = (props: Props) => {
 
             {/* Scrollable Content */}
             <View className="flex-1 rounded-tr-[37px] -mt-9 bg-white overflow-hidden pb-12">
+
                 <ScrollView
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <CardContest textButton='Hapus lomba' title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
+
+                    <View className='flex-row gap-3 mb-4' >
+                        <ButtonPrimary className='py-2 px-3 rounded-full' text='Tambah Lomba'
+                            onPress={handlePress} />
+                    </View>
+
+                    <TouchableOpacity onPress={handlePress} >
+                        <CardContest textButton='Hapus lomba' title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
+                    </TouchableOpacity>
+
                 </ScrollView>
             </View>
         </View>

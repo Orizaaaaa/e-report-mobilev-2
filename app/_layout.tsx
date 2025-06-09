@@ -187,6 +187,18 @@ export default function Layout() {
             // Pastikan tidak ada href yang digunakan
           }}
         />
+        <Tabs.Screen
+          name="admin/contest/[id]"
+          options={{
+            // Cara 1: Sembunyikan dari tab bar
+            tabBarItemStyle: { display: 'none' },
+
+            // Cara 2: Atau gunakan ini sebagai alternatif
+            tabBarButton: () => null,
+
+            // Pastikan tidak ada href yang digunakan
+          }}
+        />
       </Tabs>
     </GestureHandlerRootView>
   );
