@@ -5,14 +5,15 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 type Props = {
     image: any
     handlepres: any
+    heightImage?: string
 }
 
-const CardReport = ({ image, handlepres }: Props) => {
+const CardReport = ({ image, handlepres, heightImage = 'h-36' }: Props) => {
     return (
         <TouchableOpacity onPress={handlepres}>
             <View className={`rounded-2xl flex-1 mr-5 w-64  `}>
                 <Image
-                    className=' rounded-tl-3xl  rounded-br-3xl w-full h-36'
+                    className={`rounded-tl-3xl  rounded-br-3xl w-full ${heightImage} `}
                     source={image}
                     resizeMode='cover'
                 />
