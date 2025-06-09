@@ -54,7 +54,7 @@ const Contest = (props: Props) => {
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <CardContest textButton='Daftar Sekarang' title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
+                    <CardContest textButton='Hapus lomba' title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
                 </ScrollView>
             </View>
         </View>

@@ -8,9 +8,10 @@ type Props = {
     location: string
     title: string
     desc: string
+    textButton: string
 }
 
-const CardContest = ({ handlePres, location, title, desc }: Props) => {
+const CardContest = ({ handlePres, location, title, desc, textButton }: Props) => {
     const [searchText, setSearchText] = useState('');
     const totalPeserta = 1000;
     const pesertaSaatIni = 700;
@@ -56,7 +57,7 @@ const CardContest = ({ handlePres, location, title, desc }: Props) => {
 
                     <ButtonPrimary
                         className="mt-4 py-2 rounded-xl"
-                        text="Ikuti lomba"
+                        text={textButton}
                         onPress={handlePres}
                     />
                 </View>

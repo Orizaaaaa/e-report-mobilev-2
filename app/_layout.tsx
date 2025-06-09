@@ -50,8 +50,9 @@ const tabsUser = [
 
 const tabsAdmin = [
   { name: 'admin/index', title: 'Beranda', icon: 'home' },
-  { name: 'admin/contest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'admin/report/index', title: 'Laporan', icon: 'newspaper-outline' },
+  { name: 'admin/contest/index', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/contest/addContest', title: 'Lomba', icon: 'medal-outline' },
 ]
 
 
@@ -142,6 +143,7 @@ export default function Layout() {
 
           const shouldHide =
             tab.name === 'profile/setting' || // selalu disembunyikan
+            tab.name === 'admin/contest/addContest' || // selalu disembunyikan
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);
 

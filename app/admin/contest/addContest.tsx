@@ -3,12 +3,12 @@ import { Text, View } from 'react-native'
 
 type Props = {}
 
-const contest = (props: Props) => {
+const addContest = (props: Props) => {
     return (
         <View>
-            <Text>contest</Text>
+            <Text>addContest</Text>
         </View>
     )
 }
 
-export default contest
+export default addContest
