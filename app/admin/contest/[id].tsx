@@ -1,5 +1,4 @@
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { toDateId } from "@marceloterreiro/flash-calendar";
 import { useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
@@ -28,7 +27,7 @@ LocaleConfig.defaultLocale = 'id';
 
 const DetailContestAdmin = () => {
     const { id } = useLocalSearchParams();
-    const [selectedDate, setSelectedDate] = useState(toDateId(new Date()));
+
     const [selected, setSelected] = useState('');
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["60%"], []);
@@ -41,12 +40,7 @@ const DetailContestAdmin = () => {
         console.log("BottomSheet index:", index);
     }, []);
 
-    const todayDate = new Date();
-    const todayId = toDateId(todayDate);
 
-    const nextYear = new Date(todayDate);
-    nextYear.setFullYear(nextYear.getFullYear() + 1);
-    const nextYearId = toDateId(nextYear);
 
     return (
         <GestureHandlerRootView className="flex-1 justify-center">
