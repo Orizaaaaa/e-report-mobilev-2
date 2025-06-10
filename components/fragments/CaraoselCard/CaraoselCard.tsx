@@ -1,4 +1,4 @@
-import { Octicons } from '@expo/vector-icons'
+import { MaterialIcons, Octicons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Dimensions, Image, Text, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
@@ -22,17 +22,27 @@ const CaraoselCard = ({ imageCaraosel, typeReport }: Props) => {
                     scrollAnimationDuration={100}
                     onSnapToItem={(index) => setActiveIndex(index)}
                     renderItem={({ item }: any) => (
-                        <Image
-                            source={item}
-                            style={{
-                                width: '100%',
-                                height: 125,
-                                borderTopLeftRadius: 24,
-                                borderBottomRightRadius: 24,
-                            }}
-                            resizeMode="cover"
-                        />
+                        <View>
+                            <Image
+                                source={item}
+                                style={{
+                                    width: '100%',
+                                    height: 125,
+                                    borderTopLeftRadius: 24,
+                                    borderBottomRightRadius: 24,
+                                }}
+                                className='relative'
+                                resizeMode="cover"
+                            />
+                            <View className='flex-row justify-between items-center absolute top-3 right-3 bg-slate-200 px-3 py-1 rounded-lg gap-2 '>
+                                <MaterialIcons className='' name="pending-actions" size={18} color="black" />
+                                <Text className='text-sm'>Menunggu</Text>
+                            </View>
+
+                        </View>
+
                     )}
+
                 />
 
                 {/* Pagination bullet, posisi absolute di dalam gambar */}

@@ -1,3 +1,4 @@
+import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard'
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage'
 import { Feather, MaterialIcons } from '@expo/vector-icons'
 import React from 'react'
@@ -13,6 +14,11 @@ const index = (props: Props) => {
 
     ];
     const [activePage, setActivePage] = React.useState(pages[0].value);
+    const imagesCaraosel = [
+        require('../../../assets/images/demo.png'),
+        require('../../../assets/images/study1.png'),
+        require('../../../assets/images/demo.png'),
+    ];
     return (
         <LayoutPage padding='p-0'>
             <View className="bg-primaryNavy pb-14 pt-12 px-3 relative overflow-hidden">
@@ -65,7 +71,7 @@ const index = (props: Props) => {
             {/* View pembungkus konten dari kode asli Anda */}
             <View className="bg-white rounded-t-3xl p-4 -mt-6">
                 <Text>
-                    hallo anjing
+                    <CaraoselCard imageCaraosel={imagesCaraosel} typeReport='REGULER' />
                 </Text>
             </View>
         </LayoutPage>
