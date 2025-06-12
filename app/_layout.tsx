@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
-import { Tabs } from 'expo-router';
+import { Tabs, usePathname, useRouter, useSegments } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -119,7 +119,26 @@ const TabButton = ({ item, onPress }: any) => {
 
 export default function Layout() {
   // nanti role di ambil dari local storage
-  const [role, setRole] = useState('admin');
+
+  const [role, setRole] = useState<'admin' | 'user'>('admin'); // ganti sesuai hasil dari async storage/local storage
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const segments = useSegments();
+
+  // hanya proteksi dari user ke admin dan masih error ketika dari admin ke user
+  useEffect(() => {
+    const isAdminRoute = segments[0] === 'admin';
+    const isUserRoute = tabsUser.some(tab => segments[0] === tab.name);
+
+    if (role !== 'admin' && isAdminRoute) {
+      router.replace('/');
+    }
+
+    if (role === 'admin' && isUserRoute) {
+      router.replace('/admin');
+    }
+  }, [segments, role]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
