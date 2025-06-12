@@ -1,14 +1,14 @@
-import { FontAwesome } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 type Props = {
     total: number | string;
     title: string;
+    icon?: any
 };
 
 
-export default function Card({ total, title }: Props) {
+export default function Card({ total, title, icon }: Props) {
     return (
         <View
             className="w-[48%] bg-primaryNavy p-3 rounded-xl mb-4"
@@ -19,8 +19,8 @@ export default function Card({ total, title }: Props) {
             <View className="absolute top-10 right-5 w-16 h-16 bg-white/10 rounded-full" />
 
             {/* Konten Utama */}
-            <View className="bg-white/30 rounded-xl self-start p-2">
-                <FontAwesome name="file-text-o" size={24} color="white" />
+            <View className="bg-white/30 rounded-xl self-start p-2 mb-2">
+                {icon}
             </View>
             <Text className="text-3xl font-semibold text-white">{total}</Text>
             <Text className="text-sm text-white">{title}</Text>
