@@ -36,9 +36,6 @@ export default function ReportDetail() {
             </View>
 
             <DetailReport imageCaraosel={imagesCaraosel} />
-
-
-
         </ScrollView>
     );
 }

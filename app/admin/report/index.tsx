@@ -1,6 +1,7 @@
 import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard'
 import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage'
 import { Feather, MaterialIcons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import React from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 
@@ -71,7 +72,10 @@ const index = (props: Props) => {
             {/* View pembungkus konten dari kode asli Anda */}
             <View className="bg-white rounded-t-3xl p-4 -mt-6">
                 <Text>
-                    <CaraoselCard imageCaraosel={imagesCaraosel} typeReport='REGULER' />
+                    <TouchableOpacity onPress={() => { router.push('/admin/report/11') }}>
+                        <CaraoselCard imageCaraosel={imagesCaraosel} typeReport='REGULER' />
+                    </TouchableOpacity>
+
                 </Text>
             </View>
         </LayoutPage>
