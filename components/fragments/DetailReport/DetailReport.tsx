@@ -1,4 +1,4 @@
-import { FontAwesome5 } from '@expo/vector-icons'
+import { Feather, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Dimensions, Image, Linking, Text, TouchableOpacity, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
@@ -119,8 +119,10 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                 <View>
                     <Text className='text-sm font-thin'>Aduan ini telah</Text>
                     <Text className='text-sm font-medium' >Menunggu di Proses <Text className='font-light' >oleh</Text>  tim pemerintah</Text>
-                    <Text className='text-sm font-light'>Minggu 01 Juni 2025 - 21-36, <Text className='text-primaryOrange font-medium' >Lihat Riwayat</Text> </Text>
+                    <Text className='text-sm font-light'>Minggu 01 Juni 2025 - 21-36,</Text>
                 </View>
+
+
 
                 <View>
                     <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange' >
@@ -128,6 +130,26 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                     </Text>
                 </View>
 
+            </View>
+
+            <View className='flex-row items-center justify-between bg-gray-200 rounded-2xl px-4 py-2 mt-7' >
+                <View className='flex items-center' >
+                    <Feather name="x-circle" size={24} color="black" />
+                    <Text className='text-primaryNavy text-sm' >Tidak valid</Text>
+                </View>
+                <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-lg' >
+                    <MaterialIcons name="access-time" size={24} color="#FF840C" />
+                    <Text className='text-primaryOrange text-sm' >Menunggu</Text>
+                </View>
+
+                <View className='flex items-center' >
+                    <MaterialCommunityIcons name="archive-cog-outline" size={24} color="black" />
+                    <Text className='text-primaryNavy text-sm' >Di proses</Text>
+                </View>
+                <View className='flex items-center' >
+                    <MaterialCommunityIcons name="archive-check-outline" size={24} color="black" />
+                    <Text className='text-primaryNavy text-sm' >Selesai</Text>
+                </View>
             </View>
 
         </View>
