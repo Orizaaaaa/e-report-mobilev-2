@@ -137,9 +137,9 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                     <Feather name="x-circle" size={24} color="black" />
                     <Text className='text-primaryNavy text-sm' >Tidak valid</Text>
                 </View>
-                <View className='flex items-center bg-primaryNavy/70 px-2 py-1 rounded-xl' >
-                    <MaterialIcons name="pending-actions" size={24} color="#FF840C" />
-                    <Text className='text-primaryOrange text-sm' >Menunggu</Text>
+                <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl' >
+                    <MaterialIcons name="pending-actions" size={24} color="white" />
+                    <Text className='text-white text-sm' >Menunggu</Text>
                 </View>
 
                 <View className='flex items-center' >
