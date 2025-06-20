@@ -122,7 +122,7 @@ const index = (props: Props) => {
 
                         <View >
                             <View className=" mx-2 border-white rounded-xl">
-                                <MaterialIcons name="notifications-none" size={25} color="#FF840C" />
+                                <MaterialIcons onPress={() => { router.push('/admin/notif/NotifPage') }} name="notifications-none" size={25} color="#FF840C" />
                             </View>
                         </View>
                         <View >

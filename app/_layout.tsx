@@ -53,6 +53,7 @@ const tabsAdmin = [
   { name: 'admin/report/index', title: 'Laporan', icon: 'newspaper-outline' },
   { name: 'admin/contest/index', title: 'Lomba', icon: 'medal-outline' },
   { name: 'admin/contest/addContest', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/notif/NotifPage', title: 'Lomba', icon: 'medal-outline' },
 ]
 
 
@@ -144,7 +145,7 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tabs
         screenOptions={({ route }) => {
-          const hideTabBarRoutes = ['report/[id]', 'admin/report/[id]']; // daftar halaman yang harus sembunyikan tab bar
+          const hideTabBarRoutes = ['report/[id]', 'admin/report/[id]', 'admin/notif']; // daftar halaman yang harus sembunyikan tab bar
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
@@ -162,6 +163,7 @@ export default function Layout() {
 
           const shouldHide =
             tab.name === 'profile/setting' || // selalu disembunyikan
+            tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);
