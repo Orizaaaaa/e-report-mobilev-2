@@ -27,7 +27,10 @@ export interface ReportDescriptionInputProps {
 // File: screens/report/types/helper.ts
 
 
-
+export const formatDate = (day: { day: number; month: number; year: number }) => {
+    const pad = (num: number) => num.toString().padStart(2, '0');
+    return `${pad(day.day)}-${pad(day.month)}-${day.year}`;
+};
 
 export interface SelectedLocationType {
     latitude: number;
