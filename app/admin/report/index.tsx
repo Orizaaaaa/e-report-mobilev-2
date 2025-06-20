@@ -1,3 +1,5 @@
+import ButtonPrimary from '@/components/elements/Button/ButtonPrimary'
+import ButtonSecondary from '@/components/elements/Button/ButtonSecondary'
 import BottomSheetCustom from '@/components/fragments/bottomSheet'
 import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard'
 import { formatDate } from '@/utils/helper'
@@ -63,7 +65,7 @@ const index = (props: Props) => {
     ];
 
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const snapPoints = useMemo(() => ["70%"], []);
+    const snapPoints = useMemo(() => ["80%"], []);
     const openBottomSheet = () => {
         bottomSheetRef.current?.expand();
     };
@@ -211,6 +213,11 @@ const index = (props: Props) => {
                     />
 
 
+                </View>
+
+                <View className='flex-row justify-between mt-7 '>
+                    <ButtonSecondary className='w-[48%] rounded-lg py-2' text='Reset' onPress={() => { }} />
+                    <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
                 </View>
             </BottomSheetCustom>
         </SafeAreaView>

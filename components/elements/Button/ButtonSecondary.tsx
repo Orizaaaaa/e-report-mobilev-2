@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 
 type Props = {
-    className: string
+    className?: string
     text: string
     onPress: () => void
 }
