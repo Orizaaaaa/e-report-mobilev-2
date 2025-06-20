@@ -16,6 +16,7 @@ const today = new Date();
 const index = (props: Props) => {
     const [period, setPeriod] = useState({ startDate: '', endDate: '' });
     const [filtering, setFiltering] = useState({
+        status: '',
         date: '',
         search: '',
     });
@@ -75,9 +76,14 @@ const index = (props: Props) => {
 
 
 
+    const statusList = [
+        { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
+        { label: 'Menunggu', value: 'pending', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
+        { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
+        { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
+    ];
 
-
-    console.log(filtering.date);
+    console.log(filtering);
 
     return (
         <SafeAreaView className="flex-1 bg-primaryNavy">
@@ -139,28 +145,36 @@ const index = (props: Props) => {
             </View>
 
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
-                <View className='' >
-                    <Text className='mb-2 text-sm text-slate-400'>Filter berdasarkan status</Text>
-                    <View className='flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2 ' >
-                        <View className='flex items-center' >
-                            <Feather name="x-circle" size={18} color="black" />
-                            <Text className='text-primaryNavy text-sm' >Tidak valid</Text>
-                        </View>
-                        <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl' >
-                            <MaterialIcons name="pending-actions" size={18} color="white" />
-                            <Text className='text-white text-sm' >Menunggu</Text>
-                        </View>
+                <View className="">
+                    <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
 
-                        <View className='flex items-center' >
-                            <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" />
-                            <Text className='text-primaryNavy text-sm' >Di proses</Text>
-                        </View>
-                        <View className='flex items-center' >
-                            <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" />
-                            <Text className='text-primaryNavy text-sm' >Selesai</Text>
-                        </View>
+                    <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
+                        {statusList.map((item) => {
+                            const isActive = filtering.status === item.value;
+                            return (
+                                <TouchableOpacity
+                                    key={item.value}
+                                    className={`flex items-center px-2 py-1 rounded-xl ${isActive ? 'bg-primaryNavy' : ''}`}
+                                    onPress={() => {
+                                        // Toggle off jika sama
+                                        setFiltering((prev) => ({
+                                            ...prev,
+                                            status: prev.status === item.value ? '' : item.value,
+                                        }));
+                                    }}
+                                >
+                                    {React.cloneElement(item.icon, {
+                                        color: isActive ? 'white' : 'black',
+                                    })}
+                                    <Text className={`text-sm ${isActive ? 'text-white' : 'text-primaryNavy'}`}>
+                                        {item.label}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
                     </View>
                 </View>
+
 
 
 
