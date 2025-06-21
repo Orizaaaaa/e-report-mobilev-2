@@ -39,7 +39,7 @@ const Contest = (props: Props) => {
 
                     <View className="flex-row justify-end">
                         <View className="p-3 border-white rounded-xl">
-                            <MaterialIcons name="notifications-none" size={25} color="#FF840C" />
+                            <MaterialIcons onPress={() => router.push('/admin/notif/NotifPage?tab=lomba')} name="notifications-none" size={25} color="#FF840C" />
                         </View>
                     </View>
                     <View className="w-14 border-white h-14 justify-center items-center rounded-lg">

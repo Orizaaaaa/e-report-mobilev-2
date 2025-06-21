@@ -44,6 +44,12 @@ const index = (props: Props) => {
                 </View>
 
 
+                {/* contoh yang langsung masuk ke notif lomba */}
+                {/* <ButtonPrimary
+                    text="Buat laporan"
+                    onPress={() => router.push('/admin/notif/NotifPage?tab=lomba')}
+                /> */}
+
 
                 {/* <View className='bg-white rounded-2xl mt-5 px-3 py-6  '>
                     <View>

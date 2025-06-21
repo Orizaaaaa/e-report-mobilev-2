@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from 'react-native'
 type Props = {
     className?: string
     text: string
-    onPress: () => void
+    onPress: any
 }
 
 const ButtonPrimary = ({ className, text, onPress }: Props) => {
