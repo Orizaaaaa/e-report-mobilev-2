@@ -19,6 +19,9 @@ const NotifUser = (props: Props) => {
         }
     }, [params])
 
+
+
+
     return (
         <SafeAreaView className="pt-12 px-5">
             <View className='flex-row justify-between items-center' >
@@ -102,6 +105,8 @@ const NotifUser = (props: Props) => {
                     </View>
                 )}
             </ScrollView>
+
+
         </SafeAreaView>
     )
 }
