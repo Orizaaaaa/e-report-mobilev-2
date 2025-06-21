@@ -11,10 +11,16 @@ import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-nat
 import { Calendar } from 'react-native-calendars'
 
 type Props = {}
+const pages = [
+    { label: 'REGULER', value: 'regular' as const },
+    { label: 'PRIORITAS', value: 'prioritas' as const },
+    { label: 'SELESAI', value: 'selesai' as const },
 
+];
 const today = new Date();
 const index = (props: Props) => {
     const [period, setPeriod] = useState({ startDate: '', endDate: '' });
+    const [activePage, setActivePage] = React.useState(pages[0].value);
     const [filtering, setFiltering] = useState({
         status: '',
         date: '',
@@ -52,13 +58,8 @@ const index = (props: Props) => {
         setFiltering(prev => ({ ...prev, [key]: value.toString() }));
     };
 
-    const pages = [
-        { label: 'REGULER', value: 'regular' as const },
-        { label: 'PRIORITAS', value: 'prioritas' as const },
-        { label: 'SELESAI', value: 'selesai' as const },
 
-    ];
-    const [activePage, setActivePage] = React.useState(pages[0].value);
+
     const imagesCaraosel = [
         require('../../../assets/images/demo.png'),
         require('../../../assets/images/study1.png'),
@@ -145,35 +146,39 @@ const index = (props: Props) => {
             </View>
 
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
-                <View className="">
-                    <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
 
-                    <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
-                        {statusList.map((item) => {
-                            const isActive = filtering.status === item.value;
-                            return (
-                                <TouchableOpacity
-                                    key={item.value}
-                                    className={`flex items-center px-2 py-1 rounded-xl ${isActive ? 'bg-primaryNavy' : ''}`}
-                                    onPress={() => {
-                                        // Toggle off jika sama
-                                        setFiltering((prev) => ({
-                                            ...prev,
-                                            status: prev.status === item.value ? '' : item.value,
-                                        }));
-                                    }}
-                                >
-                                    {React.cloneElement(item.icon, {
-                                        color: isActive ? 'white' : 'black',
-                                    })}
-                                    <Text className={`text-sm ${isActive ? 'text-white' : 'text-primaryNavy'}`}>
-                                        {item.label}
-                                    </Text>
-                                </TouchableOpacity>
-                            );
-                        })}
+                {activePage !== 'selesai' && (
+                    <View className="">
+                        <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
+
+                        <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
+                            {statusList.map((item) => {
+                                const isActive = filtering.status === item.value;
+                                return (
+                                    <TouchableOpacity
+                                        key={item.value}
+                                        className={`flex items-center px-2 py-1 rounded-xl ${isActive ? 'bg-primaryNavy' : ''}`}
+                                        onPress={() => {
+                                            // Toggle off jika sama
+                                            setFiltering((prev) => ({
+                                                ...prev,
+                                                status: prev.status === item.value ? '' : item.value,
+                                            }));
+                                        }}
+                                    >
+                                        {React.cloneElement(item.icon, {
+                                            color: isActive ? 'white' : 'black',
+                                        })}
+                                        <Text className={`text-sm ${isActive ? 'text-white' : 'text-primaryNavy'}`}>
+                                            {item.label}
+                                        </Text>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </View>
                     </View>
-                </View>
+                )}
+
 
 
 
