@@ -3,14 +3,13 @@
 import { PostPredict } from '@/api/model';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard';
-import LayoutPage from '@/components/fragments/layout/layoutPage/LayoutPage';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Alert,
-    Dimensions, // StyleSheet tetap digunakan untuk style yang bukan dari className (mis. deleteImageIcon)
+    Dimensions, SafeAreaView, // StyleSheet tetap digunakan untuk style yang bukan dari className (mis. deleteImageIcon)
     Text,
     TextInput,
     TouchableOpacity,
@@ -18,12 +17,17 @@ import {
 } from 'react-native';
 
 // Import SVG sebagai komponen React
+import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import DescriptionInput from '@/components/elements/Input/DescriptionInput';
+import BottomSheetCustom from '@/components/fragments/bottomSheet';
 import CategorySelection from '@/components/fragments/CategorySelection/CategorySelection';
 import FullScreenMapModalView from '@/components/fragments/FullScreenMapModalView/FullScreenMapModalView';
 import ImageUploadSection from '@/components/fragments/ImageUpload/ImageUploadSection';
 import LocationPicker from '@/components/fragments/LocationPicker/LocationPicker';
-import { Category, FormState, SelectedLocationType } from '@/utils/helper';
+import { Category, formatDate, FormState, SelectedLocationType } from '@/utils/helper';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { router } from 'expo-router';
+import { Calendar } from 'react-native-calendars';
 import Kat1Icon from '../../assets/images/kat1.svg';
 import Kat2Icon from '../../assets/images/kat2.svg';
 import Kat3Icon from '../../assets/images/kat3.svg';
@@ -43,6 +47,12 @@ const CATEGORIES_DATA: Category[] = [
 // --- Sub-Komponen ---
 
 
+const statusList = [
+    { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
+    { label: 'Menunggu', value: 'pending', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
+    { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
+    { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
+];
 
 
 // --- Komponen Layar Utama ---
@@ -225,6 +235,18 @@ const ReportScreen = () => {
     console.log(form);
 
 
+
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const snapPoints = useMemo(() => ["80%"], []);
+    const openBottomSheet = () => {
+        bottomSheetRef.current?.expand();
+    };
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log("BottomSheet index:", index);
+    }, []);
+
+
+
     const renderLaporanForm = () => (
         <View>
             <ImageUploadSection
@@ -282,10 +304,43 @@ const ReportScreen = () => {
         }
     };
 
+    const [period, setPeriod] = useState({ startDate: '', endDate: '' });
+    const [filtering, setFiltering] = useState({
+        status: '',
+        date: '',
+        search: '',
+    });
+
+    const getMarkedDates = (start: string, end: string) => {
+        const marked: any = {};
+
+        if (!start) return marked;
+
+        const startDate = new Date(start);
+        const endDate = end ? new Date(end) : new Date(start);
+
+        let current = new Date(startDate);
+
+        while (current <= endDate) {
+            const dateStr = current.toISOString().split('T')[0];
+
+            marked[dateStr] = {
+                startingDay: dateStr === start,
+                endingDay: dateStr === end,
+                color: '#1E2A38',
+                textColor: 'white',
+            };
+
+            current.setDate(current.getDate() + 1);
+        }
+
+        return marked;
+    };
+
     // console.log(form); // Untuk debugging jika diperlukan
 
     return (
-        <LayoutPage padding='p-0'>
+        <SafeAreaView className='flex-1 ' >
             <View className="bg-primaryNavy pb-14 pt-12 px-3 relative overflow-hidden">
                 {/* Decorative circles using original className, assuming NativeWind handles transforms */}
                 <View className="absolute z-0 w-[400px] h-[400px] rounded-full bg-white/10 left-1/2 -translate-x-1/2 top-10" />
@@ -322,11 +377,11 @@ const ReportScreen = () => {
 
                                 <View >
                                     <View className=" mx-2 border-white rounded-xl">
-                                        <MaterialIcons name="notifications-none" size={25} color="#FF840C" />
+                                        <MaterialIcons onPress={() => { router.push('/notif') }} name="notifications-none" size={25} color="#FF840C" />
                                     </View>
                                 </View>
                                 <View >
-                                    <Feather name="menu" size={25} color="#FF840C" />
+                                    <Feather onPress={openBottomSheet} name="menu" size={25} color="#FF840C" />
                                 </View>
                             </View>
 
@@ -337,10 +392,104 @@ const ReportScreen = () => {
             </View>
 
             {/* View pembungkus konten dari kode asli Anda */}
-            <View className="bg-white rounded-t-3xl p-4 -mt-6">
+            <View className="bg-white rounded-t-3xl p-4 -mt-6 flex-1">
                 {renderContent()}
             </View>
-        </LayoutPage>
+
+            <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
+
+                <View className="">
+                    <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
+
+                    <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
+                        {statusList.map((item) => {
+                            const isActive = filtering.status === item.value;
+                            return (
+                                <TouchableOpacity
+                                    key={item.value}
+                                    className={`flex items-center px-2 py-1 rounded-xl ${isActive ? 'bg-primaryNavy' : ''}`}
+                                    onPress={() => {
+                                        // Toggle off jika sama
+                                        setFiltering((prev) => ({
+                                            ...prev,
+                                            status: prev.status === item.value ? '' : item.value,
+                                        }));
+                                    }}
+                                >
+                                    {React.cloneElement(item.icon, {
+                                        color: isActive ? 'white' : 'black',
+                                    })}
+                                    <Text className={`text-sm ${isActive ? 'text-white' : 'text-primaryNavy'}`}>
+                                        {item.label}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </View>
+                </View>
+
+
+
+
+
+
+
+                <View className='mt-7' >
+                    <Text className="text-sm text-slate-400 ">Filter berdasarkan tanggal</Text>
+                    <Calendar
+                        onDayPress={(day) => {
+                            const formatted = formatDate({ day: day.day, month: day.month, year: day.year });
+
+                            if (!period.startDate || (period.startDate && period.endDate)) {
+                                // Mulai periode baru
+                                setPeriod({ startDate: day.dateString, endDate: '' });
+                                setFiltering(prev => ({ ...prev, date: formatted }));
+                            } else {
+                                const isBefore = new Date(day.dateString) < new Date(period.startDate);
+
+                                if (isBefore) {
+                                    setPeriod({ startDate: day.dateString, endDate: period.startDate });
+                                    const startFormatted = formatDate({ day: day.day, month: day.month, year: day.year });
+                                    const endDateObj = new Date(period.startDate);
+                                    const endFormatted = formatDate({
+                                        day: endDateObj.getDate(),
+                                        month: endDateObj.getMonth() + 1,
+                                        year: endDateObj.getFullYear()
+                                    });
+                                    setFiltering(prev => ({ ...prev, date: `${startFormatted} - ${endFormatted}` }));
+                                } else {
+                                    setPeriod({ startDate: period.startDate, endDate: day.dateString });
+                                    const startDateObj = new Date(period.startDate);
+                                    const startFormatted = formatDate({
+                                        day: startDateObj.getDate(),
+                                        month: startDateObj.getMonth() + 1,
+                                        year: startDateObj.getFullYear()
+                                    });
+                                    const endFormatted = formatted;
+                                    setFiltering(prev => ({ ...prev, date: `${startFormatted} - ${endFormatted}` }));
+                                }
+                            }
+                        }}
+                        markingType={'period'}
+                        markedDates={getMarkedDates(period.startDate, period.endDate)}
+                        theme={{
+                            selectedDayBackgroundColor: '#1E2A38',
+                            todayTextColor: '#1E2A38',
+                            arrowColor: '#1E2A38',
+                            textDayHeaderFontSize: 12,
+                            textDayFontSize: 14,
+                        }}
+                    />
+
+
+                </View>
+
+                <View className='flex-row justify-between mt-7 '>
+                    <ButtonSecondary className='w-[48%] rounded-lg py-2' text='Reset' onPress={() => { }} />
+                    <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
+                </View>
+            </BottomSheetCustom>
+        </SafeAreaView>
     );
 };
 
