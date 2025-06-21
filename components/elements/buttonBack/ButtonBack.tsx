@@ -11,7 +11,6 @@ type Props = {
 }
 const ButtonBack = ({ className, colorIcon = 'black', bgColor = 'bg-light' }: Props) => {
     const navigate: any = useNavigation()
-    console.log('canGoBack:', navigate.canGoBack())
 
     return (
         <TouchableOpacity onPress={() => navigate.goBack()} className={` rounded-full ${bgColor} flex justify-center items-center ${className}`} >

@@ -144,7 +144,7 @@ export default function Layout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Tabs
+      <Tabs backBehavior="history"
         screenOptions={({ route }) => {
           const hideTabBarRoutes = ['report/[id]', 'admin/report/[id]', 'admin/notif']; // daftar halaman yang harus sembunyikan tab bar
 
