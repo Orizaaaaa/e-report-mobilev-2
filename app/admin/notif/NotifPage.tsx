@@ -1,3 +1,4 @@
+import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
@@ -20,8 +21,14 @@ const NotifPage = (props: Props) => {
 
     return (
         <SafeAreaView className="pt-12 px-5">
+            <View className='flex-row justify-between items-center' >
+                <ButtonBack />
+                <Text className='text-xl font-medium' >Notifikasi</Text>
+                <Text>{''}</Text>
+            </View>
             {/* Tab Selector */}
-            <View className="flex-row justify-between bg-slate-200 my-7 px-3 py-5 rounded-xl">
+            <View className="flex-row justify-between bg-slate-200 my-7 px-3 py-5 rounded-2xl">
+
                 {/* Laporan Tab */}
                 <TouchableOpacity
                     onPress={() => setActiveTab('laporan')}
