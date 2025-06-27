@@ -172,7 +172,7 @@ export default function Layout() {
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
             tab.name === 'index' || // selalu disembunyikan
             tab.name === 'register' || // selalu disembunyikan
-            tab.name === 'login' || // selalu disembunyikan
+
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);
 

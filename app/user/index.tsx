@@ -27,7 +27,7 @@ export default function Index() {
 
     const handlePress = () => {
         // Navigasi ke halaman detail dengan ID
-        router.push(`/report/22`);
+        router.push(`/user/report/22`);
     };
 
     const bottomSheetRef = useRef<BottomSheet>(null);
