@@ -28,10 +28,10 @@ import { Category, formatDate, FormState, SelectedLocationType } from '@/utils/h
 import BottomSheet from '@gorhom/bottom-sheet';
 import { router } from 'expo-router';
 import { Calendar } from 'react-native-calendars';
-import Kat1Icon from '../../assets/images/kat1.svg';
-import Kat2Icon from '../../assets/images/kat2.svg';
-import Kat3Icon from '../../assets/images/kat3.svg';
-import Kat4Icon from '../../assets/images/kat4.svg';
+import Kat1Icon from '../../../assets/images/kat1.svg';
+import Kat2Icon from '../../../assets/images/kat2.svg';
+import Kat3Icon from '../../../assets/images/kat3.svg';
+import Kat4Icon from '../../../assets/images/kat4.svg';
 
 const { width: windowWidth } = Dimensions.get('window');
 
@@ -222,9 +222,9 @@ const ReportScreen = () => {
     }, [searchQuery]);
 
     const imagesCaraosel = [
-        require('../../assets/images/demo.png'),
-        require('../../assets/images/study1.png'),
-        require('../../assets/images/demo.png'),
+        require('../../../assets/images/demo.png'),
+        require('../../../assets/images/study1.png'),
+        require('../../../assets/images/demo.png'),
     ];
     const pages = [
         { label: 'REGULER', value: 'regular' as const },
@@ -377,7 +377,7 @@ const ReportScreen = () => {
 
                                 <View >
                                     <View className=" mx-2 border-white rounded-xl">
-                                        <MaterialIcons onPress={() => { router.push('/notif') }} name="notifications-none" size={25} color="#FF840C" />
+                                        <MaterialIcons onPress={() => { router.push('/user/notif') }} name="notifications-none" size={25} color="#FF840C" />
                                     </View>
                                 </View>
                                 <View >

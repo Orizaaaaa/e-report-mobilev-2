@@ -40,14 +40,15 @@ const circle2 = {
 };
 
 const tabsUser = [
-  { name: 'index', title: 'Beranda', icon: 'home' },
-  { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
-  { name: 'report/index', title: 'Laporan', icon: 'newspaper-outline' },
-  { name: 'profile/index', title: 'Profile', icon: 'person-circle-outline' },
-  { name: 'profile/setting', title: 'Profile', icon: 'person-circle-outline' },
-  { name: 'notif', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'user/index', title: 'Beranda', icon: 'home' },
+  { name: 'user/contest', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'user/report/index', title: 'Laporan', icon: 'newspaper-outline' },
+  { name: 'user/profile/index', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'user/profile/setting', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'user/notif', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'register', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'login', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'index', title: 'Profile', icon: 'person-circle-outline' },
 ];
 
 
@@ -66,12 +67,12 @@ const TabButton = ({ item, onPress }: any) => {
 
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
-  const isReportDetail = currentRoute.startsWith('report/index') && currentRoute !== 'report/index';
-  const isProfileSetting = currentRoute.startsWith('profile/');
+  const isReportDetail = currentRoute.startsWith('user/report/index') && currentRoute !== 'user/report/index';
+  const isProfileSetting = currentRoute.startsWith('user/profile/');
   const focused =
     !isReportDetail &&
     (currentRoute === item.name ||
-      (item.name === 'profile/index' && isProfileSetting));
+      (item.name === 'user/profile/index' && isProfileSetting));
   const viewRef = useRef<any>(null);
   const circleRef = useRef<any>(null);
   const textRef = useRef<any>(null);
@@ -148,7 +149,7 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tabs backBehavior="history"
         screenOptions={({ route }) => {
-          const hideTabBarRoutes = ['report/[id]', 'admin/report/[id]', 'admin/notif']; // daftar halaman yang harus sembunyikan tab bar
+          const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'admin/notif']; // daftar halaman yang harus sembunyikan tab bar
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
@@ -165,10 +166,11 @@ export default function Layout() {
           const isAdminTab = tabsAdmin.find(t => t.name === tab.name);
 
           const shouldHide =
-            tab.name === 'profile/setting' || // selalu disembunyikan
-            tab.name === 'notif' || // selalu disembunyikan
+            tab.name === 'user/profile/setting' || // selalu disembunyikan
+            tab.name === 'user/notif' || // selalu disembunyikan
             tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
+            tab.name === 'index' || // selalu disembunyikan
             tab.name === 'register' || // selalu disembunyikan
             tab.name === 'login' || // selalu disembunyikan
             (role === 'admin' && isUserTab) ||
@@ -191,7 +193,7 @@ export default function Layout() {
 
         {/* Tambahkan screen untuk route dinamis */}
         <Tabs.Screen
-          name="report/[id]"
+          name="user/report/[id]"
           options={{
             // Cara 1: Sembunyikan dari tab bar
             tabBarItemStyle: { display: 'none' },

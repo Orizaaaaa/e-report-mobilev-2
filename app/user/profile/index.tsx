@@ -17,7 +17,7 @@ export default function Profile() {
                         <View className='w-28 h-28  rounded-xl   '>
                             <Image
                                 className='w-full h-full rounded-full'
-                                source={require('../../assets/images/human.png')}
+                                source={require('../../../assets/images/human.png')}
                                 resizeMode='cover'
                             />
                         </View>

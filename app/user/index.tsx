@@ -1,16 +1,16 @@
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import BottomSheetCustom from '@/components/fragments/bottomSheet';
-import CardContest from '@/components/fragments/CardContest/CardContest';
+import CardReport from '@/components/fragments/CardReport/CardReport';
+import IndicatorInfo from '@/components/fragments/IndicatorInfo/IndicatorInfo';
 import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { router } from 'expo-router';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { router, useNavigation } from "expo-router";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
-import { TextInput } from 'react-native-gesture-handler';
-
+const { height } = Dimensions.get('window');
 
 const statusList = [
     { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
@@ -18,13 +18,17 @@ const statusList = [
     { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
     { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
 ];
-type Props = {}
 
-const Contest = (props: Props) => {
+
+export default function Index() {
+    const navigation: any = useNavigation()
     const [searchText, setSearchText] = useState('');
-    const totalPeserta = 1000;
-    const pesertaSaatIni = 700;
-    const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
+
+
+    const handlePress = () => {
+        // Navigasi ke halaman detail dengan ID
+        router.push(`/report/22`);
+    };
 
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["80%"], []);
@@ -68,14 +72,36 @@ const Contest = (props: Props) => {
         return marked;
     };
     return (
-        <View className="flex-1 bg-white">
-            {/* Bagian Atas */}
-            <View className="pb-14 pt-12 px-3 relative overflow-hidden">
-                <View className="absolute inset-0 bg-primaryNavy opacity-100 z-0" />
+        <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
+            <View className="mb-40">
+                <View>
 
-                <View className="relative z-10 mt-5 flex-row items-center gap-2 bg-white rounded-full px-2">
-                    <View className="flex-1 h-14 px-2 rounded-lg flex-row items-center gap-2">
-                        <Feather name="search" size={24} color="#FF840C" />
+                </View>
+                <View className='flex-row items-center w-full justify-between p-1    ' >
+
+                    <View className="gap-3 flex-col" >
+                        <View className="flex-col gap-1">
+                            <Text className="text-xl font-semibold text-primaryBlack">Hi, Oriza Sativa 👋 </Text>
+                            <Text className="text-sm text-gray-500">Pamulang, Benda Baru, Tangerang Selatan </Text>
+                        </View>
+                    </View>
+
+                    <View className='w-16 h-16  rounded-full   '>
+                        <Image
+                            className='w-full h-full rounded-full'
+                            source={require('../../assets/images/human.png')}
+                            resizeMode='cover'
+                        />
+                    </View>
+
+                </View>
+
+
+
+
+                <View className="mt-5 flex-row items-center gap-2">
+                    <View className="flex-1 bg-gray-200  h-14 px-4 rounded-full flex-row items-center gap-2">
+                        <Feather name="search" size={24} color="#1E2A38" />
                         <TextInput
                             className="flex-1 text-gray-800"
                             placeholder="Cari..."
@@ -84,32 +110,78 @@ const Contest = (props: Props) => {
                         />
                     </View>
 
-                    <View className="flex-row justify-end">
-                        <View className="p-3 border-white rounded-xl">
-                            <MaterialIcons onPress={() => { router.push('/notif') }} name="notifications-none" size={25} color="#FF840C" />
+                    <View className=" flex-row justify-end">
+                        <View className="p-3  ">
+                            <MaterialIcons onPress={() => { router.push('/user/notif') }} name="notifications-none" size={25} color="#1E2A38" />
                         </View>
                     </View>
-                    <View className="w-14 border-white h-14 justify-center items-center rounded-lg">
-                        <Feather onPress={openBottomSheet} name="menu" size={24} color="#FF840C" />
+                    <View className="w-14   h-14 justify-center items-center rounded-lg">
+                        <Feather onPress={openBottomSheet} name="menu" size={24} color="#1E2A38" />
+                    </View>
+
+
+                </View>
+
+
+
+
+                <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative'>
+                    {/* Gambar */}
+                    <Image
+                        className='w-full h-full'
+                        source={require('../../assets/images/study1.png')}
+                        resizeMode='cover'
+                    />
+
+                    {/* Overlay hitam */}
+                    <View className='absolute inset-0 bg-black/35' />
+
+                    {/* Konten di bawah */}
+                    <View className='absolute bottom-0 left-0 right-0 p-5'>
+                        <Text className='text-white text-lg'>Lomba Koding <Text className='text-primaryOrange' >3</Text>  April</Text>
+                        <Text className='text-white text-sm'>Terbuka untuk umum</Text>
+
+                        <View className='flex-row justify-between items-center mt-3'>
+                            <View>
+                                <Text className=' text-sm py-2 px-3 bg-primaryNavy text-white rounded-2xl'>Gabung</Text>
+                            </View>
+
+                            <View className='p-2 bg-primaryNavy rounded-full'>
+                                <MaterialIcons name="keyboard-double-arrow-right" size={20} color="white" />
+                            </View>
+                        </View>
                     </View>
                 </View>
 
-                <View className="relative z-10 flex justify-center items-center mt-4">
-                    <MaterialCommunityIcons name="trophy-award" size={70} color="#FF840C" />
-                    <Text className="text-3xl text-white">700</Text>
-                    <Text className="text-slate-200">Lomba Tersedia</Text>
 
+                <IndicatorInfo finised='177' onProgress='44' total='221' />
+
+
+                {/* laporan */}
+                <View>
+                    <View className='flex-row justify-between items-center mt-7 px-1'>
+                        <Text>Laporan prioritas</Text>
+                        <TouchableOpacity
+                            onPress={handlePress}
+                        >
+                            <Text className='text-primaryOrange'>Lihat Semua</Text>
+                        </TouchableOpacity>
+
+                    </View>
+
+
+
+                    <ScrollView className='mt-5 overflow-x-hidden' showsHorizontalScrollIndicator={false} horizontal={true} >
+                        <CardReport image={require('../../assets/images/demo.png')} handlepres={handlePress} />
+                        <CardReport image={require('../../assets/images/demo.png')} handlepres={handlePress} />
+                        <CardReport image={require('../../assets/images/demo.png')} handlepres={handlePress} />
+                    </ScrollView>
                 </View>
-            </View>
 
-            {/* Scrollable Content */}
-            <View className="flex-1 rounded-tr-[37px] -mt-9 bg-white overflow-hidden pb-12">
-                <ScrollView
-                    contentContainerStyle={{ padding: 16 }}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <CardContest textButton='Daftar Sekarang' title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
-                </ScrollView>
+
+
+
+
             </View>
 
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
@@ -205,8 +277,6 @@ const Contest = (props: Props) => {
                     <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
                 </View>
             </BottomSheetCustom>
-        </View>
+        </ScrollView >
     );
 }
-
-export default Contest;

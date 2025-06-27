@@ -112,7 +112,7 @@ export default function Index() {
 
           <View className=" flex-row justify-end">
             <View className="p-3  ">
-              <MaterialIcons onPress={() => { router.push('/notif') }} name="notifications-none" size={25} color="#1E2A38" />
+              <MaterialIcons onPress={() => { router.push('/user/notif') }} name="notifications-none" size={25} color="#1E2A38" />
             </View>
           </View>
           <View className="w-14   h-14 justify-center items-center rounded-lg">

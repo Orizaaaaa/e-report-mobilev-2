@@ -10,9 +10,9 @@ export default function ReportDetail() {
     const { id } = useLocalSearchParams();
     const [activeIndex, setActiveIndex] = useState(0);
     const imagesCaraosel = [
-        require('../../assets/images/demo.png'),
-        require('../../assets/images/study1.png'),
-        require('../../assets/images/demo.png'),
+        require('../../../assets/images/demo.png'),
+        require('../../../assets/images/study1.png'),
+        require('../../../assets/images/demo.png'),
     ];
     const selectedLocation = {
         latitude: -6.175392,

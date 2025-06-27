@@ -73,7 +73,7 @@ const NotifUser = (props: Props) => {
                         <View className="w-20 h-20 rounded-xl">
                             <Image
                                 className="w-full h-full rounded-full"
-                                source={require('../assets/images/human.png')}
+                                source={require('../../assets/images/human.png')}
                                 resizeMode="cover"
                             />
                         </View>
@@ -91,7 +91,7 @@ const NotifUser = (props: Props) => {
                         <View className="w-20 h-20 rounded-xl">
                             <Image
                                 className="w-full h-full rounded-full"
-                                source={require('../assets/images/human.png')}
+                                source={require('../../assets/images/human.png')}
                                 resizeMode="cover"
                             />
                         </View>
