@@ -46,6 +46,8 @@ const tabsUser = [
   { name: 'profile/index', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'profile/setting', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'notif', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'register', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'login', title: 'Profile', icon: 'person-circle-outline' },
 ];
 
 
@@ -167,6 +169,8 @@ export default function Layout() {
             tab.name === 'notif' || // selalu disembunyikan
             tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
+            tab.name === 'register' || // selalu disembunyikan
+            tab.name === 'login' || // selalu disembunyikan
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);
 
