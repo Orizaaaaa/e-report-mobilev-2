@@ -40,6 +40,7 @@ const circle2 = {
 };
 
 const tabsUser = [
+  { name: 'index', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'user/index', title: 'Beranda', icon: 'home' },
   { name: 'user/contest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'user/report/index', title: 'Laporan', icon: 'newspaper-outline' },
@@ -48,7 +49,7 @@ const tabsUser = [
   { name: 'user/notif', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'register', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'login', title: 'Profile', icon: 'person-circle-outline' },
-  { name: 'index', title: 'Profile', icon: 'person-circle-outline' },
+
 ];
 
 
