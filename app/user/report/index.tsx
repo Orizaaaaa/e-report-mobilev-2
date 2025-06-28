@@ -9,7 +9,7 @@ import * as Location from 'expo-location';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Alert,
-    Dimensions, SafeAreaView, // StyleSheet tetap digunakan untuk style yang bukan dari className (mis. deleteImageIcon)
+    Dimensions, SafeAreaView, ScrollView, // StyleSheet tetap digunakan untuk style yang bukan dari className (mis. deleteImageIcon)
     Text,
     TextInput,
     TouchableOpacity,
@@ -248,7 +248,7 @@ const ReportScreen = () => {
 
 
     const renderLaporanForm = () => (
-        <View>
+        <ScrollView>
             <ImageUploadSection
                 images={images}
                 mainImageIndex={mainImageIndex}
@@ -292,7 +292,7 @@ const ReportScreen = () => {
             <View className='flex-row  '>
                 <ButtonPrimary text="Buat Laporan" className="px-3 py-2 mt-6 mb-6 rounded-lg " onPress={handleSubmitReport} />
             </View>
-        </View>
+        </ScrollView>
     );
 
     const renderContent = () => {
