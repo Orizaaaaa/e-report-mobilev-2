@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "947104129441",
+    "firebase_url": "https://next-app-8f4f7-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "next-app-8f4f7",
+    "storage_bucket": "next-app-8f4f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947104129441:android:590c27fb5aa6f89dacebe0",
+        "android_client_info": {
+          "package_name": "com.e.report"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947104129441-tcaktnk1dneeqh3nem1oqid29obnflha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKq3jpPA-DCClIxmS4FJRLyaqFKHAUavk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947104129441-tcaktnk1dneeqh3nem1oqid29obnflha.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "947104129441-1j30up63e6oipktlsbuhg2ut8m23a8gu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.e.report"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
