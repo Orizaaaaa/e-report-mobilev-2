@@ -22,7 +22,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.e.report",
-      "googleServicesFile": "/android/google-services.json"
+      "googleServicesFile": "/android/app/google-services.json"
     },
     "web": {
       "bundler": "metro",
