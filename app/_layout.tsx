@@ -171,6 +171,7 @@ export default function Layout() {
             tab.name === 'user/notif' || // selalu disembunyikan
             tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
+            tab.name === 'index' || // selalu disembunyikan
             tab.name === 'register' || // selalu disembunyikan
 
             (role === 'admin' && isUserTab) ||

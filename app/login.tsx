@@ -1,3 +1,4 @@
+import AuthInput from '@/components/elements/AuthInput/AuthInput';
 import { auth, db } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
@@ -7,13 +8,13 @@ import {
     signInWithEmailAndPassword
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Alert,
     SafeAreaView,
     Text,
-    TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    View
 } from 'react-native';
 
 // ✅ Fungsi ambil token notifikasi
@@ -41,12 +42,23 @@ const registerForPushNotificationsAsync = async (): Promise<string | undefined> 
 };
 
 export default function LoginRegisterScreen() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [form, setForm] = useState({ email: '', password: '' });
+    const handleChange = (name: string, text: string) => {
+        setForm({ ...form, [name]: text });
+    };
+
+    // validation regex
+    const [emailValidate, setEmailValidate] = useState(true)
+    useEffect(() => {
+        if (form.email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            setEmailValidate(emailRegex.test(form.email));
+        }
+    }, [form.email]);
 
     const signIn = async () => {
         try {
-            const result = await signInWithEmailAndPassword(auth, email, password);
+            const result = await signInWithEmailAndPassword(auth, form.email, form.password);
             const uid = result.user.uid;
 
             const userDocRef = doc(db, 'users', uid);
@@ -91,49 +103,29 @@ export default function LoginRegisterScreen() {
 
     const router = useRouter()
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
+        <SafeAreaView className='bg-white' style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
             <Text style={{ fontSize: 24, textAlign: 'center', marginBottom: 20 }}>Login</Text>
 
-            <TextInput
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                style={{
-                    borderWidth: 1,
-                    borderColor: '#ccc',
-                    borderRadius: 5,
-                    padding: 10,
-                    marginBottom: 10,
-                }}
-            />
-            <TextInput
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                style={{
-                    borderWidth: 1,
-                    borderColor: '#ccc',
-                    borderRadius: 5,
-                    padding: 10,
-                    marginBottom: 20,
-                }}
-            />
+            <View className='w-full flex items-center justify-center mb-4' >
+                <AuthInput placeholder='Email' value={form.email} onChangeText={(text) => handleChange('email', text)} isPass={false}
+                    border={emailValidate ? 'border-gray-200' : 'border-red-500'} />
+            </View>
+
+            <View className='w-full flex items-center justify-center' >
+                <AuthInput placeholder='Password' value={form.password} onChangeText={(text) => handleChange('password', text)} isPass={true} />
+            </View>
+
+
 
             <TouchableOpacity
                 onPress={signIn}
-                style={{
-                    backgroundColor: '#007bff',
-                    padding: 12,
-                    borderRadius: 5,
-                    alignItems: 'center',
-                }}
+                className='w-full flex items-center justify-center py-4 bg-primaryNavy  rounded-lg mt-4'
             >
                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Login</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push('/register')}>
-                <Text>Belum punya akun? Daftar</Text>
+            <TouchableOpacity className='mt-4' onPress={() => router.push('/register')}>
+                <Text className='text-slate-400 font-light' >Belum punya akun? Daftar</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
