@@ -6,6 +6,7 @@ export interface FormState {
     category: string;
     anonim: boolean;
     typeReport: string
+    status: string
 }
 export interface SelectedLocationType { // Diberi nama yang lebih spesifik
     latitude: number;

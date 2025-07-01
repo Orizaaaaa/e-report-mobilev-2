@@ -81,6 +81,7 @@ const ReportScreen = () => {
         location: [{ lat: 0, long: 0, adress: '' }],
         category: '',
         typeReport: '',
+        status: 'menunggu',
         anonim: false
     });
 
@@ -317,6 +318,7 @@ const ReportScreen = () => {
             category: '',
             anonim: false,
             typeReport: '',
+            status: 'menunggu',
         });
         setImages([]);
         setSelectedLocation(null);
