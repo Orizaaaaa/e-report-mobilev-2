@@ -1,5 +1,7 @@
+import AuthInput from '@/components/elements/AuthInput/AuthInput';
 import { auth, db } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 import {
     createUserWithEmailAndPassword,
     UserCredential,
@@ -11,9 +13,8 @@ import {
     SafeAreaView,
     ScrollView,
     Text,
-    TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 
 // Define interfaces for form data and validation errors
@@ -154,68 +155,87 @@ const RegisterScreen = () => {
         }
     };
 
+
+    const router = useRouter()
+
     return (
         <SafeAreaView className="flex-1 bg-gray-50">
-            <ScrollView contentContainerClassName="flex-grow justify-center px-5 py-8">
+            <ScrollView contentContainerClassName="flex-grow justify-center px-5 ">
                 <Text className="text-3xl font-bold text-center mb-8 text-gray-800">
-                    Daftar Akun Baru
+                    Buat Akun
                 </Text>
 
-                <TextInput
-                    placeholder="Email"
-                    value={form.email}
-                    onChangeText={(text) => handleInputChange('email', text)}
-                    className={`border border-gray-300 rounded-lg p-3 mb-2 bg-zinc-600 text-base ${validationErrors.email ? 'border-red-500' : ''}`}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                />
-                {validationErrors.email && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.email}</Text>}
+                <View className='w-full flex items-start mb-2'>
+                    <AuthInput
+                        placeholder='NIK (Nomor Induk Kependudukan)'
+                        value={form.nik}
+                        onChangeText={(text) => handleInputChange('nik', text)}
+                        isPass={false}
+                        border={validationErrors.nik ? 'border-red-500' : 'border-gray-200'}
+                        keyboardType='numeric'
+                        maxLength={16}
+                    />
+                    {validationErrors.nik && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.nik}</Text>}
+                </View>
 
-                <TextInput
-                    placeholder="Password"
-                    value={form.password}
-                    onChangeText={(text) => handleInputChange('password', text)}
-                    secureTextEntry
-                    className={`border border-gray-300 rounded-lg p-3 mb-2 bg-zinc-600 text-base ${validationErrors.password ? 'border-red-500' : ''}`}
-                />
-                {validationErrors.password && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.password}</Text>}
+                <View className='w-full flex items-start mb-2'>
+                    <AuthInput
+                        placeholder='Nama Lengkap'
+                        value={form.name}
+                        onChangeText={(text) => handleInputChange('name', text)}
+                        isPass={false}
+                        border={validationErrors.name ? 'border-red-500' : 'border-gray-200'}
+                    />
+                    {validationErrors.name && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.name}</Text>}
+                </View>
 
-                <TextInput
-                    placeholder="Nama Lengkap"
-                    value={form.name}
-                    onChangeText={(text) => handleInputChange('name', text)}
-                    className={`border border-gray-300 rounded-lg p-3 mb-2 bg-zinc-600 text-base ${validationErrors.name ? 'border-red-500' : ''}`}
-                />
-                {validationErrors.name && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.name}</Text>}
+                <View className='w-full flex items-start mb-2'>
+                    <AuthInput
+                        placeholder='Email'
+                        value={form.email}
+                        onChangeText={(text) => handleInputChange('email', text)}
+                        isPass={false}
+                        border={validationErrors.email ? 'border-red-500' : 'border-gray-200'}
+                    />
+                    {validationErrors.email && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.email}</Text>}
+                </View>
 
-                <TextInput
-                    placeholder="NIK (Nomor Induk Kependudukan)"
-                    value={form.nik}
-                    onChangeText={(text) => handleInputChange('nik', text)}
-                    className={`border border-gray-300 rounded-lg p-3 mb-2 bg-zinc-600 text-base ${validationErrors.nik ? 'border-red-500' : ''}`}
-                    keyboardType="numeric"
-                    maxLength={16}
-                />
-                {validationErrors.nik && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.nik}</Text>}
+                <View className='w-full flex items-start mb-2'>
+                    <AuthInput
+                        placeholder='Nomor Telepon'
+                        value={form.phone}
+                        onChangeText={(text) => handleInputChange('phone', text)}
+                        isPass={false}
+                        border={validationErrors.phone ? 'border-red-500' : 'border-gray-200'}
+                        keyboardType='phone-pad'
+                    />
+                    {validationErrors.phone && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.phone}</Text>}
+                </View>
 
-                <TextInput
-                    placeholder="Nomor Telepon"
-                    value={form.phone}
-                    onChangeText={(text) => handleInputChange('phone', text)}
-                    className={`border border-gray-300 rounded-lg p-3 mb-2 bg-zinc-600 text-base ${validationErrors.phone ? 'border-red-500' : ''}`}
-                    keyboardType="phone-pad"
-                />
-                {validationErrors.phone && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.phone}</Text>}
+                <View className='w-full flex items-start mb-2'>
+                    <AuthInput
+                        placeholder='Lokasi'
+                        value={form.location}
+                        onChangeText={(text) => handleInputChange('location', text)}
+                        isPass={false}
+                        border={validationErrors.location ? 'border-red-500' : 'border-gray-200'}
+                    />
+                    {validationErrors.location && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.location}</Text>}
+                </View>
 
-                <TextInput
-                    placeholder="Lokasi"
-                    value={form.location}
-                    onChangeText={(text) => handleInputChange('location', text)}
-                    className={`border border-gray-300 rounded-lg p-3 mb-2 bg-zinc-600 text-base ${validationErrors.location ? 'border-red-500' : ''}`}
-                />
-                {validationErrors.location && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.location}</Text>}
+                <View className='w-full flex items-start mb-2'>
+                    <AuthInput
+                        placeholder='Password'
+                        value={form.password}
+                        onChangeText={(text) => handleInputChange('password', text)}
+                        isPass={true}
+                        border={validationErrors.password ? 'border-red-500' : 'border-gray-200'}
+                    />
+                    {validationErrors.password && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.password}</Text>}
+                </View>
 
-                <View className="mb-5">
+
+                {/* <View className="mb-5">
                     <Text className="text-base mb-2 text-gray-700 font-bold">Pilih Role:</Text>
                     <View className="flex-row justify-around mb-2">
                         {['user', 'admin', 'editor'].map((roleOption: string) => (
@@ -224,33 +244,30 @@ const RegisterScreen = () => {
                                 className={`py-2 px-4 rounded-full border border-blue-500 ${form.role === roleOption ? 'bg-blue-500' : 'bg-blue-100'}`}
                                 onPress={() => handleInputChange('role', roleOption)}
                             >
-                                <Text
-                                    className={`font-bold ${form.role === roleOption ? 'text-white' : 'text-blue-500'}`}
-                                >
+                                <Text className={`font-bold ${form.role === roleOption ? 'text-white' : 'text-blue-500'}`}>
                                     {roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}
                                 </Text>
                             </TouchableOpacity>
                         ))}
                     </View>
                     {validationErrors.role && <Text className="text-red-500 text-xs mb-2 ml-1">{validationErrors.role}</Text>}
-                </View>
+                </View> */}
+
 
                 <TouchableOpacity
                     onPress={signUp}
-                    className="bg-blue-600 p-4 rounded-lg items-center mt-4 shadow-md"
+                    className="bg-primaryNavy p-4 rounded-lg items-center mt-4 shadow-md"
                 >
                     <Text className="text-white font-bold text-lg">
-                        Daftar
+                        Buat Akun
                     </Text>
                 </TouchableOpacity>
 
-                {/* You might want a "Go to Login" button here if this is a standalone screen */}
-                {/* <TouchableOpacity onPress={() => navigation.navigate('Login')} className="mt-5">
-                    <Text className="text-center text-blue-600 text-base underline">
-                        Sudah punya akun? Masuk di sini
-                    </Text>
-                </TouchableOpacity> */}
+                <TouchableOpacity className='mt-4' onPress={() => router.push('/login')}>
+                    <Text className='text-slate-400 font-light' >Sudah punya akun? Masuk</Text>
+                </TouchableOpacity>
             </ScrollView>
+
         </SafeAreaView>
     );
 };

@@ -121,11 +121,11 @@ export default function LoginRegisterScreen() {
                 onPress={signIn}
                 className='w-full flex items-center justify-center py-4 bg-primaryNavy  rounded-lg mt-4'
             >
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Login</Text>
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>Masuk</Text>
             </TouchableOpacity>
 
             <TouchableOpacity className='mt-4' onPress={() => router.push('/register')}>
-                <Text className='text-slate-400 font-light' >Belum punya akun? Daftar</Text>
+                <Text className='text-slate-400 font-light' >Belum punya akun? Register</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
