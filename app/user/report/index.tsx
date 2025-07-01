@@ -11,6 +11,7 @@ import {
     Dimensions,
     SafeAreaView,
     ScrollView,
+    Switch,
     Text,
     TextInput,
     TouchableOpacity,
@@ -75,6 +76,7 @@ const ReportScreen = () => {
         images: [],
         location: [{ lat: 0, long: 0, adress: '' }],
         category: '',
+        anonim: false
     });
 
     const [images, setImages] = useState<ImagePicker.ImagePickerAsset[]>([]);
@@ -231,7 +233,8 @@ const ReportScreen = () => {
             desc: '',
             images: [],
             location: [{ lat: 0, long: 0, adress: '' }],
-            category: ''
+            category: '',
+            anonim: false
         });
         setImages([]);
         setSelectedLocation(null);
@@ -397,7 +400,22 @@ const ReportScreen = () => {
                 onSelectCategory={handleCategorySelect}
             />
 
-            <View className='flex-row'>
+            <View className="flex-row items-center justify-between mt-4 mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <View className="flex-1">
+                    <Text className="text-base font-medium text-gray-800">Laporkan sebagai Anonim</Text>
+                    <Text className="text-sm text-gray-500">Identitas Anda tidak akan ditampilkan</Text>
+                </View>
+                <Switch
+                    trackColor={{ false: "#e5e7eb", true: "#1E2A38" }}
+                    thumbColor={"#ffffff"}
+                    ios_backgroundColor="#e5e7eb"
+                    onValueChange={(value) => setForm(prev => ({ ...prev, anonim: value }))}
+                    value={form.anonim}
+                    className="ml-2"
+                />
+            </View>
+
+            <View className='flex-row justify-end'>
                 <ButtonPrimary
                     text="Buat Laporan"
                     className="px-3 py-2 mt-6 mb-6 rounded-lg"

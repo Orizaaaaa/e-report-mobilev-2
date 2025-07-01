@@ -4,6 +4,7 @@ export interface FormState {
     images: ImagePicker.ImagePickerAsset[];
     location: Array<{ lat: number; long: number; adress: string }>;
     category: string;
+    anonim: boolean;
 }
 export interface SelectedLocationType { // Diberi nama yang lebih spesifik
     latitude: number;

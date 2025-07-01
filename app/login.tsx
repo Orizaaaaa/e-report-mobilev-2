@@ -108,6 +108,7 @@ export default function LoginRegisterScreen() {
 
 
         } catch (error: any) {
+            setLoading(false)
             Alert.alert('Gagal Login', error.message);
         }
     };
