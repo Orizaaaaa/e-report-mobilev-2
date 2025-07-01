@@ -87,7 +87,7 @@ const ReportScreen = () => {
 
     const [images, setImages] = useState<ImagePicker.ImagePickerAsset[]>([]);
     const [mainImageIndex, setMainImageIndex] = useState(0);
-    const [activePage, setActivePage] = useState<'regular' | 'prioritas' | 'laporan'>('laporan');
+    const [activePage, setActivePage] = useState<'regular' | 'prioritas' | 'laporan'>('regular');
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<SelectedLocationType | null>(null);
     const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
