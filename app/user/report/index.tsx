@@ -326,7 +326,7 @@ const ReportScreen = () => {
 
     // Render Functions
     const renderLaporanForm = () => (
-        <ScrollView>
+        <ScrollView className='mb-24'>
             <ImageUploadSection
                 images={images}
                 mainImageIndex={mainImageIndex}
@@ -343,21 +343,24 @@ const ReportScreen = () => {
                 onChangeText={(text) => setForm(prev => ({ ...prev, desc: text }))}
             />
 
-            <View className="mt-3">
-                <TextInput
-                    placeholder="Masukkan nama lokasi"
-                    value={query}
-                    onChangeText={setQuery}
-                    className="border border-gray-300 rounded-md p-3 mb-2 text-base"
-                />
+            <View className="mt-8">
+                <Text className='mb-2 text-gray-500'>Lokasi Kejadian (tidak harus sesuai pencarian) </Text>
+                <View className="flex-row items-center space-x-2 mb-4 gap-2">
+                    <TextInput
+                        placeholderTextColor={'gray'}
+                        placeholder="Masukkan lokasi kejadian..."
+                        value={query}
+                        onChangeText={setQuery}
+                        className="flex-1 border border-gray-300 rounded-md p-3 text-base"
+                    />
 
-                <TouchableOpacity
-                    onPress={handleSearch}
-                    className="bg-blue-500 rounded-md p-3 mb-4"
-                >
-                    <Text className="text-white text-center font-semibold">Search</Text>
-                </TouchableOpacity>
-
+                    <TouchableOpacity
+                        onPress={handleSearch}
+                        className="p-3 border border-gray-300 rounded-md"
+                    >
+                        <Feather name="search" size={20} color="black" />
+                    </TouchableOpacity>
+                </View>
                 {loading && <ActivityIndicator size="small" color="#000" />}
 
                 {!loading && searched && results.length === 0 && (
