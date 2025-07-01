@@ -10,6 +10,7 @@ import {
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import {
+    ActivityIndicator,
     Alert,
     SafeAreaView,
     Text,
@@ -42,6 +43,7 @@ const registerForPushNotificationsAsync = async (): Promise<string | undefined> 
 };
 
 export default function LoginRegisterScreen() {
+    const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({ email: '', password: '' });
     const handleChange = (name: string, text: string) => {
         setForm({ ...form, [name]: text });
@@ -55,8 +57,9 @@ export default function LoginRegisterScreen() {
             setEmailValidate(emailRegex.test(form.email));
         }
     }, [form.email]);
-
+    const router = useRouter()
     const signIn = async () => {
+        setLoading(true)
         try {
             const result = await signInWithEmailAndPassword(auth, form.email, form.password);
             const uid = result.user.uid;
@@ -95,13 +98,21 @@ export default function LoginRegisterScreen() {
             // Simpan seluruh data ke AsyncStorage
             await AsyncStorage.setItem('user', JSON.stringify(completeUserData));
 
-            Alert.alert('Login Berhasil', `Selamat datang, ${completeUserData.name}`);
+            if (completeUserData.role === 'admin') {
+                router.push('/admin')
+            } else {
+                router.push('/user')
+            }
+
+            setLoading(false)
+
+
         } catch (error: any) {
             Alert.alert('Gagal Login', error.message);
         }
     };
 
-    const router = useRouter()
+
     return (
         <SafeAreaView className='bg-white' style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
             <Text style={{ fontSize: 24, textAlign: 'center', marginBottom: 20 }}>Login</Text>
@@ -121,8 +132,12 @@ export default function LoginRegisterScreen() {
                 onPress={signIn}
                 className='w-full flex items-center justify-center py-4 bg-primaryNavy  rounded-lg mt-4'
             >
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Masuk</Text>
+                {loading ? <ActivityIndicator size="large" color="white" /> : <Text style={{ color: 'white', fontWeight: 'bold' }}>Masuk</Text>}
+
+
             </TouchableOpacity>
+
+
 
             <TouchableOpacity className='mt-4' onPress={() => router.push('/register')}>
                 <Text className='text-slate-400 font-light' >Belum punya akun? Register</Text>

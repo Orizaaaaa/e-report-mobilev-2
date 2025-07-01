@@ -9,6 +9,7 @@ import {
 import { doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import {
+    ActivityIndicator,
     Alert,
     SafeAreaView,
     ScrollView,
@@ -39,6 +40,8 @@ interface ValidationErrors {
 }
 
 const RegisterScreen = () => {
+    const router = useRouter()
+    const [loading, setLoading] = useState(false);
     const [form, setForm] = useState<FormData>({
         email: '',
         password: '',
@@ -116,8 +119,9 @@ const RegisterScreen = () => {
     };
 
     const signUp = async () => {
+        setLoading(true);
         if (!validateForm()) {
-            Alert.alert('Validasi Gagal', 'Harap perbaiki kesalahan input.');
+            setLoading(false);
             return;
         }
 
@@ -147,7 +151,8 @@ const RegisterScreen = () => {
 
             await AsyncStorage.setItem('user', JSON.stringify(userData));
 
-            Alert.alert('Akun Berhasil Dibuat', userData.email ?? '');
+            setLoading(false);
+            router.push('/login')
             // You might want to navigate to another screen after successful registration
             // For example: navigation.navigate('Home');
         } catch (error: any) {
@@ -156,7 +161,7 @@ const RegisterScreen = () => {
     };
 
 
-    const router = useRouter()
+
 
     return (
         <SafeAreaView className="flex-1 bg-gray-50">
@@ -258,9 +263,7 @@ const RegisterScreen = () => {
                     onPress={signUp}
                     className="bg-primaryNavy p-4 rounded-lg items-center mt-4 shadow-md"
                 >
-                    <Text className="text-white font-bold text-lg">
-                        Buat Akun
-                    </Text>
+                    {loading ? <ActivityIndicator size="large" color="white" /> : <Text style={{ color: 'white', fontWeight: 'bold' }}>Buat Akun</Text>}
                 </TouchableOpacity>
 
                 <TouchableOpacity className='mt-4' onPress={() => router.push('/login')}>
