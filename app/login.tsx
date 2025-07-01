@@ -2,6 +2,7 @@ import { auth, db } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import { useRouter } from 'expo-router';
 import {
     signInWithEmailAndPassword
 } from 'firebase/auth';
@@ -49,30 +50,46 @@ export default function LoginRegisterScreen() {
             const uid = result.user.uid;
 
             const userDocRef = doc(db, 'users', uid);
-            const userDoc = await getDoc(userDocRef);
-            const role = userDoc.exists() ? userDoc.data().role : 'user';
+            const userDocSnap = await getDoc(userDocRef);
 
-            // ✅ Ambil token notifikasi setelah login
+            if (!userDocSnap.exists()) {
+                Alert.alert('Data user tidak ditemukan di Firestore');
+                return;
+            }
+
+            const userDataFromFirestore = userDocSnap.data();
+
+            // Ambil token terbaru dari perangkat
             const pushToken = await registerForPushNotificationsAsync();
 
-            // ✅ Simpan token ke dokumen user
-            const userDataToSave = {
-                email: result.user.email,
-                role,
-                token: pushToken || '',
+            // Bandingkan token baru dengan token lama di Firestore
+            if (pushToken && userDataFromFirestore.token !== pushToken) {
+                await setDoc(userDocRef, { token: pushToken }, { merge: true });
+                console.log('✅ Token diperbarui di Firestore');
+            }
+
+            // Gabungkan data Firestore dengan token terbaru (jika ada)
+            const completeUserData = {
+                uid,
+                email: result.user.email || '',
+                name: userDataFromFirestore.name || '',
+                nik: userDataFromFirestore.nik || '',
+                phone: userDataFromFirestore.phone || '',
+                location: userDataFromFirestore.location || '',
+                role: userDataFromFirestore.role || 'user',
+                token: pushToken || userDataFromFirestore.token || '',
             };
-            await setDoc(userDocRef, userDataToSave, { merge: true });
 
-            // ✅ Simpan ke AsyncStorage untuk digunakan di halaman lain
-            const userData = { uid, email: result.user.email, role };
-            await AsyncStorage.setItem('user', JSON.stringify(userData));
+            // Simpan seluruh data ke AsyncStorage
+            await AsyncStorage.setItem('user', JSON.stringify(completeUserData));
 
-            Alert.alert('Login Berhasil', userData.email ?? '');
+            Alert.alert('Login Berhasil', `Selamat datang, ${completeUserData.name}`);
         } catch (error: any) {
             Alert.alert('Gagal Login', error.message);
         }
     };
 
+    const router = useRouter()
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
             <Text style={{ fontSize: 24, textAlign: 'center', marginBottom: 20 }}>Login</Text>
@@ -113,6 +130,10 @@ export default function LoginRegisterScreen() {
                 }}
             >
                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Login</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => router.push('/register')}>
+                <Text>Belum punya akun? Daftar</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

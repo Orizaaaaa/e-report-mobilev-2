@@ -1,4 +1,5 @@
 import { db } from '@/lib/firebase/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
@@ -82,6 +83,15 @@ const Index = () => {
 
   const sendNotificationToRole = async (targetRole: 'admin' | 'user') => {
     try {
+      // Ambil data user login dari AsyncStorage
+      const userStr = await AsyncStorage.getItem('user');
+      const currentUser = userStr ? JSON.parse(userStr) : null;
+
+      if (!currentUser) {
+        Alert.alert('User belum login');
+        return;
+      }
+
       const snapshot = await getDocs(collection(db, 'users'));
       let targetToken = '';
 
@@ -97,11 +107,17 @@ const Index = () => {
         return;
       }
 
+      // Buat sapaan sesuai role
+      const greeting =
+        targetRole === 'admin'
+          ? 'Halo admin'
+          : `Halo ${currentUser.name || currentUser.email || 'pengguna'}`;
+
       const message = {
         to: targetToken,
         sound: 'default',
-        title: `Halo ${targetRole}`,
-        body: `Notifikasi dikirim pada ${new Date().toLocaleTimeString()}`,
+        title: greeting,
+        body: `Notifikasi dikirim oleh ${currentUser.email} pada ${new Date().toLocaleTimeString()}`,
         priority: 'high',
         data: { clicked: true },
       };
@@ -115,11 +131,12 @@ const Index = () => {
         body: JSON.stringify(message),
       });
 
-      Alert.alert(`📤 Notifikasi dikirim ke ${targetRole}`);
+      Alert.alert(`📤 Notifikasi berhasil dikirim ke ${targetRole}`);
     } catch (err) {
       console.error('❌ Gagal mengirim notifikasi:', err);
     }
   };
+
 
   return (
     <View style={styles.container}>

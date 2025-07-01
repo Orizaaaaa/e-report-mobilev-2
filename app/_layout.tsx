@@ -171,7 +171,6 @@ export default function Layout() {
             tab.name === 'user/notif' || // selalu disembunyikan
             tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
-            tab.name === 'index' || // selalu disembunyikan
             tab.name === 'register' || // selalu disembunyikan
 
             (role === 'admin' && isUserTab) ||
@@ -196,7 +195,7 @@ export default function Layout() {
         <Tabs.Screen
           name="user/report/[id]"
           options={{
-            // Cara 1: Sembunyikan dari tab bar
+            // Cara 1: Sembunyikan dari tab barf
             tabBarItemStyle: { display: 'none' },
 
             // Cara 2: Atau gunakan ini sebagai alternatif
