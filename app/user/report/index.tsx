@@ -33,6 +33,10 @@ import { PostPredict } from '@/api/model';
 import { Category, formatDate, FormState, SelectedLocationType } from '@/utils/helper';
 
 // Assets
+import { sendNotificationToRole, uploadImagesToStorage } from '@/api/api';
+import { db } from '@/lib/firebase/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addDoc, collection } from 'firebase/firestore';
 import Kat1Icon from '../../../assets/images/kat1.svg';
 import Kat2Icon from '../../../assets/images/kat2.svg';
 import Kat3Icon from '../../../assets/images/kat3.svg';
@@ -76,6 +80,7 @@ const ReportScreen = () => {
         images: [],
         location: [{ lat: 0, long: 0, adress: '' }],
         category: '',
+        typeReport: '',
         anonim: false
     });
 
@@ -198,35 +203,111 @@ const ReportScreen = () => {
         setForm(prevForm => ({ ...prevForm, category: categoryValue }));
     }, []);
 
-    const handleSubmitReport = useCallback(() => {
-        // Validation
-        if (!form.desc.trim()) {
-            Alert.alert('Input Kurang', 'Deskripsi laporan tidak boleh kosong.');
-            return;
-        }
-        if (form.images.length === 0) {
-            Alert.alert('Input Kurang', 'Mohon unggah minimal satu gambar sebagai bukti.');
-            return;
-        }
-        if (!selectedLocation) {
-            Alert.alert('Input Kurang', 'Mohon pilih lokasi laporan di peta.');
-            return;
-        }
-        if (!form.category) {
-            Alert.alert('Input Kurang', 'Mohon pilih kategori laporan.');
-            return;
-        }
+    const handleSubmitReport = async (
+        form: FormState,
+        setForm: (f: FormState) => void,
 
-        // Submit report
-        PostPredict(form, (result: any) => {
-            if (result.success) {
-                Alert.alert("Sukses", "Laporan berhasil dikirim!");
-                resetForm();
-            } else {
-                Alert.alert("Gagal", result.message || "Gagal mengirim laporan.");
+    ) => {
+        setLoading(true);
+        try {
+            // ✅ Validasi isi
+            if (
+                !form.desc.trim() ||
+                !form.category.trim() ||
+                form.location.length === 0 ||
+                form.images.length === 0
+            ) {
+                Alert.alert('Error', 'Semua Form harus diisi');
+                setLoading(false);
+                return;
             }
-        });
-    }, [form, selectedLocation]);
+
+            // ✅ Validasi karakter minimal 15
+            const descLength = form.desc.trim().length;
+            const locationAddress = form.location[0]?.adress || '';
+            const locationLength = locationAddress.trim().length;
+
+            if (descLength < 15) {
+                Alert.alert('Error', 'Deskripsi minimal 15 karakter');
+                setLoading(false);
+                return;
+            }
+
+            if (locationLength < 15) {
+                Alert.alert('Error', 'Lokasi minimal 15 karakter');
+                setLoading(false);
+                return;
+            }
+
+            if (form.images.length > 4) {
+                Alert.alert('Error', 'Gambar maksimal 4');
+                setLoading(false);
+                return;
+            }
+
+            // Ambil user dari storage
+            const userStr = await AsyncStorage.getItem('user');
+            const currentUser = userStr ? JSON.parse(userStr) : null;
+
+            if (!currentUser) {
+                Alert.alert('Gagal', 'User belum login');
+                setLoading(false);
+                return;
+            }
+
+            // 🔎 Prediksi tipe laporan
+            PostPredict(form.desc, async (predictResult: any) => {
+                const predictedType = predictResult?.prediction || 'reguler';
+
+                setForm({ ...form, typeReport: predictedType });
+
+                // Upload gambar
+                const imageUrls = await uploadImagesToStorage(
+                    form.images.map((image) => image.uri),
+                    currentUser.uid
+                );
+
+                // Siapkan data laporan
+                const reportData = {
+                    desc: form.desc,
+                    images: imageUrls,
+                    location: form.location,
+                    category: form.category,
+                    typeReport: predictedType,
+                    anonim: form.anonim,
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    name: currentUser.name,
+                    createdAt: new Date().toISOString(),
+                };
+
+                // Simpan ke Firestore
+                const reportRef = await addDoc(collection(db, 'reports'), reportData);
+                console.log('✅ Laporan dikirim dengan ID:', reportRef.id);
+
+                // Notifikasi ke admin
+                await sendNotificationToRole('admin', 'Ada laporan baru dari');
+
+                // Simpan data notifikasi
+                await addDoc(collection(db, 'notifications'), {
+                    title: 'Laporan Baru',
+                    body: `Ada laporan baru dari ${currentUser.name || currentUser.email}`,
+                    toRole: 'admin',
+                    fromUid: currentUser.uid,
+                    createdAt: new Date().toISOString(),
+                    read: false,
+                });
+
+                setLoading(false);
+                Alert.alert('Sukses', 'Laporan berhasil dikirim!');
+            });
+        } catch (err) {
+            setLoading(false);
+            console.error('❌ Gagal kirim laporan:', err);
+            Alert.alert('Error', 'Gagal mengirim laporan');
+        }
+    };
+
 
     const resetForm = () => {
         setForm({
@@ -234,7 +315,8 @@ const ReportScreen = () => {
             images: [],
             location: [{ lat: 0, long: 0, adress: '' }],
             category: '',
-            anonim: false
+            anonim: false,
+            typeReport: '',
         });
         setImages([]);
         setSelectedLocation(null);
@@ -418,8 +500,8 @@ const ReportScreen = () => {
             <View className='flex-row justify-end'>
                 <ButtonPrimary
                     text="Buat Laporan"
-                    className="px-3 py-2 mt-6 mb-6 rounded-lg"
-                    onPress={handleSubmitReport}
+                    className="px-6 py-4 mt-6 mb-6 rounded-lg"
+                    onPress={() => handleSubmitReport(form, setForm)}
                 />
             </View>
         </ScrollView>

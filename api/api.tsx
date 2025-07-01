@@ -1,6 +1,7 @@
-import { db } from '@/lib/firebase/firebase';
+import { db, storage } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, getDocs } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Alert } from 'react-native';
 
 export const sendNotificationToRole =
@@ -58,3 +59,21 @@ export const sendNotificationToRole =
             console.error('❌ Gagal mengirim notifikasi:', err);
         }
     };
+
+export const uploadImagesToStorage = async (images: string[], uid: string): Promise<string[]> => {
+    const urls: string[] = [];
+
+    for (const image of images) {
+        const filename = `${uid}_${Date.now()}_${Math.random().toString(36).substring(2)}.jpg`;
+        const imageRef = ref(storage, `reports/${filename}`);
+
+        const response = await fetch(image);
+        const blob = await response.blob();
+
+        await uploadBytes(imageRef, blob);
+        const url = await getDownloadURL(imageRef);
+        urls.push(url);
+    }
+
+    return urls;
+};

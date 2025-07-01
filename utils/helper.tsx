@@ -5,6 +5,7 @@ export interface FormState {
     location: Array<{ lat: number; long: number; adress: string }>;
     category: string;
     anonim: boolean;
+    typeReport: string
 }
 export interface SelectedLocationType { // Diberi nama yang lebih spesifik
     latitude: number;
