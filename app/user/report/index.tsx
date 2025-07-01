@@ -350,7 +350,18 @@ const ReportScreen = () => {
                         placeholderTextColor={'gray'}
                         placeholder="Masukkan lokasi kejadian..."
                         value={query}
-                        onChangeText={setQuery}
+                        onChangeText={(text) => {
+                            setQuery(text);
+                            // Update location state immediately as user types
+                            setForm(prev => ({
+                                ...prev,
+                                location: [{
+                                    lat: 0, // Default 0 jika tidak ada koordinat
+                                    long: 0, // Default 0 jika tidak ada koordinat
+                                    adress: text, // Simpan teks yang diketik user
+                                }],
+                            }));
+                        }}
                         className="flex-1 border border-gray-300 rounded-md p-3 text-base"
                     />
 
@@ -378,15 +389,6 @@ const ReportScreen = () => {
                         </Text>
                     </TouchableOpacity>
                 ))}
-
-                {form.location[0].adress && (
-                    <View className="mt-4">
-                        <Text className="text-sm font-semibold">Lokasi dipilih:</Text>
-                        <Text className="text-sm">Alamat: {form.location[0].adress}</Text>
-                        <Text className="text-sm">Latitude: {form.location[0].lat}</Text>
-                        <Text className="text-sm">Longitude: {form.location[0].long}</Text>
-                    </View>
-                )}
             </View>
 
             <CategorySelection
