@@ -22,6 +22,7 @@ const AddContest = (props: Props) => {
         desc: '',
         audiens: 0,
         userAudiens: [],
+        location: '',
         date: '',
     });
 
@@ -90,6 +91,8 @@ const AddContest = (props: Props) => {
                 desc: form.desc,
                 date: form.date,
                 audiens: form.audiens,
+                userAudiens: form.userAudiens,
+                location: form.location,
                 createdAt: new Date().toISOString(),
             });
 
@@ -101,6 +104,7 @@ const AddContest = (props: Props) => {
                 audiens: 0,
                 date: '',
                 userAudiens: [],
+                location: '',
             })
 
             alert('Lomba berhasil dibuat!');
@@ -155,6 +159,15 @@ const AddContest = (props: Props) => {
                     value={form.desc}
                     onChangeText={(text) => handleChange('desc', text)}
                 />
+
+                <View className='mt-7'>
+                    <Text className='mb-2 text-gray-500'>Lokasi</Text>
+                    <TextInput
+                        className='border-2 border-gray-300 rounded-lg p-3 w-full'
+                        value={form.location}
+                        onChangeText={(text) => handleChange('location', text)}
+                    />
+                </View>
 
                 <View className='flex-row justify-between w-full mt-7'>
                     <View className='w-[48%]'>

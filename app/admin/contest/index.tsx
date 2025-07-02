@@ -6,9 +6,9 @@ import { db } from '@/lib/firebase/firebase';
 import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { RelativePathString, router } from 'expo-router';
+import { RelativePathString, router, useFocusEffect } from 'expo-router';
 import { collection, getDocs } from 'firebase/firestore';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { TextInput } from 'react-native-gesture-handler';
@@ -17,22 +17,24 @@ type Props = {}
 
 const Contest = (props: Props) => {
     const [dataContest, setDataContest] = useState<any[]>([]);
-    useEffect(() => {
-        const fetchContests = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'contest'));
-                const contests = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setDataContest(contests);
-            } catch (error) {
-                console.error('❌ Gagal mengambil data contest:', error);
-            }
-        };
+    useFocusEffect(
+        useCallback(() => {
+            const fetchContests = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'contest'));
+                    const contests = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setDataContest(contests);
+                } catch (error) {
+                    console.error('❌ Gagal mengambil data contest:', error);
+                }
+            };
 
-        fetchContests();
-    }, []);
+            fetchContests();
+        }, [])
+    );
 
     const [filtering, setFiltering] = useState({
         date: '',
