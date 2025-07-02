@@ -7,7 +7,7 @@ import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { RelativePathString, router, useFocusEffect } from 'expo-router';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -21,12 +21,15 @@ const Contest = (props: Props) => {
         useCallback(() => {
             const fetchContests = async () => {
                 try {
-                    const snapshot = await getDocs(collection(db, 'contest'));
+                    const contestRef = collection(db, 'contest');
+                    const q = query(contestRef, orderBy('createdAt', 'desc'));
+                    const snapshot = await getDocs(q);
+
                     const contests = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
                     }));
-                    setDataContest(contests);
+
                 } catch (error) {
                     console.error('❌ Gagal mengambil data contest:', error);
                 }

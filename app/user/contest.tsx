@@ -8,7 +8,7 @@ import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-ico
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -41,16 +41,21 @@ const Contest = (props: Props) => {
     // Ambil data lomba
     const fetchContests = async () => {
         try {
-            const snapshot = await getDocs(collection(db, 'contest'));
+            const contestRef = collection(db, 'contest');
+            const q = query(contestRef, orderBy('createdAt', 'desc'));
+            const snapshot = await getDocs(q);
+
             const contests = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             }));
+
             setDataContest(contests);
         } catch (error) {
             console.error('❌ Gagal mengambil data contest:', error);
         }
     };
+
 
     useFocusEffect(
         useCallback(() => {
