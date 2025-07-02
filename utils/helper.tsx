@@ -15,8 +15,8 @@ export interface SelectedLocationType { // Diberi nama yang lebih spesifik
 export interface Category {
     id: string;
     name: string;
-    Icon: React.FC<any>;
     value: string;
+    image?: string
 }
 
 
