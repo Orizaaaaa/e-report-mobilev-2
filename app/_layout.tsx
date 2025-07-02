@@ -1,11 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
 import { Tabs, usePathname, useRouter, useSegments } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
+
+Notifications.setNotificationHandler({
+  handleNotification: async (): Promise<Notifications.NotificationBehavior> => ({
+    shouldShowAlert: true, // kita akan tampilkan manual
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: false,
+    shouldShowList: true,
+  }),
+});
+
 const Colors = {
 
   primaryOrange: '#FF840C',
@@ -126,7 +138,7 @@ const TabButton = ({ item, onPress }: any) => {
 export default function Layout() {
   // nanti role di ambil dari local storage
 
-  const [role, setRole] = useState<'admin' | 'user'>('user'); // ganti sesuai hasil dari async storage/local storage
+  const [role, setRole] = useState<'admin' | 'user'>('admin'); // ganti sesuai hasil dari async storage/local storage
   const pathname = usePathname();
   const router = useRouter();
 

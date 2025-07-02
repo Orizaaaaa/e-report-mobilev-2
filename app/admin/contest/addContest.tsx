@@ -1,9 +1,14 @@
+import { sendNotificationToRole, uploadOneImageToStorage } from '@/api/api'
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary'
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
 import DescriptionInput from '@/components/elements/Input/DescriptionInput'
+import { db } from '@/lib/firebase/firebase'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ImagePicker from 'expo-image-picker'
+import { useRouter } from 'expo-router'
+import { addDoc, collection } from 'firebase/firestore'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
 import { View } from 'react-native-animatable'
@@ -55,6 +60,54 @@ const AddContest = (props: Props) => {
         console.log("BottomSheet index:", index);
     }, []);
     console.log(form);
+
+    const router = useRouter();
+
+    const handleCreateContest = async () => {
+        if (!form.image || !form.desc || !form.date || !form.audiens) {
+            alert('Mohon lengkapi semua data lomba');
+            return;
+        }
+
+        try {
+            // Ambil UID dari AsyncStorage
+            const userStr = await AsyncStorage.getItem('user');
+            const currentUser = userStr ? JSON.parse(userStr) : null;
+            const uid = currentUser?.uid;
+
+            if (!uid) {
+                alert('User tidak ditemukan');
+                return;
+            }
+
+            // Upload gambar ke Firebase Storage dan ambil URL-nya
+            const downloadURL = await uploadOneImageToStorage(form.image, uid);
+
+            // Simpan data lomba ke Firestore
+            await addDoc(collection(db, 'contest'), {
+                image: downloadURL,
+                desc: form.desc,
+                date: form.date,
+                audiens: form.audiens,
+                createdAt: new Date().toISOString(),
+            });
+
+            // Kirim notifikasi ke semua user
+            await sendNotificationToRole('user', '📢 Lomba baru telah dibuat!');
+            setForm({
+                image: '',
+                desc: '',
+                audiens: 0,
+                date: '',
+            })
+
+            alert('Lomba berhasil dibuat!');
+            router.push('/admin/contest');
+        } catch (error) {
+            console.error('❌ Gagal membuat lomba:', error);
+            alert('Terjadi kesalahan saat membuat lomba.');
+        }
+    };
 
     return (
         <SafeAreaView className='flex-1'>
@@ -127,9 +180,7 @@ const AddContest = (props: Props) => {
                     <ButtonPrimary
                         className='w-fit py-2 px-3 rounded-lg'
                         text='Buat Lomba'
-                        onPress={() => {
-                            console.log('Form Data:', form);
-                        }}
+                        onPress={handleCreateContest}
                     />
                 </View>
             </ScrollView>

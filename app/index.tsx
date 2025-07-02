@@ -6,16 +6,6 @@ import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, StyleSheet, Text, View } from 'react-native';
 
-// Notifikasi di foreground akan ditangani manual
-Notifications.setNotificationHandler({
-  handleNotification: async (): Promise<Notifications.NotificationBehavior> => ({
-    shouldShowAlert: false, // kita akan tampilkan manual
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: false,
-    shouldShowList: true,
-  }),
-});
 
 const Index = () => {
   const [notifContent, setNotifContent] = useState<{ title?: string; body?: string }>({});

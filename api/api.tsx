@@ -77,3 +77,21 @@ export const uploadImagesToStorage = async (images: string[], uid: string): Prom
 
     return urls;
 };
+
+export const uploadOneImageToStorage = async (imageUri: string, uid: string): Promise<string> => {
+    try {
+        const filename = `${uid}_${Date.now()}_${Math.random().toString(36).substring(2)}.jpg`;
+        const imageRef = ref(storage, `reports/${filename}`);
+
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+
+        await uploadBytes(imageRef, blob);
+        const url = await getDownloadURL(imageRef);
+
+        return url;
+    } catch (error) {
+        console.error('❌ Gagal upload gambar:', error);
+        throw error;
+    }
+};
