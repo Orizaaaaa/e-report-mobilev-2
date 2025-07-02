@@ -6,8 +6,9 @@ import { db } from '@/lib/firebase/firebase';
 import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { router } from 'expo-router';
-import { collection, getDocs } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router, useFocusEffect } from 'expo-router';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -25,22 +26,62 @@ type Props = {}
 const Contest = (props: Props) => {
 
     const [dataContest, setDataContest] = useState<any[]>([]);
-    useEffect(() => {
-        const fetchContests = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'contest'));
-                const contests = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setDataContest(contests);
-            } catch (error) {
-                console.error('❌ Gagal mengambil data contest:', error);
-            }
-        };
+    const [userName, setUserName] = useState('');
 
-        fetchContests();
+    // Ambil data user dari AsyncStorage
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userStr = await AsyncStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+            setUserName(user?.name || user?.email || '');
+        };
+        fetchUser();
     }, []);
+
+    // Ambil data lomba
+    const fetchContests = async () => {
+        try {
+            const snapshot = await getDocs(collection(db, 'contest'));
+            const contests = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setDataContest(contests);
+        } catch (error) {
+            console.error('❌ Gagal mengambil data contest:', error);
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchContests();
+        }, [fetchContests])
+    );
+
+    // Fungsi daftar lomba
+    const handleJoinContest = async (contestId: string) => {
+        try {
+            const contestRef = doc(db, 'contest', contestId);
+            const contest = dataContest.find(item => item.id === contestId);
+
+            if (!contest) return;
+
+            const sudahDaftar = contest.userAudiens?.includes(userName);
+            if (sudahDaftar) return;
+
+            const updatedUserAudiens = [...(contest.userAudiens || []), userName];
+
+            await updateDoc(contestRef, {
+                userAudiens: updatedUserAudiens,
+            });
+
+            fetchContests(); // Refresh setelah daftar
+        } catch (err) {
+            console.error('❌ Gagal daftar lomba:', err);
+        }
+    };
+
+
 
     const [searchText, setSearchText] = useState('');
     const totalPeserta = 1000;
@@ -129,14 +170,17 @@ const Contest = (props: Props) => {
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    {dataContest.map((item) => (
-                        <CardContest
-                            key={item.id}
-                            contest={item}
-                            textButton="Daftar Sekarang"
-                            handlePres={() => console.log('Klik lomba ID:', item.id)}
-                        />
-                    ))}
+                    {dataContest.map(item => {
+                        const sudahDaftar = item.userAudiens?.includes(userName);
+                        return (
+                            <CardContest
+                                key={item.id}
+                                contest={item}
+                                textButton={sudahDaftar ? 'Anda sudah daftar' : 'Daftar Sekarang'}
+                                handlePres={() => handleJoinContest(item.id)}
+                            />
+                        );
+                    })}
                 </ScrollView>
             </View>
 
