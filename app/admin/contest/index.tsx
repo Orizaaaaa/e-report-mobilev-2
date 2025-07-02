@@ -135,16 +135,18 @@ const Contest = (props: Props) => {
                             onPress={() => { router.push(`/admin/contest/addContest`) }} />
                     </View>
 
-                    <TouchableOpacity onPress={handlePress} >
-                        {dataContest.map((item) => (
+                    {dataContest.map((item) => (
+                        <TouchableOpacity onPress={handlePress} key={item.id} >
+
                             <CardContest
                                 key={item.id}
                                 contest={item}
                                 textButton="Hapus lomba"
                                 handlePres={() => console.log('Klik lomba ID:', item.id)}
                             />
-                        ))}
-                    </TouchableOpacity>
+
+                        </TouchableOpacity>
+                    ))}
 
                 </ScrollView>
             </View>

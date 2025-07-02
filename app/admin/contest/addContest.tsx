@@ -72,7 +72,6 @@ const AddContest = (props: Props) => {
         }
 
         try {
-            // Ambil UID dari AsyncStorage
             const userStr = await AsyncStorage.getItem('user');
             const currentUser = userStr ? JSON.parse(userStr) : null;
             const uid = currentUser?.uid;
@@ -82,10 +81,8 @@ const AddContest = (props: Props) => {
                 return;
             }
 
-            // Upload gambar ke Firebase Storage dan ambil URL-nya
             const downloadURL = await uploadOneImageToStorage(form.image, uid);
 
-            // Simpan data lomba ke Firestore
             await addDoc(collection(db, 'contest'), {
                 image: downloadURL,
                 desc: form.desc,
@@ -93,11 +90,11 @@ const AddContest = (props: Props) => {
                 audiens: form.audiens,
                 userAudiens: form.userAudiens,
                 location: form.location,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date(), // ✅ Gunakan Date bukan string
             });
 
-            // Kirim notifikasi ke semua user
             await sendNotificationToRole('user', '📢 Lomba baru telah dibuat!');
+
             setForm({
                 image: '',
                 desc: '',
@@ -105,7 +102,7 @@ const AddContest = (props: Props) => {
                 date: '',
                 userAudiens: [],
                 location: '',
-            })
+            });
 
             alert('Lomba berhasil dibuat!');
             router.push('/admin/contest');
@@ -114,6 +111,7 @@ const AddContest = (props: Props) => {
             alert('Terjadi kesalahan saat membuat lomba.');
         }
     };
+
 
     return (
         <SafeAreaView className='flex-1'>
