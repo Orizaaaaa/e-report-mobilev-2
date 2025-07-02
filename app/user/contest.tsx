@@ -2,11 +2,13 @@ import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import BottomSheetCustom from '@/components/fragments/bottomSheet';
 import CardContest from '@/components/fragments/CardContest/CardContest';
+import { db } from '@/lib/firebase/firebase';
 import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { router } from 'expo-router';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { TextInput } from 'react-native-gesture-handler';
@@ -21,6 +23,25 @@ const statusList = [
 type Props = {}
 
 const Contest = (props: Props) => {
+
+    const [dataContest, setDataContest] = useState<any[]>([]);
+    useEffect(() => {
+        const fetchContests = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'contest'));
+                const contests = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setDataContest(contests);
+            } catch (error) {
+                console.error('❌ Gagal mengambil data contest:', error);
+            }
+        };
+
+        fetchContests();
+    }, []);
+
     const [searchText, setSearchText] = useState('');
     const totalPeserta = 1000;
     const pesertaSaatIni = 700;
@@ -108,7 +129,14 @@ const Contest = (props: Props) => {
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <CardContest textButton='Daftar Sekarang' title='Lomba Mancing' desc='Lomba ini berhadiah motor' location='Bandung, Jawa Barat' />
+                    {dataContest.map((item) => (
+                        <CardContest
+                            key={item.id}
+                            contest={item}
+                            textButton="Daftar Sekarang"
+                            handlePres={() => console.log('Klik lomba ID:', item.id)}
+                        />
+                    ))}
                 </ScrollView>
             </View>
 

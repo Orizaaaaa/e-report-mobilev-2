@@ -1,20 +1,27 @@
-import ButtonPrimary from '@/components/elements/Button/ButtonPrimary'
-import { EvilIcons, Ionicons } from '@expo/vector-icons'
-import React, { useState } from 'react'
-import { Image, Text, View } from 'react-native'
+import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
+import { EvilIcons, Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { Image, Text, View } from 'react-native';
+
+type ContestData = {
+    image: string;
+    location: string;
+    title: string;
+    desc: string;
+    date: string;
+    audiens: number;
+    userAudiens: { name: string; uid: string }[]; // bisa disesuaikan dengan struktur kamu
+};
 
 type Props = {
-    handlePres?: any
-    location: string
-    title: string
-    desc: string
-    textButton: string
-}
+    contest: ContestData;
+    textButton: string;
+    handlePres?: () => void;
+};
 
-const CardContest = ({ handlePres, location, title, desc, textButton }: Props) => {
-    const [searchText, setSearchText] = useState('');
-    const totalPeserta = 1000;
-    const pesertaSaatIni = 700;
+const CardContest = ({ contest, textButton, handlePres }: Props) => {
+    const pesertaSaatIni = contest.userAudiens?.length || 0;
+    const totalPeserta = contest.audiens;
     const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
 
     return (
@@ -23,35 +30,32 @@ const CardContest = ({ handlePres, location, title, desc, textButton }: Props) =
             <View className="h-32">
                 <Image
                     className="w-full h-full rounded-t-3xl"
-                    source={require('../../../assets/images/study1.png')}
+                    source={{ uri: contest.image }}
                     resizeMode="cover"
                 />
                 <View className="absolute bottom-2 right-3">
                     <View className="flex-row justify-center items-center bg-slate-50 py-1 px-2 rounded-xl">
                         <EvilIcons name="location" size={15} color="black" />
-                        <Text className="text-sm font-light">{location}</Text>
-
+                        <Text className="text-sm font-light">{contest.location || 'Lokasi belum diatur'}</Text>
                     </View>
                 </View>
             </View>
 
-            {/* Konten Dengan Shadow */}
+            {/* Konten */}
             <View className="bg-white rounded-b-3xl px-3 pt-3 pb-5 shadow-md shadow-black/30">
-                <Text className="text-lg font-semibold">{title}</Text>
-                <Text className="text-sm font-light">{desc}</Text>
-
+                <Text className="text-lg font-semibold">{contest.title}</Text>
+                <Text className="text-sm font-light">{contest.desc}</Text>
 
                 <View className="w-full mt-4">
-                    <View className='flex-row items-center gap-1'>
-                        <Text className="text-sm font-light text-gray-500">24 05 2023</Text>
+                    <View className="flex-row items-center gap-1">
+                        <Text className="text-sm font-light text-gray-500">{contest.date}</Text>
                         <Ionicons name="time-outline" size={15} color="gray" />
                     </View>
-                    <View className="flex-row justify-between mb-1">
 
+                    <View className="flex-row justify-between mb-1">
                         <Text className="text-sm text-gray-800">
                             Peserta: {pesertaSaatIni} / {totalPeserta}
                         </Text>
-
                         <Text className="text-sm text-gray-800">
                             {Math.round(progress * 100)}%
                         </Text>
@@ -72,7 +76,7 @@ const CardContest = ({ handlePres, location, title, desc, textButton }: Props) =
                 </View>
             </View>
         </View>
-    )
-}
+    );
+};
 
-export default CardContest
+export default CardContest;

@@ -21,6 +21,7 @@ const AddContest = (props: Props) => {
         image: '' as string, // URI dari gambar
         desc: '',
         audiens: 0,
+        userAudiens: [],
         date: '',
     });
 
@@ -99,6 +100,7 @@ const AddContest = (props: Props) => {
                 desc: '',
                 audiens: 0,
                 date: '',
+                userAudiens: [],
             })
 
             alert('Lomba berhasil dibuat!');

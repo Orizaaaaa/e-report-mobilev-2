@@ -1,6 +1,5 @@
 import AdminInfo from '@/components/elements/adminInfo/AdminInfo';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import React from 'react';
 import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
@@ -13,10 +12,7 @@ const imagesCaraosel = [
 ];
 
 const index = (props: Props) => {
-    const handlePress = () => {
-        // Navigasi ke halaman detail dengan ID
-        router.push(`/report/22`);
-    };
+
     return (
 
         <SafeAreaView className=' pt-12  px-5 '>
