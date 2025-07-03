@@ -10,6 +10,8 @@ import { Alert, Button, StyleSheet, Text, View } from 'react-native';
 const Index = () => {
   const [notifContent, setNotifContent] = useState<{ title?: string; body?: string }>({});
 
+  // INI SEBAIK NYA DI PINDAH KAN KE HALAMAN INDEX KARENA UNTUK PUSH NOTIF NYA
+
   useEffect(() => {
     // Dapatkan token dan simpan
     registerForPushNotificationsAsync().then(token => {

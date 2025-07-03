@@ -58,3 +58,22 @@ export interface NominatimSuggestion {
     icon?: string; // Optional
     // tambahkan properti lain jika ada
 }
+
+export const getFirstTwoWords = (fullName?: string): string => {
+    if (!fullName || typeof fullName !== 'string') return '';
+    return fullName.trim().split(' ').slice(0, 2).join(' ');
+};
+
+
+
+export function truncateText(text: string, maxLength: number, suffix: string = '...'): string {
+    if (!text) return '';
+
+    if (text.length > maxLength) {
+        return text.slice(0, maxLength) + suffix;
+    }
+
+    return text;
+}
+
+

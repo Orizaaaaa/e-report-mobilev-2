@@ -88,8 +88,10 @@ export default function LoginRegisterScreen() {
                 console.log('✅ Token diperbarui di Firestore');
             }
 
+
             // Gabungkan data Firestore dengan token terbaru (jika ada)
             const completeUserData = {
+                image: userDataFromFirestore.image || '',
                 uid,
                 email: result.user.email || '',
                 name: userDataFromFirestore.name || '',

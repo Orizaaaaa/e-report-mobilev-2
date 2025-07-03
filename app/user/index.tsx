@@ -3,11 +3,12 @@ import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import BottomSheetCustom from '@/components/fragments/bottomSheet';
 import CardReport from '@/components/fragments/CardReport/CardReport';
 import IndicatorInfo from '@/components/fragments/IndicatorInfo/IndicatorInfo';
-import { formatDate } from '@/utils/helper';
+import { formatDate, getFirstTwoWords, truncateText } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useNavigation } from "expo-router";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
 const { height } = Dimensions.get('window');
@@ -21,9 +22,24 @@ const statusList = [
 
 
 export default function Index() {
+    const [userData, setUserData]: any = useState({});
     const navigation: any = useNavigation()
     const [searchText, setSearchText] = useState('');
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userStr = await AsyncStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+            if (user) {
+                setUserData({
+                    user
+                });
+            }
+        };
+
+        fetchUser();
+    }, []);
+    console.log(userData);
 
     const handlePress = () => {
         // Navigasi ke halaman detail dengan ID
@@ -71,6 +87,9 @@ export default function Index() {
 
         return marked;
     };
+
+    console.log('data memek', userData);
+
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
             <View className="mb-40">
@@ -81,15 +100,15 @@ export default function Index() {
 
                     <View className="gap-3 flex-col" >
                         <View className="flex-col gap-1">
-                            <Text className="text-xl font-semibold text-primaryBlack">Hi, Oriza Sativa 👋 </Text>
-                            <Text className="text-sm text-gray-500">Pamulang, Benda Baru, Tangerang Selatan </Text>
+                            <Text className="text-xl font-semibold text-primaryBlack">Hi, {getFirstTwoWords(userData?.user?.name)} 👋 </Text>
+                            <Text className="text-sm text-gray-500">{truncateText(userData?.user?.location, 30)}</Text>
                         </View>
                     </View>
 
                     <View className='w-16 h-16  rounded-full   '>
                         <Image
                             className='w-full h-full rounded-full'
-                            source={require('../../assets/images/human.png')}
+                            source={{ uri: `${userData?.user?.image}` }}
                             resizeMode='cover'
                         />
                     </View>
@@ -105,6 +124,7 @@ export default function Index() {
                         <TextInput
                             className="flex-1 text-gray-800"
                             placeholder="Cari..."
+                            placeholderTextColor={'black'}
                             value={searchText}
                             onChangeText={setSearchText}
                         />

@@ -2,7 +2,6 @@ import { uploadOneImageToStorage } from '@/api/api';
 import AuthInput from '@/components/elements/AuthInput/AuthInput';
 import { auth, db } from '@/lib/firebase/firebase';
 import { MaterialIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import {
@@ -162,20 +161,6 @@ const RegisterScreen = () => {
                 location: form.location,
                 role: form.role,
             });
-
-            const userData: FormData & { uid: string } = {
-                uid,
-                email: form.email,
-                name: form.name,
-                nik: form.nik,
-                phone: form.phone,
-                image: downloadURL,
-                location: form.location,
-                role: form.role,
-                password: form.password, // Add this line
-            };
-
-            await AsyncStorage.setItem('user', JSON.stringify(userData));
 
             setLoading(false);
             router.push('/login')
