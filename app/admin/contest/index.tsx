@@ -6,7 +6,7 @@ import { db } from '@/lib/firebase/firebase';
 import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { RelativePathString, router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { collection, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -57,9 +57,13 @@ const Contest = (props: Props) => {
     const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
 
 
-    const handlePress = () => {
-        // Navigasi ke halaman detail dengan ID
-        router.push(`/admin/contest/22` as RelativePathString);
+    const handlePress = (contestId: string) => {
+        if (!contestId) {
+            console.warn('ID lomba tidak tersedia');
+            return;
+        }
+
+        router.push(`/admin/contest/${contestId}`);
     };
 
     const getMarkedDates = (start: string, end: string) => {
@@ -182,7 +186,7 @@ const Contest = (props: Props) => {
                         dataContest.map(item => {
 
                             return (
-                                <TouchableOpacity onPress={handlePress} key={item.id} >
+                                <TouchableOpacity onPress={() => handlePress(item.id)} key={item.id} >
 
                                     <CardContest
                                         key={item.id}
