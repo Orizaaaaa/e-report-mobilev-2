@@ -17,9 +17,11 @@ type Props = {
     contest: ContestData;
     textButton: string;
     handlePres?: () => void;
+    styleButton?: string;
+    disabled?: boolean;
 };
 
-const CardContest = ({ contest, textButton, handlePres }: Props) => {
+const CardContest = ({ contest, textButton, handlePres, styleButton, disabled }: Props) => {
     const pesertaSaatIni = contest.userAudiens?.length || 0;
     const totalPeserta = contest.audiens;
     const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
@@ -69,7 +71,8 @@ const CardContest = ({ contest, textButton, handlePres }: Props) => {
                     </View>
 
                     <ButtonPrimary
-                        className="mt-4 py-2 rounded-xl"
+                        disabled={disabled}
+                        className={`mt-4 py-2 rounded-xl ${styleButton}`}
                         text={textButton}
                         onPress={handlePres}
                     />

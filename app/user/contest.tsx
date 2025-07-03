@@ -181,6 +181,8 @@ const Contest = (props: Props) => {
                             <CardContest
                                 key={item.id}
                                 contest={item}
+                                disabled={sudahDaftar}
+                                styleButton={sudahDaftar ? 'bg-gray-400' : 'bg-primaryNavy'}
                                 textButton={sudahDaftar ? 'Anda sudah daftar' : 'Daftar Sekarang'}
                                 handlePres={() => handleJoinContest(item.id)}
                             />
