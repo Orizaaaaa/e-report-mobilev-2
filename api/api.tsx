@@ -78,10 +78,10 @@ export const uploadImagesToStorage = async (images: string[], uid: string): Prom
     return urls;
 };
 
-export const uploadOneImageToStorage = async (imageUri: string, uid: string): Promise<string> => {
+export const uploadOneImageToStorage = async (imageUri: string, uid: string, folderStorage = 'reports'): Promise<string> => {
     try {
         const filename = `${uid}_${Date.now()}_${Math.random().toString(36).substring(2)}.jpg`;
-        const imageRef = ref(storage, `reports/${filename}`);
+        const imageRef = ref(storage, `${folderStorage}/${filename}`);
 
         const response = await fetch(imageUri);
         const blob = await response.blob();

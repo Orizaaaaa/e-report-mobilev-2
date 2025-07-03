@@ -1,6 +1,9 @@
+import { uploadOneImageToStorage } from '@/api/api';
 import AuthInput from '@/components/elements/AuthInput/AuthInput';
 import { auth, db } from '@/lib/firebase/firebase';
+import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import {
     createUserWithEmailAndPassword,
@@ -11,6 +14,7 @@ import React, { useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
+    Image,
     SafeAreaView,
     ScrollView,
     Text,
@@ -20,6 +24,7 @@ import {
 
 // Define interfaces for form data and validation errors
 interface FormData {
+    image: string;
     email: string;
     password: string;
     name: string;
@@ -31,6 +36,7 @@ interface FormData {
 
 interface ValidationErrors {
     email?: string;
+    image?: string;
     password?: string;
     name?: string;
     nik?: string;
@@ -47,6 +53,7 @@ const RegisterScreen = () => {
         password: '',
         name: '',
         nik: '',
+        image: '',
         phone: '',
         location: '',
         role: 'user', // Default role for registration
@@ -64,6 +71,18 @@ const RegisterScreen = () => {
                 delete newErrors[field];
                 return newErrors;
             });
+        }
+    };
+
+    const handlePickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            const imageUri = result.assets[0].uri;
+            handleInputChange('image', imageUri);
         }
     };
 
@@ -109,6 +128,10 @@ const RegisterScreen = () => {
             errors.location = 'Lokasi tidak boleh kosong.';
             isValid = false;
         }
+        if (!form.image.trim()) {
+            errors.location = 'Gambar tidak boleh kosong.';
+            isValid = false;
+        }
         if (!form.role.trim()) {
             errors.role = 'Role harus dipilih.';
             isValid = false;
@@ -128,8 +151,10 @@ const RegisterScreen = () => {
         try {
             const result: UserCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
             const uid: string = result.user.uid;
+            const downloadURL = await uploadOneImageToStorage(form.image, uid, 'users_profiles');
 
             await setDoc(doc(db, 'users', uid), {
+                image: downloadURL,
                 email: form.email,
                 name: form.name,
                 nik: form.nik,
@@ -144,6 +169,7 @@ const RegisterScreen = () => {
                 name: form.name,
                 nik: form.nik,
                 phone: form.phone,
+                image: downloadURL,
                 location: form.location,
                 role: form.role,
                 password: form.password, // Add this line
@@ -169,6 +195,32 @@ const RegisterScreen = () => {
                 <Text className="text-3xl font-bold text-center mb-8 text-gray-800">
                     Buat Akun
                 </Text>
+
+                <View className='w-full flex items-center justify-center relative mb-4'>
+                    <TouchableOpacity className='w-28 h-28 rounded-full border-2 bg-primary relative border-gray-400 p-2'
+                        onPress={handlePickImage}>
+                        {/* avatar section  */}
+
+                        {form.image ? (
+                            <Image
+                                source={{ uri: form.image }}
+                                className='w-full h-full rounded-full'
+                                resizeMode='cover'
+                            />
+                        ) : (
+                            <Image
+                                source={require('@/assets/images/profile.png')} // GANTI PATH sesuai struktur file kamu
+                                className='w-full h-full'
+                                resizeMode='contain'
+                            />
+                        )}
+
+                        <View className='h-7 w-7 bg-primary rounded-full absolute top-0 right-0 flex items-center justify-center z-10'>
+                            <MaterialIcons name='edit' size={20} color='gray' />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
 
                 <View className='w-full flex items-start mb-2'>
                     <AuthInput
@@ -261,6 +313,7 @@ const RegisterScreen = () => {
 
                 <TouchableOpacity
                     onPress={signUp}
+                    disabled={loading}
                     className="bg-primaryNavy p-4 rounded-lg items-center mt-4 shadow-md"
                 >
                     {loading ? <ActivityIndicator size="large" color="white" /> : <Text style={{ color: 'white', fontWeight: 'bold' }}>Buat Akun</Text>}
