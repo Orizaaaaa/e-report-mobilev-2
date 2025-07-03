@@ -1,5 +1,5 @@
 // File: screens/report/reportScreen.tsx
-import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
@@ -29,52 +29,30 @@ import ImageUploadSection from '@/components/fragments/ImageUpload/ImageUploadSe
 
 // API and Types
 import { PostPredict } from '@/api/model';
-import { Category, formatDate, FormState, SelectedLocationType } from '@/utils/helper';
+import { CATEGORIES_DATA, formatDate, FormState, PAGES, SelectedLocationType, STATUS_LIST } from '@/utils/helper';
 
 // Assets
 import { sendNotificationToRole, uploadImagesToStorage } from '@/api/api';
 import CategorySelection from '@/components/fragments/CategorySelection/CategorySelection';
 import { db } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 
 const { width: windowWidth } = Dimensions.get('window');
 
+type CaraoselCardProps = {
+    imageCaraosel: string[];
+    typeReport: 'REGULER' | 'PRIORITAS';
+};
 // Constants
-const CATEGORIES_DATA: Category[] = [
-    { id: 'lainnya', name: 'lainnya', value: 'lainnya', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20172.webp?alt=media&token=09135d68-f852-417b-887e-09663540933f' },
-    { id: 'kriminal', name: 'kriminal', value: 'kriminal', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector.webp?alt=media&token=90e59ea8-d700-455e-9593-ed1eb59eccaa' },
-    { id: 'jalan', name: 'Jalan Rusak', value: 'Jalan Rusak', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-2.webp?alt=media&token=b445286e-7120-4ecc-b78f-ac9e4adee946' },
-    { id: 'lingkungan', name: 'lingkungan', value: 'lingkungan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-1.webp?alt=media&token=9f4da080-cbde-4c1c-822e-211f4198cb1b' },
-    { id: 'sampah', name: 'Sampah / Kebersihan', value: 'Sampah', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20170.webp?alt=media&token=74be29fe-9ae3-43e4-b56f-2915fb1539da' },
-    { id: 'taman', name: 'taman', value: 'taman', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20171.webp?alt=media&token=100001da-fceb-4d13-b346-cff40dd7876d' },
-    { id: 'kesehatan', name: 'Kesehatan Masyarakat', value: 'Kesehatan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20169.webp?alt=media&token=76c72b10-0efb-487c-8788-224443381137' },
-];
-
-const STATUS_LIST = [
-    { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
-    { label: 'Menunggu', value: 'pending', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
-    { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
-    { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
-];
-
-const PAGES = [
-    { label: 'REGULER', value: 'regular' as const },
-    { label: 'PRIORITAS', value: 'prioritas' as const },
-    { label: 'BUAT LAPORAN', value: 'laporan' as const },
-];
-
-const IMAGES_CARAOSEL = [
-    require('../../../assets/images/demo.png'),
-    require('../../../assets/images/study1.png'),
-    require('../../../assets/images/demo.png'),
-];
 
 const MAX_IMAGES = 4;
 
 const ReportScreen = () => {
+
     // State Management
     const [loadingSend, setLoadingSend] = useState(false);
+    const [dataReport, setDataReport]: any = useState([])
     const [form, setForm] = useState<FormState>({
         desc: '',
         images: [],
@@ -278,6 +256,7 @@ const ReportScreen = () => {
                     anonim: form.anonim,
                     uid: currentUser.uid,
                     email: currentUser.email,
+                    status: 'menunggu',
                     name: currentUser.name,
                     createdAt: new Date().toISOString(),
                 };
@@ -516,12 +495,60 @@ const ReportScreen = () => {
         </ScrollView>
     );
 
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'reports'));
+                const reports = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                setDataReport(reports);
+            } catch (err) {
+                console.error('❌ Gagal mengambil laporan:', err);
+            }
+        };
+
+        fetchReports();
+    }, []);
+    console.log('anying', dataReport);
+
     const renderContent = () => {
         switch (activePage) {
-            case 'regular':
-                return <CaraoselCard imageCaraosel={IMAGES_CARAOSEL} typeReport='REGULER' />;
-            case 'prioritas':
-                return <CaraoselCard imageCaraosel={IMAGES_CARAOSEL} typeReport='PRIORITAS' />;
+            case 'regular': {
+                const filtered = dataReport.filter((item: any) => item.typeReport === 'Reguler');
+                return filtered.length === 0 ? (
+                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
+                ) : (
+                    filtered.map((item: any, index: number) => (
+                        <CaraoselCard
+                            key={item.id || index}
+                            status={item.status || 'status not found'}
+                            desc={item.desc || 'description not found'}
+                            imageCaraosel={item.images}
+                            typeReport="REGULER"
+                        />
+                    ))
+                );
+            }
+            case 'prioritas': {
+                const filtered = dataReport.filter((item: any) => item.typeReport === 'Prioritas');
+                return filtered.length === 0 ? (
+                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
+                ) : (
+                    filtered.map((item: any, index: number) => (
+                        <CaraoselCard
+                            key={item.id || index}
+                            status={item.status || 'status not found'}
+                            desc={item.desc || 'description not found'}
+                            imageCaraosel={item.images}
+                            typeReport="PRIORITAS"
+                        />
+                    ))
+                );
+            }
             case 'laporan':
                 return renderLaporanForm();
             default:
@@ -632,6 +659,7 @@ const ReportScreen = () => {
                                 <TextInput
                                     className="flex-1 text-gray-800"
                                     placeholder="Cari..."
+                                    placeholderTextColor={'gray'}
                                 />
                             </View>
 

@@ -6,9 +6,12 @@ import Carousel from 'react-native-reanimated-carousel'
 type Props = {
     imageCaraosel: any
     typeReport: string
+    status: string
+    desc: string
+
 }
 
-const CaraoselCard = ({ imageCaraosel, typeReport }: Props) => {
+const CaraoselCard = ({ imageCaraosel, typeReport, status, desc }: Props) => {
     const { width } = Dimensions.get('window');
     const [activeIndex, setActiveIndex] = useState(0);
     return (
@@ -24,7 +27,7 @@ const CaraoselCard = ({ imageCaraosel, typeReport }: Props) => {
                     renderItem={({ item }: any) => (
                         <View>
                             <Image
-                                source={item}
+                                source={{ uri: item }}
                                 style={{
                                     width: '100%',
                                     height: 125,
@@ -36,7 +39,7 @@ const CaraoselCard = ({ imageCaraosel, typeReport }: Props) => {
                             />
                             <View className='flex-row justify-between items-center absolute top-3 right-3 bg-slate-200 px-3 py-1 rounded-lg gap-2 '>
                                 <MaterialIcons className='' name="pending-actions" size={18} color="black" />
-                                <Text className='text-sm'>Menunggu</Text>
+                                <Text className='text-sm'>{status}</Text>
                             </View>
 
                         </View>
@@ -79,8 +82,7 @@ const CaraoselCard = ({ imageCaraosel, typeReport }: Props) => {
             </View>
 
             <View className='py-3 w-full' >
-                <Text className='font-light'>Beberapa mahasiswa berdemo dan menutup Jalan
-                    sehingga kendaraan tidak bisa masuk...</Text>
+                <Text className='font-light'>{desc}</Text>
 
                 <View className='mt-3 flex-row justify-between items-center'>
                     <View className='w-24'>

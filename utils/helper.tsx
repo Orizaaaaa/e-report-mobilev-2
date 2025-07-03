@@ -1,3 +1,4 @@
+import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 export interface FormState {
     desc: string;
@@ -75,5 +76,34 @@ export function truncateText(text: string, maxLength: number, suffix: string = '
 
     return text;
 }
+
+export const CATEGORIES_DATA: Category[] = [
+    { id: 'lainnya', name: 'lainnya', value: 'lainnya', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20172.webp?alt=media&token=09135d68-f852-417b-887e-09663540933f' },
+    { id: 'kriminal', name: 'kriminal', value: 'kriminal', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector.webp?alt=media&token=90e59ea8-d700-455e-9593-ed1eb59eccaa' },
+    { id: 'jalan', name: 'Jalan Rusak', value: 'Jalan Rusak', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-2.webp?alt=media&token=b445286e-7120-4ecc-b78f-ac9e4adee946' },
+    { id: 'lingkungan', name: 'lingkungan', value: 'lingkungan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-1.webp?alt=media&token=9f4da080-cbde-4c1c-822e-211f4198cb1b' },
+    { id: 'sampah', name: 'Sampah / Kebersihan', value: 'Sampah', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20170.webp?alt=media&token=74be29fe-9ae3-43e4-b56f-2915fb1539da' },
+    { id: 'taman', name: 'taman', value: 'taman', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20171.webp?alt=media&token=100001da-fceb-4d13-b346-cff40dd7876d' },
+    { id: 'kesehatan', name: 'Kesehatan Masyarakat', value: 'Kesehatan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20169.webp?alt=media&token=76c72b10-0efb-487c-8788-224443381137' },
+];
+
+export const STATUS_LIST = [
+    { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
+    { label: 'Menunggu', value: 'pending', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
+    { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
+    { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
+];
+
+export const PAGES = [
+    { label: 'REGULER', value: 'regular' as const },
+    { label: 'PRIORITAS', value: 'prioritas' as const },
+    { label: 'BUAT LAPORAN', value: 'laporan' as const },
+];
+
+export const IMAGES_CARAOSEL = [
+    require('../assets/images/demo.png'),
+    require('../assets/images/study1.png'),
+    require('../assets/images/demo.png'),
+];
 
 
