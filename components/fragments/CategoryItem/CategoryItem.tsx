@@ -1,7 +1,8 @@
 // File: screens/report/components/CategoryItem.tsx
 import { Category } from '@/utils/helper';
+import { Image } from 'expo-image';
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface CategoryItemProps {
     category: Category;
@@ -22,6 +23,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ category, isActive, onPress
             <Image
                 source={{ uri: category.image }}
                 style={{ width: 55, height: 55, resizeMode: 'contain' }}
+                cachePolicy="disk" // penting agar dicache ke disk
             />
         </TouchableOpacity>
 

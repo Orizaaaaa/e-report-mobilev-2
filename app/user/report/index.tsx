@@ -42,13 +42,13 @@ const { width: windowWidth } = Dimensions.get('window');
 
 // Constants
 const CATEGORIES_DATA: Category[] = [
-    { id: 'lainnya', name: 'lainnya', value: 'lainnya', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20172.png?alt=media&token=b43850b6-6c7c-4c67-a437-faedf037bce1' },
-    { id: 'kriminal', name: 'kriminal', value: 'kriminal', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector.png?alt=media&token=debf9065-e451-4b8c-beb6-eb697f2a8978' },
-    { id: 'jalan', name: 'Jalan Rusak', value: 'Jalan Rusak', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-2.png?alt=media&token=de3acdd7-476d-4fe7-a851-c57519ba8ae5' },
-    { id: 'lingkungan', name: 'lingkungan', value: 'lingkungan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-1.png?alt=media&token=33f5368c-efb8-4ad2-a8ab-ef049a54cb25' },
-    { id: 'sampah', name: 'Sampah / Kebersihan', value: 'Sampah', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20170.png?alt=media&token=f1889c84-c522-45e5-88fc-facfe5b2c82b' },
-    { id: 'taman', name: 'taman', value: 'taman', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20171.png?alt=media&token=1019022b-58a4-45fa-a9b1-316f8c07e44d' },
-    { id: 'kesehatan', name: 'Kesehatan Masyarakat', value: 'Kesehatan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20169.png?alt=media&token=9afbb765-343c-4fd5-b9bb-5362008381fc' },
+    { id: 'lainnya', name: 'lainnya', value: 'lainnya', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20172.webp?alt=media&token=09135d68-f852-417b-887e-09663540933f' },
+    { id: 'kriminal', name: 'kriminal', value: 'kriminal', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector.webp?alt=media&token=90e59ea8-d700-455e-9593-ed1eb59eccaa' },
+    { id: 'jalan', name: 'Jalan Rusak', value: 'Jalan Rusak', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-2.webp?alt=media&token=b445286e-7120-4ecc-b78f-ac9e4adee946' },
+    { id: 'lingkungan', name: 'lingkungan', value: 'lingkungan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector-1.webp?alt=media&token=9f4da080-cbde-4c1c-822e-211f4198cb1b' },
+    { id: 'sampah', name: 'Sampah / Kebersihan', value: 'Sampah', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20170.webp?alt=media&token=74be29fe-9ae3-43e4-b56f-2915fb1539da' },
+    { id: 'taman', name: 'taman', value: 'taman', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20171.webp?alt=media&token=100001da-fceb-4d13-b346-cff40dd7876d' },
+    { id: 'kesehatan', name: 'Kesehatan Masyarakat', value: 'Kesehatan', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20169.webp?alt=media&token=76c72b10-0efb-487c-8788-224443381137' },
 ];
 
 const STATUS_LIST = [
