@@ -1,6 +1,7 @@
 
+import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { db } from "@/lib/firebase/firebase";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -109,6 +110,10 @@ const DetailContestAdmin = () => {
 
     return (
         <SafeAreaView className="flex-1 mb-10 py-12 px-3">
+            <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full mb-5">
+                <ButtonBack colorIcon="#FF840C" />
+                <Ionicons name="medal-outline" size={20} color="gray" />
+            </View>
             <View>
                 <View className="h-52 mb-5">
                     <Image
