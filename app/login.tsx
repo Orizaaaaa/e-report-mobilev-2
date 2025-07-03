@@ -59,6 +59,11 @@ export default function LoginRegisterScreen() {
     }, [form.email]);
     const router = useRouter()
     const signIn = async () => {
+        if (!form.email.trim() || !form.password.trim()) {
+            Alert.alert('Peringatan', 'Email dan password tidak boleh kosong!');
+            return;
+        }
+
         setLoading(true)
         try {
             const result = await signInWithEmailAndPassword(auth, form.email, form.password);
@@ -131,6 +136,7 @@ export default function LoginRegisterScreen() {
 
             <TouchableOpacity
                 onPress={signIn}
+                disabled={loading}
                 className='w-full flex items-center justify-center py-4 bg-primaryNavy  rounded-lg mt-4'
             >
                 {loading ? <ActivityIndicator size="large" color="white" /> : <Text style={{ color: 'white', fontWeight: 'bold' }}>Masuk</Text>}
