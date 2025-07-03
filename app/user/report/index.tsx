@@ -74,6 +74,7 @@ const MAX_IMAGES = 4;
 
 const ReportScreen = () => {
     // State Management
+    const [loadingSend, setLoadingSend] = useState(false);
     const [form, setForm] = useState<FormState>({
         desc: '',
         images: [],
@@ -208,7 +209,7 @@ const ReportScreen = () => {
         setForm: (f: FormState) => void,
 
     ) => {
-        setLoading(true);
+        setLoadingSend(true);
         try {
             // ✅ Validasi isi
             if (
@@ -218,7 +219,7 @@ const ReportScreen = () => {
                 form.images.length === 0
             ) {
                 Alert.alert('Error', 'Semua Form harus diisi');
-                setLoading(false);
+                setLoadingSend(false);
                 return;
             }
 
@@ -229,19 +230,19 @@ const ReportScreen = () => {
 
             if (descLength < 15) {
                 Alert.alert('Error', 'Deskripsi minimal 15 karakter');
-                setLoading(false);
+                setLoadingSend(false);
                 return;
             }
 
             if (locationLength < 15) {
                 Alert.alert('Error', 'Lokasi minimal 15 karakter');
-                setLoading(false);
+                setLoadingSend(false);
                 return;
             }
 
             if (form.images.length > 4) {
                 Alert.alert('Error', 'Gambar maksimal 4');
-                setLoading(false);
+                setLoadingSend(false);
                 return;
             }
 
@@ -251,7 +252,7 @@ const ReportScreen = () => {
 
             if (!currentUser) {
                 Alert.alert('Gagal', 'User belum login');
-                setLoading(false);
+                setLoadingSend(false);
                 return;
             }
 
@@ -298,11 +299,11 @@ const ReportScreen = () => {
                     read: false,
                 });
 
-                setLoading(false);
+                setLoadingSend(false);
                 Alert.alert('Sukses', 'Laporan berhasil dikirim!');
             });
         } catch (err) {
-            setLoading(false);
+            setLoadingSend(false);
             console.error('❌ Gagal kirim laporan:', err);
             Alert.alert('Error', 'Gagal mengirim laporan');
         }
@@ -499,11 +500,18 @@ const ReportScreen = () => {
             </View>
 
             <View className='flex-row justify-end'>
-                <ButtonPrimary
-                    text="Buat Laporan"
-                    className="px-6 py-4 mt-6 mb-6 rounded-lg"
-                    onPress={() => handleSubmitReport(form, setForm)}
-                />
+                {loadingSend ?
+                    <View className='px-6 py-4 mt-6 mb-6 rounded-lg bg-primaryNavy' >
+                        <ActivityIndicator size="large" color="white" />
+                    </View>
+
+                    :
+                    <ButtonPrimary
+                        text="Buat Laporan"
+                        className="px-6 py-4 mt-6 mb-6 rounded-lg"
+                        onPress={() => handleSubmitReport(form, setForm)}
+                    />}
+
             </View>
         </ScrollView>
     );
