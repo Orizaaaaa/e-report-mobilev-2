@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import { collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { TextInput } from 'react-native-gesture-handler';
 
@@ -24,7 +24,7 @@ const statusList = [
 type Props = {}
 
 const Contest = (props: Props) => {
-
+    const [loading, setLoading] = useState(false)
     const [dataContest, setDataContest] = useState<any[]>([]);
     const [userName, setUserName] = useState('');
 
@@ -39,29 +39,33 @@ const Contest = (props: Props) => {
     }, []);
 
     // Ambil data lomba
-    const fetchContests = async () => {
-        try {
-            const contestRef = collection(db, 'contest');
-            const q = query(contestRef, orderBy('createdAt', 'desc'));
-            const snapshot = await getDocs(q);
-
-            const contests = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-
-            setDataContest(contests);
-        } catch (error) {
-            console.error('❌ Gagal mengambil data contest:', error);
-        }
-    };
-
 
     useFocusEffect(
         useCallback(() => {
+            const fetchContests = async () => {
+                console.log('fetch');
+                setLoading(true)
+                try {
+                    const contestRef = collection(db, 'contest');
+                    const q = query(contestRef, orderBy('createdAt', 'desc'));
+                    const snapshot = await getDocs(q);
+
+                    const contests = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+
+                    setDataContest(contests);
+                    setLoading(false)
+                } catch (error) {
+                    console.error('❌ Gagal mengambil data contest:', error);
+                }
+            };
+
             fetchContests();
-        }, [fetchContests])
+        }, []) // ✅ Kosong karena tidak perlu dependency di sini
     );
+
 
     // Fungsi daftar lomba
     const handleJoinContest = async (contestId: string) => {
@@ -76,15 +80,25 @@ const Contest = (props: Props) => {
 
             const updatedUserAudiens = [...(contest.userAudiens || []), userName];
 
+            // Update ke Firestore
             await updateDoc(contestRef, {
                 userAudiens: updatedUserAudiens,
             });
 
-            fetchContests(); // Refresh setelah daftar
+            // ✅ Update state lokal agar UI ikut berubah
+            setDataContest(prev =>
+                prev.map(item =>
+                    item.id === contestId
+                        ? { ...item, userAudiens: updatedUserAudiens }
+                        : item
+                )
+            );
+
         } catch (err) {
             console.error('❌ Gagal daftar lomba:', err);
         }
     };
+
 
 
 
@@ -175,19 +189,23 @@ const Contest = (props: Props) => {
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    {dataContest.map(item => {
-                        const sudahDaftar = item.userAudiens?.includes(userName);
-                        return (
-                            <CardContest
-                                key={item.id}
-                                contest={item}
-                                disabled={sudahDaftar}
-                                styleButton={sudahDaftar ? 'bg-gray-400' : 'bg-primaryNavy'}
-                                textButton={sudahDaftar ? 'Anda sudah daftar' : 'Daftar Sekarang'}
-                                handlePres={() => handleJoinContest(item.id)}
-                            />
-                        );
-                    })}
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#FF840C" />
+                    ) : (
+                        dataContest.map(item => {
+                            const sudahDaftar = item.userAudiens?.includes(userName);
+                            return (
+                                <CardContest
+                                    key={item.id}
+                                    contest={item}
+                                    disabled={sudahDaftar}
+                                    styleButton={sudahDaftar ? 'bg-gray-400' : 'bg-primaryNavy'}
+                                    textButton={sudahDaftar ? 'Anda sudah daftar' : 'Daftar Sekarang'}
+                                    handlePres={() => handleJoinContest(item.id)}
+                                />
+                            );
+                        })
+                    )}
                 </ScrollView>
             </View>
 
