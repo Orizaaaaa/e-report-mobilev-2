@@ -7,19 +7,24 @@ import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { RelativePathString, router, useFocusEffect } from 'expo-router';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { TextInput } from 'react-native-gesture-handler';
 
 type Props = {}
 
 const Contest = (props: Props) => {
+    const [selectedContest, setSelectedContest] = useState<any>(null);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [loading, setLoading] = useState(false)
     const [dataContest, setDataContest] = useState<any[]>([]);
     useFocusEffect(
         useCallback(() => {
             const fetchContests = async () => {
+                setLoading(true)
                 try {
                     const contestRef = collection(db, 'contest');
                     const q = query(contestRef, orderBy('createdAt', 'desc'));
@@ -30,6 +35,8 @@ const Contest = (props: Props) => {
                         ...doc.data()
                     }));
 
+                    setDataContest(contests);
+                    setLoading(false)
                 } catch (error) {
                     console.error('❌ Gagal mengambil data contest:', error);
                 }
@@ -90,6 +97,36 @@ const Contest = (props: Props) => {
         console.log("BottomSheet index:", index);
     }, []);
 
+    console.log(dataContest);
+    const confirmDelete = (contest: any) => {
+        setSelectedContest(contest);
+        setModalVisible(true);
+    };
+
+    const handleDeleteContest = async () => {
+        try {
+            if (!selectedContest?.id) return;
+            await deleteDoc(doc(db, 'contest', selectedContest.id));
+            setModalVisible(false);
+            setSelectedContest(null);
+
+            const contestRef = collection(db, 'contest');
+            const q = query(contestRef, orderBy('createdAt', 'desc'));
+            const snapshot = await getDocs(q);
+
+            const contests = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            setDataContest(contests);
+
+        } catch (error) {
+            console.error('Gagal menghapus lomba:', error);
+        }
+    };
+
+
     return (
         <View className="flex-1 bg-white">
             {/* Bagian Atas */}
@@ -138,22 +175,60 @@ const Contest = (props: Props) => {
                             onPress={() => { router.push(`/admin/contest/addContest`) }} />
                     </View>
 
-                    {dataContest.map((item) => (
-                        <TouchableOpacity onPress={handlePress} key={item.id} >
 
-                            <CardContest
-                                key={item.id}
-                                contest={item}
-                                textButton="Hapus lomba"
-                                handlePres={() => console.log('Klik lomba ID:', item.id)}
-                            />
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#FF840C" />
+                    ) : (
+                        dataContest.map(item => {
 
-                        </TouchableOpacity>
-                    ))}
+                            return (
+                                <TouchableOpacity onPress={handlePress} key={item.id} >
+
+                                    <CardContest
+                                        key={item.id}
+                                        contest={item}
+                                        textButton="Hapus lomba"
+                                        handlePres={() => confirmDelete(item)}
+                                    />
+
+                                </TouchableOpacity>
+                            );
+                        })
+                    )}
 
                 </ScrollView>
             </View>
 
+            <Modal
+                visible={modalVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View className="flex-1 bg-black/50 justify-center items-center px-6">
+                    <View className="bg-white p-6 rounded-xl w-full">
+                        <Text className="text-lg font-semibold mb-4">
+                            Apakah Anda yakin ingin menghapus lomba ini?
+                        </Text>
+
+                        <View className="flex-row justify-end gap-3">
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(false)}
+                                className="px-4 py-2 bg-gray-200 rounded-lg"
+                            >
+                                <Text>Batal</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={handleDeleteContest}
+                                className="px-4 py-2 bg-red-500 rounded-lg"
+                            >
+                                <Text className="text-white">Hapus</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
                 <Text className="text-sm text-slate-400 ">Filter berdasarkan tanggal</Text>
                 <Calendar
