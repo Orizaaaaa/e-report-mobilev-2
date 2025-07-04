@@ -516,9 +516,12 @@ const ReportScreen = () => {
     console.log('anying', dataReport);
 
     const renderContent = () => {
+        // Terapkan filter ke dataReport
+        const filteredReports = filterReports(dataReport, filtering);
+
         switch (activePage) {
             case 'regular': {
-                const filtered = dataReport.filter((item: any) => item.typeReport === 'Reguler');
+                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Reguler');
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
                 ) : (
@@ -534,7 +537,7 @@ const ReportScreen = () => {
                 );
             }
             case 'prioritas': {
-                const filtered = dataReport.filter((item: any) => item.typeReport === 'Prioritas');
+                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Prioritas');
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
                 ) : (
@@ -628,7 +631,59 @@ const ReportScreen = () => {
             }}
         />
     );
-    console.log(form);
+
+    const filterReports = (reports: any[], filters: any) => {
+        return reports.filter((report) => {
+            // Filter berdasarkan status
+            if (filters.status && report.status !== filters.status) {
+                return false;
+            }
+
+            // Filter berdasarkan tanggal
+            if (filters.date && period.startDate) {
+                const reportDate = new Date(report.createdAt);
+                const startDate = new Date(period.startDate);
+
+                if (period.endDate) {
+                    const endDate = new Date(period.endDate);
+                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari untuk mencakup seluruh hari terakhir
+
+                    if (reportDate < startDate || reportDate >= endDate) {
+                        return false;
+                    }
+                } else {
+                    // Filter untuk satu hari tertentu
+                    if (
+                        reportDate.getDate() !== startDate.getDate() ||
+                        reportDate.getMonth() !== startDate.getMonth() ||
+                        reportDate.getFullYear() !== startDate.getFullYear()
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        });
+    };
+
+    const resetFilters = () => {
+        setFiltering({
+            status: '',
+            date: '',
+            search: '',
+        });
+        setPeriod({
+            startDate: '',
+            endDate: '',
+        });
+        bottomSheetRef.current?.close(); // Tutup bottom sheet setelah reset
+    };
+
+    const applyFilters = () => {
+        bottomSheetRef.current?.close(); // Tutup bottom sheet setelah menerapkan
+    };
+    console.log(filtering);
 
     return (
         <SafeAreaView className='flex-1'>
@@ -706,15 +761,16 @@ const ReportScreen = () => {
                 </View>
 
                 <View className='flex-row justify-between mt-7'>
+
                     <ButtonSecondary
                         className='w-[48%] rounded-lg py-2'
                         text='Reset'
-                        onPress={() => { }}
+                        onPress={resetFilters}
                     />
                     <ButtonPrimary
                         className='w-[48%] rounded-lg py-2'
                         text='Terapkan'
-                        onPress={() => { }}
+                        onPress={applyFilters}
                     />
                 </View>
             </BottomSheetCustom>
