@@ -17,7 +17,7 @@ const Colors = {
 // Hanya dua tab sekarang: Beranda dan Prediksi
 const tabs = [
   { name: '/', title: 'Beranda', icon: 'home' },
-  { name: '/predict', title: 'Prediksi', icon: 'analytics-outline' },
+  { name: '/predict', title: 'Prediksi', icon: 'search' },
 ];
 
 const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => void, isFocused: boolean }) => {
