@@ -1,4 +1,3 @@
-
 import * as ImagePicker from 'expo-image-picker'
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
@@ -105,25 +104,30 @@ const AppContent = () => {
             <ScrollView contentContainerStyle={styles.container}>
                 <Text variant="headlineMedium" style={styles.header}>Gigi Analyzer</Text>
 
-                <View style={styles.btnGroup}>
-                    <Button
-                        icon="camera"
-                        mode="contained"
-                        onPress={() => pickImage(true)}
-                        style={styles.button}
-                        labelStyle={styles.buttonLabel}
-                    >
-                        Take Photo
-                    </Button>
-                    <Button
-                        icon="image"
-                        mode="contained"
-                        onPress={() => pickImage(false)}
-                        style={styles.button}
-                        labelStyle={styles.buttonLabel}
-                    >
-                        Pick from Gallery
-                    </Button>
+                {/* Modified Button Group */}
+                <View style={styles.btnContainer}>
+                    <View style={styles.btnGroup}>
+                        <Button
+                            icon="camera"
+                            mode="contained"
+                            onPress={() => pickImage(true)}
+                            style={[styles.button, styles.fullWidthButton]}
+                            labelStyle={styles.buttonLabel}
+                            contentStyle={styles.buttonContent}
+                        >
+                            Take Photo
+                        </Button>
+                        <Button
+                            icon="image"
+                            mode="contained"
+                            onPress={() => pickImage(false)}
+                            style={[styles.button, styles.fullWidthButton]}
+                            labelStyle={styles.buttonLabel}
+                            contentStyle={styles.buttonContent}
+                        >
+                            Pick from Gallery
+                        </Button>
+                    </View>
                 </View>
 
                 {image && (
@@ -206,20 +210,35 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
         paddingBottom: 60,
+        flexGrow: 1,
     },
     header: {
         marginBottom: 30,
         fontWeight: 'bold',
         color: '#007F7F',
     },
+    // New styles for full-height balanced buttons
+    btnContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        width: '100%',
+        maxHeight: 300, // Membatasi tinggi maksimum
+    },
     btnGroup: {
         width: '100%',
-        gap: 10,
+        gap: 20,
         marginBottom: 20,
     },
     button: {
         backgroundColor: '#00A8A8',
         borderRadius: 8,
+    },
+    fullWidthButton: {
+        width: '100%',
+        paddingVertical: 12,
+    },
+    buttonContent: {
+        height: 48, // Memberikan tinggi yang konsisten untuk button
     },
     buttonLabel: {
         fontSize: 16,
