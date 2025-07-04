@@ -22,11 +22,15 @@ module.exports = {
     extend: {
       textColors: {
         primaryOrange: '#FF840C',
-        primaryBlue: '#40D8D4',
-        primaryNavy: '#1E2A38',
+        primaryNavy: '#002B5A',
         primaryGreen: '#E2FA49',
         primaryWhite: '#fbfafa',
-        primaryBlack: '#141414'
+        primaryBlack: '#141414',
+        primaryBlue: '#20BEC6',
+        secondaryBlue: '#2C3E50 ',
+        tertiaryBlue: '#F5F5F5',
+        aksen1: '#FFE66D',
+        aksen2: '#FF6B6B',
       },
       fontFamily: {
         Geometric: ['Geometric', 'sans-serif'],
@@ -35,25 +39,38 @@ module.exports = {
       },
       backgroundColor: {
         primaryOrange: '#FF840C',
-        primaryBlue: '#40D8D4',
-        primaryNavy: '#1E2A38',
+        primaryBlue: '#20BEC6',
+        secondaryBlue: '#2C3E50 ',
+        tertiaryBlue: '#F5F5F5',
+        aksen1: '#FFE66D',
+        aksen2: '#FF6B6B',
+        primaryNavy: '#002B5A',
         primaryGreen: '#E2FA49',
         primaryWhite: '#fbfafa',
         primaryBlack: '#141414'
       },
       borderColor: {
         primaryOrange: '#FF840C',
-        primaryBlue: '#40D8D4',
-        primaryNavy: '#1E2A38',
+        primaryBlue: '#20BEC6',
+        secondaryBlue: '#2C3E50 ',
+        tertiaryBlue: '#F5F5F5',
+        aksen1: '#FFE66D',
+        aksen2: '#FF6B6B',
+        primaryNavy: '#002B5A',
         primaryGreen: '#E2FA49'
       },
       colors: {
         primaryOrange: '#FF840C',
-        primaryBlue: '#40D8D4',
-        primaryNavy: '#1E2A38',
+        // primaryBlue: '#20BEC6',
+        primaryNavy: '#002B5A',
         primaryWhite: '#fbfafa',
         primaryBlack: '#141414',
-        primaryGreen: '#E2FA49'
+        primaryGreen: '#E2FA49',
+        primaryBlue: '#20BEC6',
+        secondaryBlue: '#2C3E50 ',
+        tertiaryBlue: '#F5F5F5',
+        aksen1: '#FFE66D',
+        aksen2: '#FF6B6B',
       }
     },
   },

@@ -1,9 +1,7 @@
-import ButtonBack from '@/components/elements/buttonBack/ButtonBack';
 import DetailReport from '@/components/fragments/DetailReport/DetailReport';
-import { Octicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Dimensions, Linking, ScrollView, View } from 'react-native';
+import { Dimensions, Linking, ScrollView } from 'react-native';
 
 export default function ReportDetail() {
     const { width } = Dimensions.get('window');
@@ -30,10 +28,10 @@ export default function ReportDetail() {
 
     return (
         <ScrollView className='pt-16 px-3'>
-            <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full">
+            {/* <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full">
                 <ButtonBack colorIcon="#FF840C" />
                 <Octicons name="report" size={20} color="gray" />
-            </View>
+            </View> */}
 
             <DetailReport imageCaraosel={imagesCaraosel} />
 

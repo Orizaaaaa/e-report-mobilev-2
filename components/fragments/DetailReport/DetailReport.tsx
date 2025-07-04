@@ -1,6 +1,5 @@
-import { FontAwesome5 } from '@expo/vector-icons'
 import React, { useState } from 'react'
-import { Dimensions, Image, Linking, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Linking, Text, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 
 type Props = {
@@ -80,15 +79,15 @@ const DetailReport = ({ imageCaraosel }: Props) => {
             </View>
             <View>
                 <View>
-                    <Text className='text-gray-500 font-light mb-1'>Permasalahan</Text>
+                    <Text className='text-black font-bold mb-1'>Permasalahan</Text>
                     <Text className='font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente sequi temporibus delectus, corupti atque consectetur, optio consequuntur repellat molestias maiores dolorum commodi modi? Pariatur harum quaerat nobis, exercitationem incidunt ut?</Text>
                 </View>
-                <View className='my-3'>
+                {/* <View className='my-3'>
                     <Text className='text-lg font-medium' >Lokasi Aduan</Text>
-                </View>
+                </View> */}
             </View>
 
-            <View className='flex-row justify-between items-start'>
+            {/* <View className='flex-row justify-between items-start'>
                 <View className='flex-row justify-between items-start'>
                     <View className="flex-1 pr-2">
                         <Text className='font-light'>
@@ -106,12 +105,12 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                         <FontAwesome5 name="map-marked-alt" size={20} color="#1E2A38" />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
 
 
 
             <View className='my-3'>
-                <Text className='text-lg font-medium' >Riwayat Status</Text>
+                <Text className='text-lg font-medium' >Sumber</Text>
             </View>
 
 
@@ -121,12 +120,12 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                     <Text className='text-sm font-medium' >Menunggu di Proses <Text className='font-light' >oleh</Text>  tim pemerintah</Text>
                     <Text className='text-sm font-light'>Minggu 01 Juni 2025 - 21-36, <Text className='text-primaryOrange font-medium' >Lihat Riwayat</Text> </Text>
                 </View>
-
+                {/*                 
                 <View>
                     <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange' >
                         PRIORITAS
                     </Text>
-                </View>
+                </View> */}
 
             </View>
 

@@ -1,18 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
-import { Tabs } from 'expo-router';
+import { Stack } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
+
 const Colors = {
 
   primaryOrange: '#FF840C',
   primaryBlue: '#40D8D4',
   primaryGreen: '#E2FA49',
   primaryWhite: 'white',
-  primaryBlack: '#1E2A38'
+  primaryBlack: '#1E2A38',
+  primary: '40E0D0',
+  secondary: '##2C3E50 ',
+  tertiary: '#F5F5F5',
+  aksen1: '#FFE66D',
+  aksen2: '#FF6B6B',
 };
 
 const animate1 = {
@@ -116,70 +121,7 @@ export default function Layout() {
   const [role, setRole] = useState('user');
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Tabs
-        screenOptions={({ route }) => {
-          const hideTabBarRoutes = ['report/[id]', 'admin/report/[id]']; // daftar halaman yang harus sembunyikan tab bar
-
-          const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
-
-          return {
-            headerShown: false,
-            tabBarStyle: shouldHideTabBar ? { display: 'none' } : styles.tabBar,
-            tabBarHideOnKeyboard: true,
-          };
-        }}
-      >
-
-        {[...tabsUser, ...tabsAdmin].map((tab, index) => {
-          const isUserTab = tabsUser.find(t => t.name === tab.name);
-          const isAdminTab = tabsAdmin.find(t => t.name === tab.name);
-
-          const shouldHide =
-            (role === 'admin' && isUserTab) ||
-            (role !== 'admin' && isAdminTab);
-
-          return (
-            <Tabs.Screen
-              key={index}
-              name={tab.name}
-              options={{
-                tabBarItemStyle: shouldHide ? { display: 'none' } : undefined,
-                tabBarButton: shouldHide ? () => null : (props) => <TabButton {...props} item={tab} />,
-                title: tab.title,
-              }}
-            />
-          );
-        })}
-
-
-        {/* Tambahkan screen untuk route dinamis */}
-        <Tabs.Screen
-          name="report/[id]"
-          options={{
-            // Cara 1: Sembunyikan dari tab bar
-            tabBarItemStyle: { display: 'none' },
-
-            // Cara 2: Atau gunakan ini sebagai alternatif
-            tabBarButton: () => null,
-
-            // Pastikan tidak ada href yang digunakan
-          }}
-        />
-        <Tabs.Screen
-          name="admin/report/[id]"
-          options={{
-            // Cara 1: Sembunyikan dari tab bar
-            tabBarItemStyle: { display: 'none' },
-
-            // Cara 2: Atau gunakan ini sebagai alternatif
-            tabBarButton: () => null,
-
-            // Pastikan tidak ada href yang digunakan
-          }}
-        />
-      </Tabs>
-    </GestureHandlerRootView>
+    <Stack screenOptions={{ headerShown: false }}></Stack>
   );
 }
 // Styles tetap sama
