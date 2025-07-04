@@ -81,7 +81,7 @@ const AppContent = () => {
         } as any)
 
         try {
-            const res = await fetch('https://3b83-114-10-147-66.ngrok-free.app/predict', {
+            const res = await fetch('https://saving-lemming-loyal.ngrok-free.app/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'multipart/form-data' },
                 body: formData,

@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 type Props = {
-    onPress?: (event: GestureResponderEvent) => void;
+    onPress?: any;
     children: React.ReactNode;
     className?: string; // bisa override style dari luar jika perlu
 };

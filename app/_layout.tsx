@@ -1,4 +1,6 @@
-import FloatingButton from '@/components/fragments/FloatingButton/floatingButton';
+
+
+import FloatingButton from '@/components/fragments/FloatingButton';
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
