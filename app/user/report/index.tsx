@@ -526,7 +526,7 @@ const ReportScreen = () => {
             case 'regular': {
                 const filtered = filteredReports.filter((item: any) => item.typeReport === 'Reguler');
                 return filtered.length === 0 ? (
-                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
+                    <Text className="text-center text-gray-500 mt-2">Belum ada laporan reguler</Text>
                 ) : (
                     filtered.map((item: any, index: number) => (
                         <CaraoselCard
@@ -542,7 +542,7 @@ const ReportScreen = () => {
             case 'prioritas': {
                 const filtered = filteredReports.filter((item: any) => item.typeReport === 'Prioritas');
                 return filtered.length === 0 ? (
-                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
+                    <Text className="text-center text-gray-500 mt-2">Belum ada laporan prioritas</Text>
                 ) : (
                     filtered.map((item: any, index: number) => (
                         <CaraoselCard

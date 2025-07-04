@@ -6,7 +6,7 @@ import { db } from '@/lib/firebase/firebase'
 import { formatDate, STATUS_LIST } from '@/utils/helper'
 import { Feather, MaterialIcons } from '@expo/vector-icons'
 import BottomSheet from '@gorhom/bottom-sheet'
-import { router } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { collection, getDocs } from 'firebase/firestore'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -21,6 +21,7 @@ const pages = [
 ];
 const today = new Date();
 const index = (props: Props) => {
+    const router = useRouter()
     const [dataReport, setDataReport]: any = useState([]);
     const [period, setPeriod] = useState({ startDate: '', endDate: '' });
     const [activePage, setActivePage] = React.useState(pages[0].value);
@@ -153,7 +154,7 @@ const index = (props: Props) => {
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
                 ) : (
                     filtered.map((item: any, index: number) => (
-                        <CaraoselCard
+                        <CaraoselCard onpress={() => router.push(`/admin/report/${item.id}`)}
                             key={item.id || index}
                             status={item.status || 'status not found'}
                             desc={item.desc || 'description not found'}
