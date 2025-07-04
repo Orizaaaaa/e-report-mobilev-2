@@ -1,3 +1,6 @@
+
+
+import FloatingButton from '@/components/fragments/FloatingButton/floatingButton';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
@@ -121,7 +124,14 @@ export default function Layout() {
   const [role, setRole] = useState('user');
 
   return (
-    <Stack screenOptions={{ headerShown: false }}></Stack>
+    <View style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }} />
+
+      {/* Ini akan tampil di semua halaman */}
+      <FloatingButton onPress={() => console.log('Floating clicked')}>
+        <Ionicons name="add" size={24} color="white" />
+      </FloatingButton>
+    </View>
   );
 }
 // Styles tetap sama
