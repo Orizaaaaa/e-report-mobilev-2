@@ -1,4 +1,3 @@
-import AppLayout from '@/components/elements/Button/Menu';
 import CardReportScroll from '@/components/fragments/CardReport/CardReportScroll';
 import Promo from '@/components/fragments/IndicatorInfo/Promo';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -7,7 +6,7 @@ import { router } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ActivityIndicator, Button, Card, FAB, PaperProvider } from 'react-native-paper';
+import { ActivityIndicator, Button, Card, FAB } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const { height } = Dimensions.get('window');
 
@@ -191,62 +190,62 @@ export default function Index() {
   })
 
   return (
-    <PaperProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ScrollView className='pt-12 px-3 bg-white' contentContainerStyle={{ paddingBottom: 100 }} >
-          <View className="mb-40">
 
-            <View className='flex-row items-center w-full justify-between p-1    ' >
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ScrollView className='pt-12 px-3 bg-white' contentContainerStyle={{ paddingBottom: 100 }} >
+        <View className="mb-40">
 
-              <View className="gap-3 flex-col" >
-                <View className="flex-col gap-1">
-                  <Text className="text-xl font-semibold text-secondaryBlue">Hi, Gabriel Yonathan</Text>
-                  <Text className="text-sm text-secondaryBlue/50">Pamulang, Benda Baru, Tangerang Selatan </Text>
-                </View>
+          <View className='flex-row items-center w-full justify-between p-1    ' >
+
+            <View className="gap-3 flex-col" >
+              <View className="flex-col gap-1">
+                <Text className="text-xl font-semibold text-secondaryBlue">Hi, Gabriel Yonathan</Text>
+                <Text className="text-sm text-secondaryBlue/50">Pamulang, Benda Baru, Tangerang Selatan </Text>
               </View>
-
-              <View className='w-14 h-14  rounded-xl   '>
-                <Image
-                  className='w-full h-full rounded-full'
-                  source={require('../assets/images/human.png')}
-                  resizeMode='cover'
-                />
-              </View>
-
             </View>
 
+            <View className='w-14 h-14  rounded-xl   '>
+              <Image
+                className='w-full h-full rounded-full'
+                source={require('../assets/images/human.png')}
+                resizeMode='cover'
+              />
+            </View>
 
-            <View className='w-50 h-60 rounded-3xl mt-5 overflow-hidden relative flex flex-row-reverse'>
-              <View className='absolute inset-0 bg-primaryBlue/20' >
+          </View>
 
-                {/* Patern */}
 
-                {/* 
+          <View className='w-50 h-60 rounded-3xl mt-5 overflow-hidden relative flex flex-row-reverse'>
+            <View className='absolute inset-0 bg-primaryBlue/20' >
+
+              {/* Patern */}
+
+              {/* 
             <View className="absolute -top-5 -right-35 w-52 h-52 bg-primaryBlue/20 rounded-full" />
             <View className="absolute -bottom-10 -left-10 w-40 h-40 bg-primaryBlue/20 rounded-full" />
             <View className="absolute top-10 right-20 w-32 h-32 bg-primaryBlue/60 rounded-full" /> */}
 
-                {/* Gambar
+              {/* Gambar
             <Image
               className='w-52 h-56 mr-15'
               source={require('../assets/images/doctor.png')}
               resizeMode='cover'
             /> */}
 
-                {/* Overlay hitam */}
+              {/* Overlay hitam */}
 
-                {/* Konten di bawah */}
-                <View className=' bottom-0 top-0 left-0 right-0 p-5'>
-                  <Text className='text-secondaryBlue text-lg font-bold'>Deteksi <Text className='text-secondaryBlue' >Penyakit Gigi</Text> </Text>
-                  <Text className='text-secondaryBlue text-xs'>Fitur AI untuk Analisis</Text>
-                  <Text className='text-secondaryBlue text-xs'>Penyakit Gigi</Text>
+              {/* Konten di bawah */}
+              <View className=' bottom-0 top-0 left-0 right-0 p-5'>
+                <Text className='text-secondaryBlue text-lg font-bold'>Deteksi <Text className='text-secondaryBlue' >Penyakit Gigi</Text> </Text>
+                <Text className='text-secondaryBlue text-xs'>Fitur AI untuk Analisis</Text>
+                <Text className='text-secondaryBlue text-xs'>Penyakit Gigi</Text>
 
-                  <View className='flex-row top-5 justify-between mt-3'>
-                    <View className='flex-1 top-12 left-0 right-0'>
-                      <Text onPress={() => (router.push("/predict"))} className='text-center text-sm py-5 px-20 bg-primaryBlue text-white rounded-2xl'>Cek Sekarang </Text>
-                    </View>
+                <View className='flex-row top-5 justify-between mt-3'>
+                  <View className='flex-1 top-12 left-0 right-0'>
+                    <Text onPress={() => (router.push("/predict"))} className='text-center text-sm py-5 px-20 bg-primaryBlue text-white rounded-2xl'>Cek Sekarang </Text>
+                  </View>
 
-                    {/* <View className="flex-1 top-12 left-0 right-0 items-center">
+                  {/* <View className="flex-1 top-12 left-0 right-0 items-center">
                     <LinearGradient
                       colors={['#00A8A8', '#007F7F']} // Atur sesuai warna gradient yang Anda mau
                       start={[0, 0]}
@@ -269,31 +268,31 @@ export default function Index() {
                     </LinearGradient>
                   </View>
                    */}
-                  </View>
                 </View>
               </View>
-
             </View>
 
-            {/* <View className='flex-row justify-between items-center mt-7 px-1 mb-5'>
+          </View>
+
+          {/* <View className='flex-row justify-between items-center mt-7 px-1 mb-5'>
             <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
           </View> */}
 
 
-            <View style={{ overflow: 'visible' }}>
-              <Promo handlePress={handlePress} />
-            </View>
+          <View style={{ overflow: 'visible' }}>
+            <Promo handlePress={handlePress} />
+          </View>
 
 
 
 
 
-            {/* <IndicatorInfo finised='177' onProgress='44' total='221' /> */}
+          {/* <IndicatorInfo finised='177' onProgress='44' total='221' /> */}
 
 
-            {/* laporan */}
-            <View>
-              {/* <View className='flex-row justify-between items-center mt-7 px-1'>
+          {/* laporan */}
+          <View>
+            {/* <View className='flex-row justify-between items-center mt-7 px-1'>
             <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
             <TouchableOpacity
               onPress={handlePress}
@@ -310,7 +309,7 @@ export default function Index() {
           </ScrollView> */}
 
 
-              {/* <View className='flex-row justify-between items-center mt-7 px-1'>
+            {/* <View className='flex-row justify-between items-center mt-7 px-1'>
               <TouchableOpacity className='bg-primaryBlue  p-4 rounded-3xl' onPress={() => pickImage(true)}>
                 <Text className='text-tertiaryBlue'>prediksi gambar dari kamera</Text>
               </TouchableOpacity>
@@ -320,100 +319,99 @@ export default function Index() {
               </TouchableOpacity>
             </View> */}
 
-              <View className='flex-row justify-between items-center mt-2 px-1'>
-                <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
-                <TouchableOpacity
-                  onPress={handlePress}
-                >
-                  <Text className='text-primaryBlue/50 font-bold'>Lihat Semua</Text>
-                </TouchableOpacity>
-
-              </View>
-
-              <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
-              <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
-              <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
+            <View className='flex-row justify-between items-center mt-2 px-1'>
+              <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
+              <TouchableOpacity
+                onPress={handlePress}
+              >
+                <Text className='text-primaryBlue/50 font-bold'>Lihat Semua</Text>
+              </TouchableOpacity>
 
             </View>
 
-
+            <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
+            <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
+            <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
 
           </View>
 
-          <BottomSheet
-            index={-1}
-            ref={bottomSheetRef}
-            snapPoints={snapPoints}
-            enablePanDownToClose
-            onChange={handleSheetChanges}
-          >
-            <BottomSheetView >
 
-              {image && (
-                <Card style={styles.imageCard}>
-                  <Card.Cover source={{ uri: image.uri }} style={styles.image} />
-                  <Card.Actions>
-                    <Button
-                      mode="contained-tonal"
-                      onPress={uploadImage}
-                      disabled={loading}
-                      labelStyle={{ fontSize: 16 }}
-                    >
-                      {loading ? 'Predicting...' : '🔍 Predict'}
-                    </Button>
-                    {loading && <ActivityIndicator style={{ marginLeft: 10 }} />}
-                  </Card.Actions>
-                </Card>
-              )}
 
-              {result && (
-                <View>
-                  <Text style={styles.modalTitle}>
-                    Predicted: {result.predicted_class}
-                  </Text>
-                  <Text style={styles.modalText}>
-                    Confidence: {result.confidence}
-                  </Text>
-
-                  <Text style={styles.sectionTitle}>Top 3 Predictions:</Text>
-                  {result.top_3_predictions.map((item, i) => (
-                    <Text key={i} style={styles.modalText}>
-                      {i + 1}. {item.label} - {item.probability}
-                    </Text>
-                  ))}
-
-                  <Text style={styles.sectionTitle}>All Probabilities:</Text>
-                  {Object.entries(result.probabilities).map(([label, prob]) => (
-                    <Text key={label} style={styles.modalText}>
-                      {label}: {prob}
-                    </Text>
-                  ))}
-                </View>
-              )}
-            </BottomSheetView>
-          </BottomSheet>
-        </ScrollView >
-        <View style={{ position: 'absolute', bottom: insets.bottom + 10, left: 0, right: 0, paddingHorizontal: 16 }}>
-          <FAB
-            icon="camera"
-            label="Ambil Foto"
-            onPress={() => pickImage(true)}
-            style={{ backgroundColor: '#00A8A8' }}
-          />
         </View>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-          }}
+
+        <BottomSheet
+          index={-1}
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          enablePanDownToClose
+          onChange={handleSheetChanges}
         >
-          <AppLayout />
-        </View>
+          <BottomSheetView >
 
-      </GestureHandlerRootView>
-    </PaperProvider>
+            {image && (
+              <Card style={styles.imageCard}>
+                <Card.Cover source={{ uri: image.uri }} style={styles.image} />
+                <Card.Actions>
+                  <Button
+                    mode="contained-tonal"
+                    onPress={uploadImage}
+                    disabled={loading}
+                    labelStyle={{ fontSize: 16 }}
+                  >
+                    {loading ? 'Predicting...' : '🔍 Predict'}
+                  </Button>
+                  {loading && <ActivityIndicator style={{ marginLeft: 10 }} />}
+                </Card.Actions>
+              </Card>
+            )}
+
+            {result && (
+              <View>
+                <Text style={styles.modalTitle}>
+                  Predicted: {result.predicted_class}
+                </Text>
+                <Text style={styles.modalText}>
+                  Confidence: {result.confidence}
+                </Text>
+
+                <Text style={styles.sectionTitle}>Top 3 Predictions:</Text>
+                {result.top_3_predictions.map((item, i) => (
+                  <Text key={i} style={styles.modalText}>
+                    {i + 1}. {item.label} - {item.probability}
+                  </Text>
+                ))}
+
+                <Text style={styles.sectionTitle}>All Probabilities:</Text>
+                {Object.entries(result.probabilities).map(([label, prob]) => (
+                  <Text key={label} style={styles.modalText}>
+                    {label}: {prob}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </BottomSheetView>
+        </BottomSheet>
+      </ScrollView >
+      <View style={{ position: 'absolute', bottom: insets.bottom + 10, left: 0, right: 0, paddingHorizontal: 16 }}>
+        <FAB
+          icon="camera"
+          label="Ambil Foto"
+          onPress={() => pickImage(true)}
+          style={{ backgroundColor: '#00A8A8' }}
+        />
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}
+      >
+
+      </View>
+
+    </GestureHandlerRootView>
   );
 
 

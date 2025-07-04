@@ -1,180 +1,96 @@
-
-
 import FloatingButton from '@/components/fragments/FloatingButton/floatingButton';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import * as Animatable from 'react-native-animatable';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import '../global.css';
 
 const Colors = {
-
   primaryOrange: '#FF840C',
-  primaryBlue: '#40D8D4',
-  primaryGreen: '#E2FA49',
   primaryWhite: 'white',
   primaryBlack: '#1E2A38',
-  primary: '40E0D0',
-  secondary: '##2C3E50 ',
-  tertiary: '#F5F5F5',
-  aksen1: '#FFE66D',
-  aksen2: '#FF6B6B',
 };
 
-const animate1 = {
-  0: { scale: 0.5, translateY: 7 },
-  0.92: { translateY: -34 },
-  1: { scale: 1.2, translateY: -24 }
-};
-
-const animate2 = {
-  0: { scale: 1.2, translateY: -24 },
-  1: { scale: 1, translateY: 7 }
-};
-
-const circle1 = {
-  0: { scale: 0 },
-  0.3: { scale: 0.9 },
-  0.5: { scale: 0.2 },
-  0.8: { scale: 0.7 },
-  1: { scale: 1 }
-};
-
-const circle2 = {
-  0: { scale: 1 },
-  1: { scale: 0 }
-};
-
-const tabsUser = [
-  { name: 'index', title: 'Beranda', icon: 'home' },
-  { name: 'contest', title: 'Lomba', icon: 'medal-outline' },
-  { name: 'report/index', title: 'Laporan', icon: 'newspaper-outline' },
-  { name: 'profile', title: 'Profile', icon: 'person-circle-outline' },
+// Hanya dua tab sekarang: Beranda dan Prediksi
+const tabs = [
+  { name: '/', title: 'Beranda', icon: 'home' },
+  { name: '/predict', title: 'Prediksi', icon: 'analytics-outline' },
 ];
 
-
-const tabsAdmin = [
-  { name: 'admin/index', title: 'Beranda', icon: 'home' },
-  { name: 'admin/contest', title: 'Lomba', icon: 'medal-outline' },
-  { name: 'admin/report/index', title: 'Laporan', icon: 'newspaper-outline' },
-]
-
-
-// ... (Warna dan animasi tetap sama)
-
-const TabButton = ({ item, onPress }: any) => {
-
-  const state = useNavigationState(state => state);
-  const currentRoute = state.routes[state.index].name;
-  const isReportDetail = currentRoute.startsWith('report/index') && currentRoute !== 'report/index';
-  const focused = !isReportDetail && currentRoute === item.name;
-  const viewRef = useRef<any>(null);
-  const circleRef = useRef<any>(null);
-  const textRef = useRef<any>(null);
-
-  const bgColor = Colors.primaryBlack;
-
-  useEffect(() => {
-    if (focused) {
-      viewRef.current?.animate(animate1);
-      circleRef.current?.animate(circle1);
-      textRef.current?.transitionTo({ scale: 1 });
-    } else {
-      viewRef.current?.animate(animate2);
-      circleRef.current?.animate(circle2);
-      textRef.current?.transitionTo({ scale: 0 });
-    }
-  }, [focused]);
-
+const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => void, isFocused: boolean }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={1}
-      style={styles.container}>
-      <Animatable.View
-        ref={viewRef}
-        duration={1000}
-        style={styles.container}>
-        <View style={[styles.btn, { backgroundColor: bgColor }]}>
-          <Animatable.View
-            ref={circleRef}
-            style={[styles.circle, { backgroundColor: Colors.primaryOrange }]}
-          />
-          <Ionicons
-            name={item.icon}
-            size={24}
-            color={focused ? Colors.primaryBlack : Colors.primaryOrange}
-          />
-        </View>
-        <Animatable.Text
-          ref={textRef}
-          style={[styles.text, { color: Colors.primaryWhite }]}>
-          {item.title}
-        </Animatable.Text>
-
-      </Animatable.View>
+      activeOpacity={0.7}
+      style={styles.tabButton}>
+      <Ionicons
+        name={item.icon}
+        size={24}
+        color={isFocused ? Colors.primaryOrange : Colors.primaryWhite}
+      />
+      <Text style={[styles.tabText, { color: isFocused ? Colors.primaryOrange : Colors.primaryWhite }]}>
+        {item.title}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 export default function Layout() {
-  // nanti role di ambil dari local storage
-  const [role, setRole] = useState('user');
+  const state = useNavigationState(state => state);
+  const currentRoute = state.routes[state.index].name;
 
   return (
     <View style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }} />
 
-      {/* Ini akan tampil di semua halaman */}
       <FloatingButton onPress={() => console.log('Floating clicked')}>
         <Ionicons name="add" size={24} color="white" />
       </FloatingButton>
+
+      {/* Simple Tab Bar dengan 2 tab */}
+      <View style={styles.tabBar}>
+        {tabs.map((item, index) => {
+          const isFocused = currentRoute === item.name;
+
+          return (
+            <TabButton
+              key={index}
+              item={item}
+              onPress={() => {
+                const router = require('expo-router').router;
+                router.push(`${item.name}`);
+              }}
+              isFocused={isFocused}
+            />
+          );
+        })}
+      </View>
     </View>
   );
 }
-// Styles tetap sama
 
 const styles = StyleSheet.create({
-  container: {
+  tabBar: {
+    flexDirection: 'row',
+    height: 60,
+    backgroundColor: Colors.primaryBlack,
+    borderTopWidth: 1,
+    borderTopColor: '#333',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  tabButton: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 70,
+    paddingVertical: 8,
   },
-  tabBar: {
-    height: 70,
-    position: 'absolute',
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 16,
-    marginBottom: 16,
-    borderRadius: 16,
-    backgroundColor: Colors.primaryBlack,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 10,
-  },
-  btn: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 4,
-    borderColor: Colors.primaryBlack,
-    backgroundColor: Colors.primaryWhite,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  circle: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: 25,
-  },
-  text: {
+  tabText: {
     fontSize: 12,
-    textAlign: 'center',
+    marginTop: 4,
     fontWeight: '400',
-    marginTop: 4
-  }
+  },
 });
