@@ -10,7 +10,7 @@ type Props = {
 
 const FloatingButton: React.FC<Props> = ({ onPress, children, className }) => {
     return (
-        <View className="absolute bottom-36 right-6 z-50">
+        <View className="absolute bottom-32 right-6 z-50">
             <TouchableOpacity
                 onPress={onPress}
                 className={

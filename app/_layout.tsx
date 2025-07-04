@@ -47,7 +47,7 @@ export default function Layout() {
       <Stack screenOptions={{ headerShown: false }} />
 
       <FloatingButton onPress={() => console.log('Floating clicked')}>
-        <FontAwesome6 name="whatsapp" size={24} color="black" />
+        <FontAwesome6 name="whatsapp" size={24} color="green" />
       </FloatingButton>
 
       {/* Simple Tab Bar dengan 2 tab */}
