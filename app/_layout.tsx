@@ -15,6 +15,7 @@ const Colors = {
 };
 
 // Hanya dua tab sekarang: Beranda dan Prediksi
+// kabeh halaman atau icon tunda didieu, jang nama icon pake expo icon (---oriza)
 const tabs = [
 
   { name: '/predict', title: 'Prediksi', icon: 'search' },

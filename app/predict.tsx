@@ -78,7 +78,7 @@ const AppContent = () => {
             name: 'photo.jpg',
             type: 'image/jpeg',
         } as any)
-
+        // https://saving-lemming-loyal.ngrok-free.app/predict
         try {
             // ke saruaken ip server ieu jeng nu di run di ml mnh  (---ORIZA)
             const res = await fetch('http://192.168.9.85:5000/predict', {
@@ -112,7 +112,7 @@ const AppContent = () => {
                             icon="camera"
                             mode="contained"
                             onPress={() => pickImage(true)}
-                            style={[styles.button, styles.fullWidthButton]}
+                            style={[styles.button, styles.flexButton]}
                             labelStyle={styles.buttonLabel}
                             contentStyle={styles.buttonContent}
                         >
@@ -122,7 +122,7 @@ const AppContent = () => {
                             icon="image"
                             mode="contained"
                             onPress={() => pickImage(false)}
-                            style={[styles.button, styles.fullWidthButton]}
+                            style={[styles.button, styles.flexButton]}
                             labelStyle={styles.buttonLabel}
                             contentStyle={styles.buttonContent}
                         >
@@ -130,6 +130,8 @@ const AppContent = () => {
                         </Button>
                     </View>
                 </View>
+
+
 
                 {image && (
                     <Card style={styles.imageCard}>
@@ -159,20 +161,6 @@ const AppContent = () => {
                                     <Text style={styles.modalText}>
                                         Confidence: {result.confidence}
                                     </Text>
-
-                                    <Text style={styles.sectionTitle}>Top 3 Predictions:</Text>
-                                    {result.top_3_predictions.map((item, i) => (
-                                        <Text key={i} style={styles.modalText}>
-                                            {i + 1}. {item.label} - {item.probability}
-                                        </Text>
-                                    ))}
-
-                                    <Text style={styles.sectionTitle}>All Probabilities:</Text>
-                                    {Object.entries(result.probabilities).map(([label, prob]) => (
-                                        <Text key={label} style={styles.modalText}>
-                                            {label}: {prob}
-                                        </Text>
-                                    ))}
                                 </View>
                             )}
                             <Button
@@ -203,6 +191,33 @@ const Index = () => {
 }
 
 const styles = StyleSheet.create({
+
+    btnContainer: {
+        flex: 1,
+        width: '100%',
+        paddingVertical: 20, // jarak atas bawah container tombol
+    },
+    btnGroup: {
+        flex: 1,
+        justifyContent: 'space-between',
+        gap: 20, // jarak antar tombol (jika gap tidak support, gunakan marginVertical di tombol)
+        paddingHorizontal: 20,
+    },
+    flexButton: {
+        flex: 1,
+        justifyContent: 'center',
+        borderRadius: 12, // gunakan borderRadius
+        overflow: 'hidden', // pastikan radius berlaku
+        marginVertical: 10, // jika `gap` tidak berlaku
+    },
+
+
+
+    buttonContent: {
+        flex: 1,
+        height: '100%',
+    },
+
     scroll: {
         flex: 1,
         backgroundColor: '#E6F5F3',
@@ -219,17 +234,7 @@ const styles = StyleSheet.create({
         color: '#007F7F',
     },
     // New styles for full-height balanced buttons
-    btnContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        width: '100%',
-        maxHeight: 300, // Membatasi tinggi maksimum
-    },
-    btnGroup: {
-        width: '100%',
-        gap: 20,
-        marginBottom: 20,
-    },
+
     button: {
         backgroundColor: '#00A8A8',
         borderRadius: 8,
@@ -238,9 +243,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingVertical: 12,
     },
-    buttonContent: {
-        height: 48, // Memberikan tinggi yang konsisten untuk button
-    },
+
     buttonLabel: {
         fontSize: 16,
         color: 'white',
