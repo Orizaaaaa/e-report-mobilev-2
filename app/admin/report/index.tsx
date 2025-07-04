@@ -2,12 +2,14 @@ import ButtonPrimary from '@/components/elements/Button/ButtonPrimary'
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary'
 import BottomSheetCustom from '@/components/fragments/bottomSheet'
 import CaraoselCard from '@/components/fragments/CaraoselCard/CaraoselCard'
-import { formatDate } from '@/utils/helper'
-import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { db } from '@/lib/firebase/firebase'
+import { formatDate, STATUS_LIST } from '@/utils/helper'
+import { Feather, MaterialIcons } from '@expo/vector-icons'
 import BottomSheet from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { collection, getDocs } from 'firebase/firestore'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
 type Props = {}
@@ -19,6 +21,7 @@ const pages = [
 ];
 const today = new Date();
 const index = (props: Props) => {
+    const [dataReport, setDataReport]: any = useState([]);
     const [period, setPeriod] = useState({ startDate: '', endDate: '' });
     const [activePage, setActivePage] = React.useState(pages[0].value);
     const [filtering, setFiltering] = useState({
@@ -77,15 +80,139 @@ const index = (props: Props) => {
 
 
 
-    const statusList = [
-        { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
-        { label: 'Menunggu', value: 'pending', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
-        { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
-        { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
-    ];
 
+
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'reports'));
+                const reports = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                setDataReport(reports);
+            } catch (err) {
+                console.error('❌ Gagal mengambil laporan:', err);
+            }
+        };
+
+        fetchReports();
+    }, []);
+    console.log('anying', dataReport);
     console.log(filtering);
 
+    const filterReports = (reports: any[], filters: any) => {
+        return reports.filter((report) => {
+            // Filter berdasarkan status
+            if (filters.status && report.status !== filters.status) {
+                return false;
+            }
+
+            // Filter berdasarkan tanggal
+            if (filters.date && period.startDate) {
+                const reportDate = new Date(report.createdAt);
+                const startDate = new Date(period.startDate);
+
+                if (period.endDate) {
+                    const endDate = new Date(period.endDate);
+                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari untuk mencakup seluruh hari terakhir
+
+                    if (reportDate < startDate || reportDate >= endDate) {
+                        return false;
+                    }
+                } else {
+                    // Filter untuk satu hari tertentu
+                    if (
+                        reportDate.getDate() !== startDate.getDate() ||
+                        reportDate.getMonth() !== startDate.getMonth() ||
+                        reportDate.getFullYear() !== startDate.getFullYear()
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        });
+    };
+
+
+    const renderContent = () => {
+        // Terapkan filter ke dataReport
+        const filteredReports = filterReports(dataReport, filtering);
+
+        switch (activePage) {
+            case 'regular': {
+                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Reguler');
+                return filtered.length === 0 ? (
+                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
+                ) : (
+                    filtered.map((item: any, index: number) => (
+                        <CaraoselCard
+                            key={item.id || index}
+                            status={item.status || 'status not found'}
+                            desc={item.desc || 'description not found'}
+                            imageCaraosel={item.images}
+                            typeReport="REGULER"
+                        />
+                    ))
+                );
+            }
+            case 'prioritas': {
+                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Prioritas');
+                return filtered.length === 0 ? (
+                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
+                ) : (
+                    filtered.map((item: any, index: number) => (
+                        <CaraoselCard
+                            key={item.id || index}
+                            status={item.status || 'status not found'}
+                            desc={item.desc || 'description not found'}
+                            imageCaraosel={item.images}
+                            typeReport="PRIORITAS"
+                        />
+                    ))
+                );
+            }
+            case 'selesai': {
+                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Selesai');
+                return filtered.length === 0 ? (
+                    <Text className="text-center text-gray-500 mt-5">Belum ada laporan selesai</Text>
+                ) : (
+                    filtered.map((item: any, index: number) => (
+                        <CaraoselCard
+                            key={item.id || index}
+                            status={item.status || 'status not found'}
+                            desc={item.desc || 'description not found'}
+                            imageCaraosel={item.images}
+                            typeReport="SELESAI"
+                        />
+                    ))
+                );
+            }
+            default:
+                return null;
+        }
+    };
+
+    const resetFilters = () => {
+        setFiltering({
+            status: '',
+            date: '',
+            search: '',
+        });
+        setPeriod({
+            startDate: '',
+            endDate: '',
+        });
+        bottomSheetRef.current?.close(); // Tutup bottom sheet setelah reset
+    };
+
+    const applyFilters = () => {
+        bottomSheetRef.current?.close(); // Tutup bottom sheet setelah menerapkan
+    };
     return (
         <SafeAreaView className="flex-1 bg-primaryNavy">
             <View className="bg-primaryNavy pb-14 pt-12 px-3 relative overflow-hidden">
@@ -117,6 +244,7 @@ const index = (props: Props) => {
                             <TextInput
                                 className="flex-1 text-gray-800"
                                 placeholder="Cari..."
+                                placeholderTextColor={'gray'}
 
                             />
                         </View>
@@ -136,14 +264,10 @@ const index = (props: Props) => {
             </View>
 
             {/* View pembungkus konten dari kode asli Anda */}
-            <View className="bg-slate-100 rounded-t-3xl p-4 -mt-6">
-                <Text>
-                    <TouchableOpacity onPress={() => { router.push('/admin/report/11') }}>
-                        <CaraoselCard imageCaraosel={imagesCaraosel} typeReport='REGULER' />
-                    </TouchableOpacity>
+            <ScrollView className="flex-1 bg-white rounded-t-3xl -mt-6 px-4 py-6">
+                {renderContent()}
+            </ScrollView>
 
-                </Text>
-            </View>
 
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
 
@@ -152,7 +276,7 @@ const index = (props: Props) => {
                         <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
 
                         <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
-                            {statusList.map((item) => {
+                            {STATUS_LIST.map((item) => {
                                 const isActive = filtering.status === item.value;
                                 return (
                                     <TouchableOpacity
@@ -235,8 +359,16 @@ const index = (props: Props) => {
                 </View>
 
                 <View className='flex-row justify-between mt-7 '>
-                    <ButtonSecondary className='w-[48%] rounded-lg py-2' text='Reset' onPress={() => { }} />
-                    <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
+                    <ButtonSecondary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Reset'
+                        onPress={resetFilters}
+                    />
+                    <ButtonPrimary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Terapkan'
+                        onPress={applyFilters}
+                    />
                 </View>
             </BottomSheetCustom>
         </SafeAreaView>

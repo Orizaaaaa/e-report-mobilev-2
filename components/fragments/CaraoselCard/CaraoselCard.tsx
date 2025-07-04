@@ -15,7 +15,7 @@ const CaraoselCard = ({ imageCaraosel, typeReport, status, desc }: Props) => {
     const { width } = Dimensions.get('window');
     const [activeIndex, setActiveIndex] = useState(0);
     return (
-        <View className={`rounded-2xl flex-1  w-full `}>
+        <View className={`rounded-2xl flex-1  w-full mb-5 `}>
             <View style={{ position: 'relative', width: width - 29, height: 125 }}>
                 <Carousel
                     loop
