@@ -18,7 +18,7 @@ const Colors = {
 // kabeh halaman atau icon tunda didieu, jang nama icon pake expo icon (---oriza)
 const tabs = [
 
-  { name: '/predict', title: 'Prediksi', icon: 'search' },
+  { name: '/articles', title: 'Artikel', icon: 'newspaper-outline' },
   { name: '/', title: 'Beranda', icon: 'home' },
   { name: '/profile', title: 'Profile', icon: 'person-circle-outline' },
 
