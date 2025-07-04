@@ -88,10 +88,10 @@ export const CATEGORIES_DATA: Category[] = [
 ];
 
 export const STATUS_LIST = [
-    { label: 'Tidak valid', value: 'invalid', icon: <Feather name="x-circle" size={18} color="black" /> },
-    { label: 'Menunggu', value: 'pending', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
-    { label: 'Di proses', value: 'processing', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
-    { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
+    { label: 'Tidak valid', value: 'tidak valid', icon: <Feather name="x-circle" size={18} color="black" /> },
+    { label: 'Menunggu', value: 'menunggu', icon: <MaterialIcons name="pending-actions" size={18} color="white" /> },
+    { label: 'Di proses', value: 'di proses', icon: <MaterialCommunityIcons name="archive-cog-outline" size={18} color="black" /> },
+    { label: 'Selesai', value: 'selesai', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
 ];
 
 export const PAGES = [
