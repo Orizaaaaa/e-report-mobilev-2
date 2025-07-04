@@ -4,25 +4,44 @@ import { Dimensions, Image, Linking, Text, TouchableOpacity, View } from 'react-
 import Carousel from 'react-native-reanimated-carousel'
 
 type Props = {
-    imageCaraosel: any
+    imageCaraosel: string[]
+    desc: string
+    location: {
+        adress: string
+        lat: number
+        long: number
+    }
+    typeReport: string
+    status: string
+    createdAt?: string
 }
 
-const DetailReport = ({ imageCaraosel }: Props) => {
-    const { width } = Dimensions.get('window');
-    const [activeIndex, setActiveIndex] = useState(0);
-    const selectedLocation = {
-        latitude: -6.175392,
-        longitude: 106.827153,
-    };
+const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, createdAt }: Props) => {
+    const { width } = Dimensions.get('window')
+    const [activeIndex, setActiveIndex] = useState(0)
+
     const openInGoogleMaps = () => {
-        if (selectedLocation) {
-            const { latitude, longitude } = selectedLocation;
-            const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-            Linking.openURL(url).catch(err => console.error('Gagal membuka Google Maps:', err));
+        if (location?.lat && location?.long) {
+            const url = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.long}`
+            Linking.openURL(url).catch(err => console.error('Gagal membuka Google Maps:', err))
         } else {
-            alert('Lokasi belum dipilih');
+            alert('Lokasi belum dipilih')
         }
-    };
+    }
+
+    const formatDate = (isoDate?: string) => {
+        if (!isoDate) return ''
+        const date = new Date(isoDate)
+        return date.toLocaleString('id-ID', {
+            weekday: 'long',
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        })
+    }
+
     return (
         <View>
             <View className='my-7' style={{ position: 'relative', width: width - 29, height: 190 }}>
@@ -32,21 +51,16 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                     height={200}
                     data={imageCaraosel}
                     scrollAnimationDuration={100}
-                    onSnapToItem={(index) => setActiveIndex(index)}
+                    onSnapToItem={index => setActiveIndex(index)}
                     renderItem={({ item }: any) => (
                         <Image
-                            source={item}
-                            style={{
-                                width: '100%',
-                                height: 200,
-                                borderRadius: 20
-                            }}
-                            resizeMode="cover"
+                            source={{ uri: item }}
+                            style={{ width: '100%', height: 200, borderRadius: 20 }}
+                            resizeMode='cover'
                         />
                     )}
                 />
 
-                {/* Pagination bullet, posisi absolute di dalam gambar */}
                 <View
                     style={{
                         position: 'absolute',
@@ -58,7 +72,7 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                         alignItems: 'center',
                     }}
                 >
-                    {imageCaraosel.map((_: any, index: any) => (
+                    {imageCaraosel.map((_, index) => (
                         <View
                             key={index}
                             style={{
@@ -67,7 +81,6 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                                 borderRadius: 4,
                                 marginHorizontal: 4,
                                 backgroundColor: index === activeIndex ? '#FB923C' : '#D1D5DB',
-                                // shadow agar bullet terlihat lebih jelas di atas gambar
                                 shadowColor: '#000',
                                 shadowOffset: { width: 0, height: 1 },
                                 shadowOpacity: 0.3,
@@ -78,80 +91,73 @@ const DetailReport = ({ imageCaraosel }: Props) => {
                     ))}
                 </View>
             </View>
+
             <View>
-                <View>
-                    <Text className='text-gray-500 font-light mb-1'>Permasalahan</Text>
-                    <Text className='font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente sequi temporibus delectus, corupti atque consectetur, optio consequuntur repellat molestias maiores dolorum commodi modi? Pariatur harum quaerat nobis, exercitationem incidunt ut?</Text>
-                </View>
+                <Text className='text-gray-500 font-light mb-1'>Permasalahan</Text>
+                <Text className='font-light'>{desc}</Text>
+
                 <View className='my-3'>
-                    <Text className='text-lg font-medium' >Lokasi Aduan</Text>
+                    <Text className='text-lg font-medium'>Lokasi Aduan</Text>
                 </View>
             </View>
 
             <View className='flex-row justify-between items-start'>
                 <View className='flex-row justify-between items-start'>
-                    <View className="flex-1 pr-2">
+                    <View className='flex-1 pr-2'>
                         <Text className='font-light'>
-                            Jalan Astana Anyar, Bandung, Jawa Barat, Indonesia, RT 04 RW 08
+                            {location?.adress || 'Alamat tidak tersedia'}
                         </Text>
                         <Text className='font-light text-sm mt-1 text-gray-400'>
-                            Lat: -6.932977, Long: 107.599216
+                            Lat: {location?.lat}, Long: {location?.long}
                         </Text>
                     </View>
 
-                    <TouchableOpacity
-                        className="ml-2"
-                        onPress={openInGoogleMaps}
-                    >
-                        <FontAwesome5 name="map-marked-alt" size={20} color="#1E2A38" />
+                    <TouchableOpacity className='ml-2' onPress={openInGoogleMaps}>
+                        <FontAwesome5 name='map-marked-alt' size={20} color='#1E2A38' />
                     </TouchableOpacity>
                 </View>
             </View>
 
-
-
             <View className='my-3'>
-                <Text className='text-lg font-medium' >Riwayat Status</Text>
+                <Text className='text-lg font-medium'>Riwayat Status</Text>
             </View>
 
-
-            <View className='flex-row justify-between items-end' >
+            <View className='flex-row justify-between items-end'>
                 <View>
                     <Text className='text-sm font-thin'>Aduan ini telah</Text>
-                    <Text className='text-sm font-medium' >Menunggu di Proses <Text className='font-light' >oleh</Text>  tim pemerintah</Text>
-                    <Text className='text-sm font-light'>Minggu 01 Juni 2025 - 21-36,</Text>
+                    <Text className='text-sm font-medium'>
+                        {status} <Text className='font-light'>oleh</Text> tim pemerintah
+                    </Text>
+                    {createdAt && (
+                        <Text className='text-sm font-light'>{formatDate(createdAt)}</Text>
+                    )}
                 </View>
-
-
 
                 <View>
-                    <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange' >
-                        PRIORITAS
+                    <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange'>
+                        {typeReport?.toUpperCase()}
                     </Text>
                 </View>
-
             </View>
 
-            <View className='flex-row items-center justify-between bg-gray-200 rounded-2xl px-4 py-2 mt-7' >
-                <View className='flex items-center' >
-                    <Feather name="x-circle" size={24} color="black" />
-                    <Text className='text-primaryNavy text-sm' >Tidak valid</Text>
+            <View className='flex-row items-center justify-between bg-gray-200 rounded-2xl px-4 py-2 mt-7'>
+                <View className='flex items-center'>
+                    <Feather name='x-circle' size={24} color='black' />
+                    <Text className='text-primaryNavy text-sm'>Tidak valid</Text>
                 </View>
-                <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl' >
-                    <MaterialIcons name="pending-actions" size={24} color="white" />
-                    <Text className='text-white text-sm' >Menunggu</Text>
+                <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl'>
+                    <MaterialIcons name='pending-actions' size={24} color='white' />
+                    <Text className='text-white text-sm'>Menunggu</Text>
                 </View>
-
-                <View className='flex items-center' >
-                    <MaterialCommunityIcons name="archive-cog-outline" size={24} color="black" />
-                    <Text className='text-primaryNavy text-sm' >Di proses</Text>
+                <View className='flex items-center'>
+                    <MaterialCommunityIcons name='archive-cog-outline' size={24} color='black' />
+                    <Text className='text-primaryNavy text-sm'>Di proses</Text>
                 </View>
-                <View className='flex items-center' >
-                    <MaterialCommunityIcons name="archive-check-outline" size={24} color="black" />
-                    <Text className='text-primaryNavy text-sm' >Selesai</Text>
+                <View className='flex items-center'>
+                    <MaterialCommunityIcons name='archive-check-outline' size={24} color='black' />
+                    <Text className='text-primaryNavy text-sm'>Selesai</Text>
                 </View>
             </View>
-
         </View>
     )
 }
