@@ -47,11 +47,11 @@ const Contest = (props: Props) => {
     );
 
     const [filtering, setFiltering] = useState({
+        search: '',
         date: '',
-
     });
     const [period, setPeriod] = useState({ startDate: '', endDate: '' });
-    const [searchText, setSearchText] = useState('');
+
     const totalPeserta = 1000;
     const pesertaSaatIni = 700;
     const progress = Math.min(pesertaSaatIni / totalPeserta, 1);
@@ -129,7 +129,28 @@ const Contest = (props: Props) => {
             console.error('Gagal menghapus lomba:', error);
         }
     };
+    const parseCustomDate = (dateStr: string) => {
+        const [day, month, year] = dateStr.split('-');
+        return new Date(`${year}-${month}-${day}`); // Convert to YYYY-MM-DD
+    };
 
+    const filteredData = dataContest.filter(item => {
+        const matchSearch = item?.desc?.toLowerCase().includes(filtering.search.toLowerCase()) ||
+            item?.location?.toLowerCase().includes(filtering.search.toLowerCase());
+
+        const itemDate = parseCustomDate(item.date);
+        const startDate = period.startDate ? new Date(period.startDate) : null;
+        const endDate = period.endDate ? new Date(period.endDate) : null;
+
+        const matchDate = (!startDate && !endDate) || (
+            startDate && endDate && itemDate >= startDate && itemDate <= endDate
+        );
+
+        return matchSearch && matchDate;
+    });
+
+
+    console.log(filtering);
 
     return (
         <View className="flex-1 bg-white">
@@ -143,8 +164,9 @@ const Contest = (props: Props) => {
                         <TextInput
                             className="flex-1 text-gray-800"
                             placeholder="Cari..."
-                            value={searchText}
-                            onChangeText={setSearchText}
+                            placeholderTextColor={'gray'}
+                            value={filtering.search}
+                            onChangeText={(text) => setFiltering(prev => ({ ...prev, search: text }))}
                         />
                     </View>
 
@@ -183,21 +205,15 @@ const Contest = (props: Props) => {
                     {loading ? (
                         <ActivityIndicator size="large" color="#FF840C" />
                     ) : (
-                        dataContest.map(item => {
-
-                            return (
-                                <TouchableOpacity onPress={() => handlePress(item.id)} key={item.id} >
-
-                                    <CardContest
-                                        key={item.id}
-                                        contest={item}
-                                        textButton="Hapus lomba"
-                                        handlePres={() => confirmDelete(item)}
-                                    />
-
-                                </TouchableOpacity>
-                            );
-                        })
+                        filteredData.map(item => (
+                            <TouchableOpacity onPress={() => handlePress(item.id)} key={item.id}>
+                                <CardContest
+                                    contest={item}
+                                    textButton="Hapus lomba"
+                                    handlePres={() => confirmDelete(item)}
+                                />
+                            </TouchableOpacity>
+                        ))
                     )}
 
                 </ScrollView>
@@ -280,8 +296,23 @@ const Contest = (props: Props) => {
                     }}
                 />
                 <View className='flex-row justify-between mt-7 '>
-                    <ButtonSecondary className='w-[48%] rounded-lg py-2' text='Reset' onPress={() => { }} />
-                    <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
+                    <ButtonSecondary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Reset'
+                        onPress={() => {
+                            setPeriod({ startDate: '', endDate: '' });
+                            setFiltering(prev => ({ ...prev, date: '' }));
+                        }}
+                    />
+
+                    <ButtonPrimary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Terapkan'
+                        onPress={() => {
+                            bottomSheetRef.current?.close();
+                        }}
+                    />
+
                 </View>
             </BottomSheetCustom>
         </View>
