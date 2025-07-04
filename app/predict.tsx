@@ -80,10 +80,10 @@ const AppContent = () => {
         } as any)
 
         try {
-            const res = await fetch('https://saving-lemming-loyal.ngrok-free.app/predict', {
+            // ke saruaken ip server ieu jeng nu di run di ml mnh  (---ORIZA)
+            const res = await fetch('http://192.168.9.85:5000/predict', {
                 method: 'POST',
-                headers: { 'Content-Type': 'multipart/form-data' },
-                body: formData,
+                body: formData, // jangan tambahkan headers
             })
 
             if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`)
@@ -98,6 +98,7 @@ const AppContent = () => {
             setLoading(false)
         }
     }
+
 
     return (
         <View style={[styles.scroll, { paddingTop: insets.top }]}>
