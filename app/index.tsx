@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ActivityIndicator, Button, Card, FAB } from 'react-native-paper';
+import { ActivityIndicator, Button, Card } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const { height } = Dimensions.get('window');
 
@@ -392,7 +392,7 @@ export default function Index() {
           </BottomSheetView>
         </BottomSheet>
       </ScrollView >
-      <View style={{ position: 'absolute', bottom: insets.bottom + 10, left: 0, right: 0, paddingHorizontal: 16 }}>
+      {/* <View style={{ position: 'absolute', bottom: insets.bottom + 10, left: 0, right: 0, paddingHorizontal: 16 }}>
         <FAB
           icon="camera"
           label="Ambil Foto"
@@ -409,7 +409,7 @@ export default function Index() {
         }}
       >
 
-      </View>
+      </View> */}
 
     </GestureHandlerRootView>
   );

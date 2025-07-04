@@ -14,7 +14,7 @@ const FloatingButton: React.FC<Props> = ({ onPress, children, className }) => {
             <TouchableOpacity
                 onPress={onPress}
                 className={
-                    `bg-blue-600 w-16 h-16 rounded-full items-center justify-center shadow-lg ${className}`
+                    `bg-white w-16 h-16 rounded-full items-center justify-center shadow-lg ${className}`
                 }
                 activeOpacity={0.8}
             >

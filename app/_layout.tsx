@@ -1,5 +1,5 @@
 import FloatingButton from '@/components/fragments/FloatingButton/floatingButton';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import React from 'react';
@@ -9,7 +9,7 @@ import '../global.css';
 const Colors = {
   primaryOrange: '#FF840C',
   primaryWhite: 'white',
-  primaryBlack: '#1E2A38',
+  primaryBlack: '#20BEC6',
 };
 
 // Hanya dua tab sekarang: Beranda dan Prediksi
@@ -45,7 +45,7 @@ export default function Layout() {
       <Stack screenOptions={{ headerShown: false }} />
 
       <FloatingButton onPress={() => console.log('Floating clicked')}>
-        <Ionicons name="add" size={24} color="white" />
+        <FontAwesome6 name="whatsapp" size={24} color="black" />
       </FloatingButton>
 
       {/* Simple Tab Bar dengan 2 tab */}
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 60,
     backgroundColor: Colors.primaryBlack,
-    borderTopWidth: 1,
-    borderTopColor: '#333',
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+
+    bottom: 15,
+    borderRadius: 20,
+    left: 15,
+    right: 15,
   },
   tabButton: {
     flex: 1,
