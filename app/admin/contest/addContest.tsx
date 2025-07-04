@@ -102,6 +102,7 @@ const AddContest = (props: Props) => {
                 fromUid: currentUser.uid,
                 createdAt: new Date().toISOString(),
                 read: false,
+                userName: 'Admin'
             });
 
             await sendNotificationToRole('user', '📢 Lomba baru telah dibuat!');
