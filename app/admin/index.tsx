@@ -23,8 +23,6 @@ type Contest = {
 
 
 const index = (props: Props) => {
-    const [dataReport, setDataReport]: any = useState([]);
-    const [dataContest, setDataContest]: any = useState([]);
 
     // State untuk menampung jumlah
     const [countPrioritas, setCountPrioritas] = useState(0);
@@ -56,9 +54,6 @@ const index = (props: Props) => {
                     } as Report));
 
 
-                    // Set ke state utama
-                    setDataContest(contests);
-                    setDataReport(reports);
 
                     // Hitung jumlah berdasarkan filter
                     const prioritas = reports.filter(item => item.typeReport === 'Prioritas');

@@ -57,18 +57,6 @@ const index = (props: Props) => {
     };
 
 
-    const handleChange = (key: keyof typeof filtering, value: string | number) => {
-        setFiltering(prev => ({ ...prev, [key]: value.toString() }));
-    };
-
-
-
-    const imagesCaraosel = [
-        require('../../../assets/images/demo.png'),
-        require('../../../assets/images/study1.png'),
-        require('../../../assets/images/demo.png'),
-    ];
-
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["80%"], []);
     const openBottomSheet = () => {
@@ -117,13 +105,13 @@ const index = (props: Props) => {
 
                 if (period.endDate) {
                     const endDate = new Date(period.endDate);
-                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari untuk mencakup seluruh hari terakhir
+                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari agar mencakup hari terakhir
 
                     if (reportDate < startDate || reportDate >= endDate) {
                         return false;
                     }
                 } else {
-                    // Filter untuk satu hari tertentu
+                    // Filter untuk satu hari
                     if (
                         reportDate.getDate() !== startDate.getDate() ||
                         reportDate.getMonth() !== startDate.getMonth() ||
@@ -134,9 +122,24 @@ const index = (props: Props) => {
                 }
             }
 
+            // 🔍 Filter berdasarkan pencarian
+            if (filters.search) {
+                const keyword = filters.search.toLowerCase();
+                const searchFields = [
+                    report.desc?.toLowerCase() || '',
+                    report.category?.toLowerCase() || '',
+                    report.email?.toLowerCase() || '',
+                    report.location?.[0]?.adress?.toLowerCase() || '',
+                ];
+
+                const isMatch = searchFields.some(field => field.includes(keyword));
+                if (!isMatch) return false;
+            }
+
             return true;
         });
     };
+
 
 
     const renderContent = () => {
@@ -245,7 +248,9 @@ const index = (props: Props) => {
                                 className="flex-1 text-gray-800"
                                 placeholder="Cari..."
                                 placeholderTextColor={'gray'}
-
+                                onChangeText={(text) =>
+                                    setFiltering((prev) => ({ ...prev, search: text }))
+                                }
                             />
                         </View>
 
