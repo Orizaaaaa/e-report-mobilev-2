@@ -5,7 +5,7 @@ import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import '../global.css';
 
 const Colors = {
@@ -45,12 +45,20 @@ const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => voi
 export default function Layout() {
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
+  const handleWhatsApp = () => {
+    const phoneNumber = '6282119092160'; // ← Ganti dengan nomor WA tujuan (tanpa +, pakai 62 untuk Indonesia)
+    const message = `Silahkan mengisi form pendaftaran !\n\nKami dari Klinik Harum Lembang ijin mengirimkan\n\nFormat Pendaftaran Pasien\n\nNama:\nNo KTP:\nTanggal Lahir:\nUmur:\nPekerjaan:\nAlamat:\nNo tlp:\n\nHari kedatangan:\nWaktu kedatangan:\nTindakan yang ingin dilakukan: Konsultasi / Sebutkan\nInstagram :`;
 
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    Linking.openURL(url).catch(err =>
+      console.error('Failed to open WhatsApp:', err)
+    );
+  };
   return (
     <View style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }} />
 
-      <FloatingButton onPress={() => console.log('Floating clicked')}>
+      <FloatingButton onPress={handleWhatsApp}>
         <FontAwesome6 name="whatsapp" size={24} color="green" />
       </FloatingButton>
 
