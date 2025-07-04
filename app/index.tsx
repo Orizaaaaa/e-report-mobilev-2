@@ -4,8 +4,7 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useRef, useState, } from "react";
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Button, Card } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const { height } = Dimensions.get('window');
@@ -191,7 +190,7 @@ export default function Index() {
 
   return (
 
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <SafeAreaView>
       <ScrollView className='pt-12 px-3 bg-white' contentContainerStyle={{ paddingBottom: 100 }} >
         <View className="mb-40">
 
@@ -411,7 +410,7 @@ export default function Index() {
 
       </View> */}
 
-    </GestureHandlerRootView>
+    </SafeAreaView>
   );
 
 

@@ -3,7 +3,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {
     image: any
-    handlepres: any
+    handlepres?: any
 }
 
 const CardReportScroll = ({ image, handlepres }: Props) => {

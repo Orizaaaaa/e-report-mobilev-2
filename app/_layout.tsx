@@ -6,6 +6,7 @@ import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../global.css';
 
 const Colors = {
@@ -55,7 +56,7 @@ export default function Layout() {
     );
   };
   return (
-    <View style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }} />
 
       <FloatingButton onPress={handleWhatsApp}>
@@ -80,7 +81,8 @@ export default function Layout() {
           );
         })}
       </View>
-    </View>
+    </GestureHandlerRootView>
+
   );
 }
 
