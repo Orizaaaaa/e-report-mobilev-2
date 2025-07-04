@@ -125,8 +125,8 @@ const DetailContestAdmin = () => {
 
                 <View >
                     <View className="mb-5" >
-                        <Text className="text-gray-400 text-sm">Nama Lomba</Text>
-                        <Text className="text-lg font-semibold">{contest.desc}</Text>
+                        <Text className="text-gray-400 text-sm">Deskripsi</Text>
+                        <Text>{contest.desc}</Text>
                     </View>
 
                     <View className="mb-5" >
@@ -152,10 +152,7 @@ const DetailContestAdmin = () => {
                         </View>
                     </View>
 
-                    <View className="mb-5" >
-                        <Text className="text-gray-400 text-sm">Deskripsi</Text>
-                        <Text>{contest.desc}</Text>
-                    </View>
+
 
                     <View className="flex-row items-center gap-2 mb-4">
                         <View className="flex-1">

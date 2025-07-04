@@ -45,11 +45,11 @@ const CardContest = ({ contest, textButton, handlePres, styleButton, disabled }:
 
             {/* Konten */}
             <View className="bg-white rounded-b-3xl px-3 pt-3 pb-5 shadow-md shadow-black/30">
-                <Text className="text-lg font-semibold">{contest.title}</Text>
+
                 <Text className="text-sm font-light">{contest.desc}</Text>
 
                 <View className="w-full mt-4">
-                    <View className="flex-row items-center gap-1">
+                    <View className="flex-row items-center gap-1 mb-1">
                         <Text className="text-sm font-light text-gray-500">{contest.date}</Text>
                         <Ionicons name="time-outline" size={15} color="gray" />
                     </View>
