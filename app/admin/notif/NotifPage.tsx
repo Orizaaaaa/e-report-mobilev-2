@@ -1,4 +1,5 @@
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
+import NotifReportCard from '@/components/fragments/cardNotif/notifReportCard'
 import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
@@ -90,22 +91,9 @@ const NotifPage = (props: Props) => {
             <ScrollView>
                 {activeTab === 'laporan' ? (
                     // Konten Laporan
-                    <View className="flex-row gap-3 mb-5">
-                        <View className="w-20 h-20 rounded-xl">
-                            <Image
-                                className="w-full h-full rounded-full"
-                                source={require('../../../assets/images/human.png')}
-                                resizeMode="cover"
-                            />
-                        </View>
-                        <View className="flex-1 mt-1">
-                            <Text className="text-sm text-wrap">Oriza Sativa</Text>
-                            <Text className="text-xs text-wrap">
-                                Telah membuat laporan prioritas Lorem ipsum dolor sit amet consectetur adipisicing elit...
-                            </Text>
-                            <Text className="text-xs text-slate-400">21 Januari 2023</Text>
-                        </View>
-                    </View>
+                    dataNotif.filter((item: any) => item.typeNotif === 'report').map((item: any, index: number) => (
+                        <NotifReportCard key={index} imageUrl={item.image} description={item.body} date={item.createdAt} user={item.userName} />
+                    ))
                 ) : (
                     // Konten Lomba
                     <View className="flex-row gap-3 mb-5">

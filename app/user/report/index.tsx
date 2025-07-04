@@ -274,6 +274,7 @@ const ReportScreen = () => {
                     body: `Ada laporan baru bertipe ${predictedType} dari ${currentUser.name}`,
                     toRole: 'admin',
                     typeNotif: 'report',
+                    userName: currentUser.name,
                     image: currentUser.image || 'image empety',
                     fromUid: currentUser.uid,
                     createdAt: new Date().toISOString(),

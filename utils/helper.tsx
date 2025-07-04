@@ -77,6 +77,22 @@ export function truncateText(text: string, maxLength: number, suffix: string = '
     return text;
 }
 
+export function formatTanggalIndonesia(isoDate: string): string {
+    const date = new Date(isoDate);
+
+    const bulanIndo = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    const tanggal = date.getDate();
+    const bulan = bulanIndo[date.getMonth()];
+    const tahun = date.getFullYear();
+
+    return `${tanggal} ${bulan} ${tahun}`;
+}
+
+
 export const CATEGORIES_DATA: Category[] = [
     { id: 'lainnya', name: 'lainnya', value: 'lainnya', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FGroup%20172.webp?alt=media&token=09135d68-f852-417b-887e-09663540933f' },
     { id: 'kriminal', name: 'kriminal', value: 'kriminal', image: 'https://firebasestorage.googleapis.com/v0/b/next-app-8f4f7.appspot.com/o/category%2FVector.webp?alt=media&token=90e59ea8-d700-455e-9593-ed1eb59eccaa' },
