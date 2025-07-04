@@ -4,7 +4,7 @@ import { Dimensions, Image, Text, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 
 type Props = {
-    imageCaraosel: any
+    imageCaraosel?: any
     typeReport: string
     status: string
     desc: string

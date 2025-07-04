@@ -271,8 +271,10 @@ const ReportScreen = () => {
                 // Simpan data notifikasi
                 await addDoc(collection(db, 'notifications'), {
                     title: 'Laporan Baru',
-                    body: `Ada laporan baru dari ${currentUser.name || currentUser.email}`,
+                    body: `Ada laporan baru bertipe ${predictedType} dari ${currentUser.name}`,
                     toRole: 'admin',
+                    typeNotif: 'report',
+                    image: currentUser.image || 'image empety',
                     fromUid: currentUser.uid,
                     createdAt: new Date().toISOString(),
                     read: false,

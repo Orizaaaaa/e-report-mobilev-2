@@ -88,7 +88,7 @@ export default function Index() {
         return marked;
     };
 
-    console.log('data memek', userData);
+
 
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >

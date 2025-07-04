@@ -93,6 +93,17 @@ const AddContest = (props: Props) => {
                 createdAt: new Date(), // ✅ Gunakan Date bukan string
             });
 
+            await addDoc(collection(db, 'notifications'), {
+                title: 'Lomba baru telah dibuat',
+                body: `Ada lomba baru telah dibuat, yaitu ${form.desc}`,
+                toRole: 'user',
+                typeNotif: 'contest',
+                image: currentUser.image || 'image empety',
+                fromUid: currentUser.uid,
+                createdAt: new Date().toISOString(),
+                read: false,
+            });
+
             await sendNotificationToRole('user', '📢 Lomba baru telah dibuat!');
 
             setForm({

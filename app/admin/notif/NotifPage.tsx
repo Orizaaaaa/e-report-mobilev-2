@@ -1,16 +1,40 @@
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
+import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
+import { collection, getDocs } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {}
 
 const NotifPage = (props: Props) => {
+    const [dataNotif, setDataNotif]: any = useState([])
     const route = useRoute()
     const params = route.params as { tab?: 'laporan' | 'lomba' }
 
     const [activeTab, setActiveTab] = useState<'laporan' | 'lomba'>('laporan')
+
+    useEffect(() => {
+        const fetchNotifs = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'notifications'));
+                const notifications = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                setDataNotif(notifications);
+            } catch (err) {
+                console.error('❌ Gagal mengambil laporan:', err);
+            }
+        };
+
+        fetchNotifs();
+    }, []);
+
+    console.log('data notif', dataNotif);
+
 
     // Cek parameter saat pertama kali render
     useEffect(() => {

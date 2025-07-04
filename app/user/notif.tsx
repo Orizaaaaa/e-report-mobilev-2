@@ -1,6 +1,8 @@
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
+import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
+import { collection, getDocs } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
@@ -19,8 +21,25 @@ const NotifUser = (props: Props) => {
         }
     }, [params])
 
+    const [dataNotif, setDataNotif]: any = useState([])
+    useEffect(() => {
+        const fetchNotifs = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'notifications'));
+                const notifications = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
 
+                setDataNotif(notifications);
+            } catch (err) {
+                console.error('❌ Gagal mengambil laporan:', err);
+            }
+        };
+        fetchNotifs();
+    }, []);
 
+    console.log('kontol', dataNotif);
 
     return (
         <SafeAreaView className="pt-12 px-5">
