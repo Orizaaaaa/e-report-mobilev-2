@@ -1,4 +1,4 @@
-import { Feather, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { AntDesign, Feather, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Dimensions, Image, Linking, Text, TouchableOpacity, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
@@ -11,14 +11,16 @@ type Props = {
         lat: number
         long: number
     }
+    bukti_penyelesaian?: string
     typeReport: string
     status: string
     createdAt?: string
 }
 
-const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, createdAt }: Props) => {
+const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, createdAt, bukti_penyelesaian }: Props) => {
     const { width } = Dimensions.get('window')
     const [activeIndex, setActiveIndex] = useState(0)
+    const [showImage, setShowImage] = useState(false);
 
     const openInGoogleMaps = () => {
         if (location?.lat && location?.long) {
@@ -42,45 +44,10 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
         })
     }
 
-    const renderStatus = () => {
-        switch (status.toLowerCase()) {
-            case 'tidak valid':
-                return (
-                    <View className='flex items-center'>
-                        <Feather name='x-circle' size={24} color='black' />
-                        <Text className='text-primaryNavy text-sm'>Tidak valid</Text>
-                    </View>
-                )
-            case 'menunggu':
-                return (
-                    <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl'>
-                        <MaterialIcons name='pending-actions' size={24} color='white' />
-                        <Text className='text-white text-sm'>Menunggu</Text>
-                    </View>
-                )
-            case 'diproses':
-                return (
-                    <View className='flex items-center'>
-                        <MaterialCommunityIcons name='archive-cog-outline' size={24} color='black' />
-                        <Text className='text-primaryNavy text-sm'>Di proses</Text>
-                    </View>
-                )
-            case 'selesai':
-                return (
-                    <View className='flex items-center'>
-                        <MaterialCommunityIcons name='archive-check-outline' size={24} color='black' />
-                        <Text className='text-primaryNavy text-sm'>Selesai</Text>
-                    </View>
-                )
-            default:
-                return (
-                    <View className='flex items-center'>
-                        <Feather name='alert-triangle' size={24} color='gray' />
-                        <Text className='text-gray-500 text-sm'>Status tidak diketahui</Text>
-                    </View>
-                )
-        }
-    }
+    const showButtonSelesai = () => {
+        setShowImage(prev => !prev);
+    };
+
 
 
     return (
@@ -241,6 +208,31 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
                 </View>
 
             </View>
+
+            {bukti_penyelesaian && (
+                <View>
+                    <TouchableOpacity
+                        onPress={showButtonSelesai}
+                        className='mt-7 flex-row items-center gap-3'
+                    >
+                        <Text className='text-gray-500 font-light text-sm'>
+                            {showImage ? 'Tutup bukti penyelesaian' : 'Lihat bukti penyelesaian'}
+                        </Text>
+                        <AntDesign name={showImage ? 'caretup' : 'caretdown'} size={13} color="gray" />
+                    </TouchableOpacity>
+
+                    {showImage && (
+                        <Image
+                            className='mt-3'
+                            source={{ uri: bukti_penyelesaian }}
+                            style={{ width: '100%', height: 200, borderRadius: 20 }}
+                            resizeMode='cover'
+                        />
+                    )}
+                </View>
+            )}
+
+
 
         </View>
     )

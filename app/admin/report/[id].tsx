@@ -25,6 +25,7 @@ type ReportData = {
     uid: string
     status: string
     createdAt: string
+    bukti_selesai?: string
 }
 
 const ReportDetailAdmin = () => {
@@ -219,7 +220,7 @@ const ReportDetailAdmin = () => {
 
     console.log(reportData);
 
-    const statuses = ['menunggu', 'di proses', 'selesai', 'tidak valid']
+    const statuses = ['Menunggu', 'Di proses', 'Selesai', 'Tidak valid']
 
     return (
         <SafeAreaView className="flex-1 pt-5">
@@ -243,8 +244,9 @@ const ReportDetailAdmin = () => {
                             typeReport={reportData.typeReport}
                             status={reportData.status}
                             createdAt={reportData.createdAt}
+                            bukti_penyelesaian={reportData.bukti_selesai}
                         />
-                        <View className="flex-row mt-5">
+                        <View className="flex-row my-5">
                             <TouchableOpacity
                                 className="flex-row items-center gap-2 mt-4 bg-primaryNavy py-2 px-4 rounded-full"
                                 onPress={openBottomSheet}
