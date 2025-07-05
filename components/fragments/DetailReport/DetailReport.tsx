@@ -136,18 +136,21 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
             </View>
 
             <View className='flex-row justify-between items-end'>
-                <View>
+                <View className='flex-1'>
                     <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
                     <Text className='text-sm font-medium'>
                         {status}<Text className='font-light'> oleh</Text> tim pemerintah
                     </Text>
+                    <Text className='text-sm font-light'>alasan di tolak adalah lorem</Text>
                     {createdAt && (
                         <Text className='text-sm font-light'>{formatDate(createdAt)}</Text>
                     )}
                 </View>
 
-                <View>
-                    <Text className='py-1 px-2 border-2 border-primaryOrange text-sm rounded-lg text-primaryOrange'>
+
+
+                <View className='items-end' >
+                    <Text className={`py-1 px-2 border-2 ${typeReport === 'Reguler' ? 'border-primaryNavy text-primaryNavy' : 'border-primaryOrange text-primaryOrange'}  text-sm rounded-lg `}>
                         {typeReport?.toUpperCase()}
                     </Text>
                 </View>

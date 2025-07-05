@@ -26,6 +26,7 @@ type ReportData = {
     status: string
     createdAt: string
     bukti_selesai?: string
+    reason?: string
 }
 
 const ReportDetailAdmin = () => {
@@ -151,7 +152,26 @@ const ReportDetailAdmin = () => {
             await updateDoc(docRef, updateData);
             alert('Status berhasil disimpan');
 
-            setReportData(prev => prev ? { ...prev, ...updateData } : null);
+            setReportData(prev => {
+                if (!prev) return null;
+
+                const updatedData = {
+                    ...prev,
+                    status: form.status,
+                    updatedAt: new Date().toISOString(),
+                    reason: form.reason || prev?.reason,
+                };
+
+                // Tambah atau hapus `bukti_selesai` di state sesuai status baru
+                if (form.status.toLowerCase() === 'selesai' && form.image) {
+                    updatedData.bukti_selesai = updateData.bukti_selesai;
+                } else if (previousStatus === 'selesai' && form.status.toLowerCase() !== 'selesai') {
+                    delete updatedData.bukti_selesai;
+                }
+
+                return updatedData;
+            });
+
             setForm({ status: '', image: '', reason: '' });
 
         } catch (error) {
