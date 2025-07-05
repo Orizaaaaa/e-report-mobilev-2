@@ -42,6 +42,47 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
         })
     }
 
+    const renderStatus = () => {
+        switch (status.toLowerCase()) {
+            case 'tidak valid':
+                return (
+                    <View className='flex items-center'>
+                        <Feather name='x-circle' size={24} color='black' />
+                        <Text className='text-primaryNavy text-sm'>Tidak valid</Text>
+                    </View>
+                )
+            case 'menunggu':
+                return (
+                    <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl'>
+                        <MaterialIcons name='pending-actions' size={24} color='white' />
+                        <Text className='text-white text-sm'>Menunggu</Text>
+                    </View>
+                )
+            case 'diproses':
+                return (
+                    <View className='flex items-center'>
+                        <MaterialCommunityIcons name='archive-cog-outline' size={24} color='black' />
+                        <Text className='text-primaryNavy text-sm'>Di proses</Text>
+                    </View>
+                )
+            case 'selesai':
+                return (
+                    <View className='flex items-center'>
+                        <MaterialCommunityIcons name='archive-check-outline' size={24} color='black' />
+                        <Text className='text-primaryNavy text-sm'>Selesai</Text>
+                    </View>
+                )
+            default:
+                return (
+                    <View className='flex items-center'>
+                        <Feather name='alert-triangle' size={24} color='gray' />
+                        <Text className='text-gray-500 text-sm'>Status tidak diketahui</Text>
+                    </View>
+                )
+        }
+    }
+
+
     return (
         <View>
             <View className='my-7' style={{ position: 'relative', width: width - 29, height: 190 }}>
@@ -107,14 +148,19 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
                         <Text className='font-light'>
                             {location?.adress || 'Alamat tidak tersedia'}
                         </Text>
-                        <Text className='font-light text-sm mt-1 text-gray-400'>
-                            Lat: {location?.lat}, Long: {location?.long}
-                        </Text>
+                        {location?.lat && location?.long && (
+                            <Text className='font-light text-sm mt-1 text-gray-400'>
+                                Lat: {location?.lat}, Long: {location?.long}
+                            </Text>
+                        )}
                     </View>
 
-                    <TouchableOpacity className='ml-2' onPress={openInGoogleMaps}>
-                        <FontAwesome5 name='map-marked-alt' size={20} color='#1E2A38' />
-                    </TouchableOpacity>
+                    {location?.lat && location?.long && (
+                        <TouchableOpacity className='ml-2' onPress={openInGoogleMaps}>
+                            <FontAwesome5 name='map-marked-alt' size={20} color='#1E2A38' />
+                        </TouchableOpacity>
+                    )}
+
                 </View>
             </View>
 
@@ -124,9 +170,9 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
             <View className='flex-row justify-between items-end'>
                 <View>
-                    <Text className='text-sm font-thin'>Aduan ini telah</Text>
+                    <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
                     <Text className='text-sm font-medium'>
-                        {status} <Text className='font-light'>oleh</Text> tim pemerintah
+                        {status}<Text className='font-light'> oleh</Text> tim pemerintah
                     </Text>
                     {createdAt && (
                         <Text className='text-sm font-light'>{formatDate(createdAt)}</Text>
@@ -141,23 +187,61 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
             </View>
 
             <View className='flex-row items-center justify-between bg-gray-200 rounded-2xl px-4 py-2 mt-7'>
-                <View className='flex items-center'>
-                    <Feather name='x-circle' size={24} color='black' />
-                    <Text className='text-primaryNavy text-sm'>Tidak valid</Text>
+
+                {/* Tidak Valid */}
+                <View
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'tidak valid' ? 'bg-primaryNavy rounded-lg' : ''
+                        }`}
+                >
+                    <Feather name='x-circle' size={24} color={status?.toLowerCase() === 'tidak valid' ? 'white' : 'black'} />
+                    <Text className={`text-sm ${status?.toLowerCase() === 'tidak valid' ? 'text-white' : 'text-primaryNavy'}`}>
+                        Tidak valid
+                    </Text>
                 </View>
-                <View className='flex items-center bg-primaryNavy px-2 py-1 rounded-xl'>
-                    <MaterialIcons name='pending-actions' size={24} color='white' />
-                    <Text className='text-white text-sm'>Menunggu</Text>
+
+                {/* Menunggu */}
+                <View
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'menunggu' ? 'bg-primaryNavy rounded-lg' : ''
+                        }`}
+                >
+                    <MaterialIcons name='pending-actions' size={24} color={status?.toLowerCase() === 'menunggu' ? 'white' : 'black'} />
+                    <Text className={`text-sm ${status?.toLowerCase() === 'menunggu' ? 'text-white' : 'text-primaryNavy'}`}>
+                        Menunggu
+                    </Text>
                 </View>
-                <View className='flex items-center'>
-                    <MaterialCommunityIcons name='archive-cog-outline' size={24} color='black' />
-                    <Text className='text-primaryNavy text-sm'>Di proses</Text>
+
+                {/* Diproses */}
+                <View
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'di proses' ? 'bg-primaryNavy rounded-lg' : ''
+                        }`}
+                >
+                    <MaterialCommunityIcons
+                        name='archive-cog-outline'
+                        size={24}
+                        color={status?.toLowerCase() === 'di proses' ? 'white' : 'black'}
+                    />
+                    <Text className={`text-sm ${status?.toLowerCase() === 'di proses' ? 'text-white' : 'text-primaryNavy'}`}>
+                        Di proses
+                    </Text>
                 </View>
-                <View className='flex items-center'>
-                    <MaterialCommunityIcons name='archive-check-outline' size={24} color='black' />
-                    <Text className='text-primaryNavy text-sm'>Selesai</Text>
+
+                {/* Selesai */}
+                <View
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'selesai' ? 'bg-primaryNavy rounded-lg' : ''
+                        }`}
+                >
+                    <MaterialCommunityIcons
+                        name='archive-check-outline'
+                        size={24}
+                        color={status?.toLowerCase() === 'selesai' ? 'white' : 'black'}
+                    />
+                    <Text className={`text-sm ${status?.toLowerCase() === 'selesai' ? 'text-white' : 'text-primaryNavy'}`}>
+                        Selesai
+                    </Text>
                 </View>
+
             </View>
+
         </View>
     )
 }
