@@ -190,7 +190,7 @@ const ReportDetailAdmin = () => {
 
 
     const renderAdditionalField = () => {
-        if (form.status === 'Selesai') {
+        if (form.status === 'selesai') {
             return (
                 <View className="mt-4">
                     <Text className="text-gray-500 mb-2">Masukan Bukti Penyelesaian</Text>
@@ -221,7 +221,7 @@ const ReportDetailAdmin = () => {
             )
         }
 
-        if (form.status === 'Tidak valid') {
+        if (form.status === 'tidak valid') {
             return (
                 <View className="mt-4">
                     <Text className="text-sm font-semibold mb-1">Alasan:</Text>
@@ -240,7 +240,7 @@ const ReportDetailAdmin = () => {
 
     console.log(reportData);
 
-    const statuses = ['Menunggu', 'Di proses', 'Selesai', 'Tidak valid']
+    const statuses = ['menunggu', 'di proses', 'selesai', 'tidak valid']
 
     return (
         <SafeAreaView className="flex-1 pt-5">
