@@ -144,64 +144,53 @@ const index = (props: Props) => {
 
 
     const renderContent = () => {
-        // Terapkan filter ke dataReport
         const filteredReports = filterReports(dataReport, filtering);
+
+        const renderCards = (filtered: any[], typeReport: string) => (
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 100 }}
+            >
+                {filtered.map((item: any, index: number) => (
+                    <CaraoselCard
+                        onpress={() => router.push(`/admin/report/${item.id}`)}
+                        key={item.id || index}
+                        status={item.status || 'status not found'}
+                        desc={item.desc || 'description not found'}
+                        imageCaraosel={item.images}
+                        typeReport={typeReport}
+                    />
+                ))}
+            </ScrollView>
+        );
 
         switch (activePage) {
             case 'regular': {
                 const filtered = filteredReports.filter((item: any) => item.typeReport === 'Reguler');
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
-                ) : (
-                    filtered.map((item: any, index: number) => (
-                        <CaraoselCard onpress={() => router.push(`/admin/report/${item.id}`)}
-                            key={item.id || index}
-                            status={item.status || 'status not found'}
-                            desc={item.desc || 'description not found'}
-                            imageCaraosel={item.images}
-                            typeReport="REGULER"
-                        />
-                    ))
-                );
+                ) : renderCards(filtered, 'REGULER');
             }
+
             case 'prioritas': {
                 const filtered = filteredReports.filter((item: any) => item.typeReport === 'Prioritas');
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
-                ) : (
-                    filtered.map((item: any, index: number) => (
-                        <CaraoselCard
-                            onpress={() => router.push(`/admin/report/${item.id}`)}
-                            key={item.id || index}
-                            status={item.status || 'status not found'}
-                            desc={item.desc || 'description not found'}
-                            imageCaraosel={item.images}
-                            typeReport="PRIORITAS"
-                        />
-                    ))
-                );
+                ) : renderCards(filtered, 'PRIORITAS');
             }
+
             case 'selesai': {
                 const filtered = filteredReports.filter((item: any) => item.status === 'selesai');
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan selesai</Text>
-                ) : (
-                    filtered.map((item: any, index: number) => (
-                        <CaraoselCard
-                            onpress={() => router.push(`/admin/report/${item.id}`)}
-                            key={item.id || index}
-                            status={item.status || 'status not found'}
-                            desc={item.desc || 'description not found'}
-                            imageCaraosel={item.images}
-                            typeReport="SELESAI"
-                        />
-                    ))
-                );
+                ) : renderCards(filtered, 'SELESAI');
             }
+
             default:
                 return null;
         }
     };
+
 
     const resetFilters = () => {
         setFiltering({
