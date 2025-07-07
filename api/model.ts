@@ -1,9 +1,11 @@
 import axios from "axios";
-export const PostPredict = (text: any, callback: any) => {
-    axios.post(`https://oryza22.pythonanywhere.com/predict`, { text })
-        .then((result) => {
-            callback(result.data)
-        }).catch((err) => {
-            console.log(err);
-        });
-}
+
+export const PostPredict = async (text: string): Promise<{ prediction: string }> => {
+    try {
+        const response = await axios.post(`https://oryza22.pythonanywhere.com/predict`, { text });
+        return response.data; // { prediction: 'prioritas' } misalnya
+    } catch (error) {
+        console.error("Gagal mengambil prediksi:", error);
+        throw error;
+    }
+};

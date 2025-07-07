@@ -3,6 +3,7 @@ import NotifReportCard from '@/components/fragments/cardNotif/notifReportCard'
 import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
+import { router } from 'expo-router'
 import { collection, getDocs } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
@@ -103,6 +104,7 @@ const NotifPage = (props: Props) => {
                         ) : (
                             laporanNotif.map((item: any, index: number) => (
                                 <NotifReportCard
+                                    goToLink={() => router.push(`/admin/report/${item.reportId}`)}
                                     key={index}
                                     imageUrl={item.image}
                                     description={item.body}
@@ -126,6 +128,7 @@ const NotifPage = (props: Props) => {
                         ) : (
                             contestNotif.map((item: any, index: number) => (
                                 <NotifReportCard
+                                    goToLink={() => router.push(`/admin/contest/${item.id}`)}
                                     key={index}
                                     imageUrl={item.image}
                                     description={item.body}

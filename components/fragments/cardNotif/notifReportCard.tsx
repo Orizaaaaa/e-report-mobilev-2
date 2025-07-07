@@ -1,18 +1,19 @@
 import { formatTanggalIndonesia, truncateText } from '@/utils/helper'
 import React from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {
     imageUrl: string
     description: string
     date: string
     user: string
+    goToLink?: any
 }
 
-const NotifReportCard = ({ imageUrl, description, date, user }: Props) => {
+const NotifReportCard = ({ imageUrl, description, date, user, goToLink }: Props) => {
     return (
-        <View>
-            <View className="flex-row gap-3 mb-5">
+        <View >
+            <TouchableOpacity onPress={goToLink} className="flex-row gap-3 mb-5">
                 <View className="w-16 h-16 rounded-xl">
                     <Image
                         className="w-full h-full rounded-full"
@@ -27,7 +28,7 @@ const NotifReportCard = ({ imageUrl, description, date, user }: Props) => {
                     </Text>
                     <Text className="text-xs text-slate-400">{formatTanggalIndonesia(date)}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }

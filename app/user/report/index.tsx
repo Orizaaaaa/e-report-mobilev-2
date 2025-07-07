@@ -185,11 +185,11 @@ const ReportScreen = () => {
     const handleSubmitReport = async (
         form: FormState,
         setForm: (f: FormState) => void,
-
     ) => {
         setLoadingSend(true);
+
         try {
-            // ✅ Validasi isi
+            // ✅ Validasi isi form
             if (
                 !form.desc.trim() ||
                 !form.category.trim() ||
@@ -201,7 +201,7 @@ const ReportScreen = () => {
                 return;
             }
 
-            // ✅ Validasi karakter minimal 15
+            // ✅ Validasi karakter minimal
             const descLength = form.desc.trim().length;
             const locationAddress = form.location[0]?.adress || '';
             const locationLength = locationAddress.trim().length;
@@ -224,7 +224,7 @@ const ReportScreen = () => {
                 return;
             }
 
-            // Ambil user dari storage
+            // ✅ Ambil user dari AsyncStorage
             const userStr = await AsyncStorage.getItem('user');
             const currentUser = userStr ? JSON.parse(userStr) : null;
 
@@ -234,62 +234,64 @@ const ReportScreen = () => {
                 return;
             }
 
-            // 🔎 Prediksi tipe laporan
-            PostPredict(form.desc, async (predictResult: any) => {
-                const predictedType = predictResult?.prediction || 'reguler';
+            // ✅ Prediksi tipe laporan
+            const predictResult = await PostPredict(form.desc);
+            const predictedType = predictResult?.prediction || 'reguler';
 
-                setForm({ ...form, typeReport: predictedType });
+            // Set state form (jika diperlukan)
+            setForm({ ...form, typeReport: predictedType });
 
-                // Upload gambar
-                const imageUrls = await uploadImagesToStorage(
-                    form.images.map((image) => image.uri),
-                    currentUser.uid
-                );
+            // ✅ Upload gambar
+            const imageUrls = await uploadImagesToStorage(
+                form.images.map((image) => image.uri),
+                currentUser.uid
+            );
 
-                // Siapkan data laporan
-                const reportData = {
-                    desc: form.desc,
-                    images: imageUrls,
-                    location: form.location,
-                    category: form.category,
-                    typeReport: predictedType,
-                    anonim: form.anonim,
-                    uid: currentUser.uid,
-                    email: currentUser.email,
-                    status: 'menunggu',
-                    name: currentUser.name,
-                    createdAt: new Date().toISOString(),
-                };
+            // ✅ Siapkan data laporan
+            const reportData = {
+                desc: form.desc,
+                images: imageUrls,
+                location: form.location,
+                category: form.category,
+                typeReport: predictedType,
+                anonim: form.anonim,
+                uid: currentUser.uid,
+                email: currentUser.email,
+                status: 'menunggu',
+                name: currentUser.name,
+                createdAt: new Date().toISOString(),
+            };
 
-                // Simpan ke Firestore
-                const reportRef = await addDoc(collection(db, 'reports'), reportData);
-                console.log('✅ Laporan dikirim dengan ID:', reportRef.id);
+            // ✅ Simpan laporan ke Firestore
+            const reportRef = await addDoc(collection(db, 'reports'), reportData);
+            console.log('✅ Laporan dikirim dengan ID:', reportRef.id);
 
-                // Notifikasi ke admin
-                await sendNotificationToRole('admin', 'Ada laporan baru dari');
+            // ✅ Kirim notifikasi ke admin
+            await sendNotificationToRole('admin', 'Ada laporan baru dari');
 
-                // Simpan data notifikasi
-                await addDoc(collection(db, 'notifications'), {
-                    title: 'Laporan Baru',
-                    body: `Ada laporan baru bertipe ${predictedType} dari ${currentUser.name}`,
-                    toRole: 'admin',
-                    typeNotif: 'report',
-                    userName: currentUser.name,
-                    image: currentUser.image || 'image empety',
-                    fromUid: currentUser.uid,
-                    createdAt: new Date().toISOString(),
-                    read: false,
-                });
-
-                setLoadingSend(false);
-                Alert.alert('Sukses', 'Laporan berhasil dikirim!');
+            // ✅ Simpan data notifikasi ke Firestore
+            await addDoc(collection(db, 'notifications'), {
+                title: 'Laporan Baru',
+                body: `Ada laporan baru bertipe ${predictedType} dari ${currentUser.name}`,
+                toRole: 'admin',
+                typeNotif: 'report',
+                userName: currentUser.name,
+                image: currentUser.image || 'image empty',
+                fromUid: currentUser.uid,
+                reportId: reportRef.id, // ✅ ID laporan dibawa ke notifikasi
+                createdAt: new Date().toISOString(),
+                read: false,
             });
+
+            setLoadingSend(false);
+            Alert.alert('Sukses', 'Laporan berhasil dikirim!');
         } catch (err) {
             setLoadingSend(false);
             console.error('❌ Gagal kirim laporan:', err);
             Alert.alert('Error', 'Gagal mengirim laporan');
         }
     };
+
 
 
     const resetForm = () => {
