@@ -23,7 +23,7 @@ const IndicatorInfo = ({ finised, onProgress, total }: Props) => {
                     <View className="bg-white/30 rounded-md self-start p-2">
                         <FontAwesome name="file-text-o" size={24} color="white" />
                     </View>
-                    <Text className="text-3xl font-semibold text-white">177</Text>
+                    <Text className="text-3xl font-semibold text-white">{total}</Text>
                     <Text className="text-sm text-white">aduan yang masuk</Text>
                 </View>
 
@@ -41,7 +41,7 @@ const IndicatorInfo = ({ finised, onProgress, total }: Props) => {
                             <View className="bg-white/30 rounded-md self-start p-1">
                                 <MaterialIcons name="sync-problem" size={20} color="white" />
                             </View>
-                            <Text className="text-xl text-white">44</Text>
+                            <Text className="text-xl text-white"> {onProgress}</Text>
                         </View>
                         <Text className="text-sm text-white z-10">aduan yang di proses</Text>
                     </View>
@@ -58,7 +58,7 @@ const IndicatorInfo = ({ finised, onProgress, total }: Props) => {
                             <View className="bg-white/30 self-start p-1 rounded-md">
                                 <FontAwesome name="flag-checkered" size={20} color="white" />
                             </View>
-                            <Text className="text-xl text-white">44</Text>
+                            <Text className="text-xl text-white">{finised}</Text>
                         </View>
                         <Text className="text-sm text-white z-10">aduan yang selesai</Text>
                     </View>

@@ -171,6 +171,7 @@ const index = (props: Props) => {
                 ) : (
                     filtered.map((item: any, index: number) => (
                         <CaraoselCard
+                            onpress={() => router.push(`/admin/report/${item.id}`)}
                             key={item.id || index}
                             status={item.status || 'status not found'}
                             desc={item.desc || 'description not found'}
@@ -187,6 +188,7 @@ const index = (props: Props) => {
                 ) : (
                     filtered.map((item: any, index: number) => (
                         <CaraoselCard
+                            onpress={() => router.push(`/admin/report/${item.id}`)}
                             key={item.id || index}
                             status={item.status || 'status not found'}
                             desc={item.desc || 'description not found'}

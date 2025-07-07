@@ -3,12 +3,14 @@ import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import BottomSheetCustom from '@/components/fragments/bottomSheet';
 import CardReport from '@/components/fragments/CardReport/CardReport';
 import IndicatorInfo from '@/components/fragments/IndicatorInfo/IndicatorInfo';
+import { db } from '@/lib/firebase/firebase';
 import { formatDate, getFirstTwoWords, truncateText } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect, useNavigation } from "expo-router";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
 const { height } = Dimensions.get('window');
@@ -23,6 +25,7 @@ const statusList = [
 
 export default function Index() {
     const [userData, setUserData]: any = useState({});
+    const [reports, setReports]: any = useState([]);
     const navigation: any = useNavigation()
     const [searchText, setSearchText] = useState('');
 
@@ -40,6 +43,23 @@ export default function Index() {
         }, []) // dependensi kosong = hanya saat screen fokus
     );
 
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'reports'));
+                const reports = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                setReports(reports);
+            } catch (err) {
+                console.error('❌ Gagal mengambil laporan:', err);
+            }
+        };
+
+        fetchReports();
+    }, []);
 
     const handlePress = () => {
         // Navigasi ke halaman detail dengan ID
@@ -89,6 +109,17 @@ export default function Index() {
     };
 
     console.log('user tolol', userData);
+
+    const allReport = reports.length;
+
+    const status_onprocess = reports.filter((report: any) =>
+        report.status?.toLowerCase() === 'di proses' || report.status?.toLowerCase() === 'di proses'
+    ).length;
+
+    const status_finished = reports.filter((report: any) =>
+        report.status?.toLowerCase() === 'selesai'
+    ).length;
+
 
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
@@ -174,7 +205,7 @@ export default function Index() {
                 </View>
 
 
-                <IndicatorInfo finised='177' onProgress='44' total='221' />
+                <IndicatorInfo finised={status_finished} onProgress={status_onprocess} total={allReport} />
 
 
                 {/* laporan */}
