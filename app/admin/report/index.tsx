@@ -181,7 +181,7 @@ const index = (props: Props) => {
                 );
             }
             case 'selesai': {
-                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Selesai');
+                const filtered = filteredReports.filter((item: any) => item.status === 'selesai');
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan selesai</Text>
                 ) : (
