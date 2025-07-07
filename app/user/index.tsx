@@ -4,11 +4,11 @@ import BottomSheetCustom from '@/components/fragments/bottomSheet';
 import CardReport from '@/components/fragments/CardReport/CardReport';
 import IndicatorInfo from '@/components/fragments/IndicatorInfo/IndicatorInfo';
 import { db } from '@/lib/firebase/firebase';
-import { capitalizeEachWordWithLimit, formatDate, formatDateContest, getFirstTwoWords, truncateText } from '@/utils/helper';
+import { formatDate, getFirstTwoWords, truncateText } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RelativePathString, router, useFocusEffect, useNavigation } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { collection, getDocs } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -26,8 +26,6 @@ const statusList = [
 export default function Index() {
     const [userData, setUserData]: any = useState({});
     const [reports, setReports]: any = useState([]);
-    const [contest, setContest]: any = useState([]);
-    const navigation: any = useNavigation()
     const [searchText, setSearchText] = useState('');
 
     useFocusEffect(
@@ -52,14 +50,7 @@ export default function Index() {
                     id: doc.id,
                     ...doc.data(),
                 }));
-                const snapshotContest = await getDocs(collection(db, 'contest'));
-                const contestDocs = snapshotContest.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
 
-                const firstContest = contestDocs[0]; // Ambil index pertama
-                setContest(firstContest); // Simpan ke state
                 setReports(reports);
             } catch (err) {
                 console.error('❌ Gagal mengambil laporan:', err);
@@ -132,11 +123,7 @@ export default function Index() {
         (report: any) => report.typeReport?.toLowerCase() === 'prioritas'
     );
 
-    const handleToDetail = () => {
-
-
-        router.push(`/user/contest/${contest?.id}` as RelativePathString);
-    }
+    const router = useRouter()
 
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
@@ -193,7 +180,7 @@ export default function Index() {
 
 
 
-                {/* <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative'>
+                <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative'>
 
                     <Image
                         className='w-full h-full'
@@ -206,62 +193,22 @@ export default function Index() {
 
 
                     <View className='absolute bottom-0 left-0 right-0 p-5'>
-                        <Text className='text-white text-lg'>Lomba Koding <Text className='text-primaryOrange' >3</Text>  April</Text>
+                        <Text className='text-white text-lg'>Lomba Tersedia <Text className='text-primaryOrange font-semibold' >30</Text> </Text>
                         <Text className='text-white text-sm'>Terbuka untuk umum</Text>
 
                         <View className='flex-row justify-between items-center mt-3'>
                             <View>
-                                <Text className=' text-sm py-2 px-3 bg-primaryNavy text-white rounded-2xl'>Gabung</Text>
+                                <Text onPress={() => router.push('/user/contest')} className=' text-sm py-2 px-3 bg-primaryNavy text-white rounded-2xl'>Gabung</Text>
                             </View>
 
                             <View className='p-2 bg-primaryNavy rounded-full'>
-                                <MaterialIcons name="keyboard-double-arrow-right" size={20} color="white" />
+                                <MaterialIcons onPress={() => router.push('/user/contest')} name="keyboard-double-arrow-right" size={20} color="white" />
                             </View>
                         </View>
                     </View>
-                </View> */}
+                </View>
 
-                {contest && (
-                    <View className='w-full h-40 rounded-3xl mt-5 overflow-hidden relative' >
-                        {/* Gambar */}
-                        <Image
-                            className='w-full h-full'
-                            source={{ uri: contest.image || 'https://i.pravatar.cc/150' }}
-                            resizeMode='cover'
-                        />
 
-                        {/* Overlay hitam */}
-                        <View className='absolute inset-0 bg-black/35' />
-
-                        {/* Konten bawah */}
-                        <View className='absolute bottom-0 left-0 right-0 p-5'>
-                            <Text className='text-white text-lg'>
-
-                                {capitalizeEachWordWithLimit(contest?.desc, 20)}{' '}
-                                <Text className='text-primaryOrange'>
-                                    {formatDateContest(contest?.date || '').day}
-                                </Text>{' '}
-                                {formatDateContest(contest?.date || '').monthName}
-                            </Text>
-
-                            <Text className='text-white text-sm'>
-                                Terbuka untuk umum
-                            </Text>
-
-                            <View className='flex-row justify-between items-center mt-3'>
-                                <View>
-                                    <Text onPress={handleToDetail} className='text-sm py-2 px-3 bg-primaryNavy text-white rounded-2xl'>
-                                        Gabung
-                                    </Text>
-                                </View>
-
-                                <View className='p-2 bg-primaryNavy rounded-full' >
-                                    <MaterialIcons onPress={handleToDetail} name="keyboard-double-arrow-right" size={20} color="white" />
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                )}
 
 
 
