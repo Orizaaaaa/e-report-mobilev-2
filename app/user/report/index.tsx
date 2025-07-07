@@ -530,6 +530,7 @@ const ReportScreen = () => {
                 ) : (
                     filtered.map((item: any, index: number) => (
                         <CaraoselCard
+                            onpress={() => router.push(`/user/report/${item.id}`)}
                             key={item.id || index}
                             status={item.status || 'status not found'}
                             desc={item.desc || 'description not found'}
@@ -546,6 +547,7 @@ const ReportScreen = () => {
                 ) : (
                     filtered.map((item: any, index: number) => (
                         <CaraoselCard
+                            onpress={() => router.push(`/user/report/${item.id}`)}
                             key={item.id || index}
                             status={item.status || 'status not found'}
                             desc={item.desc || 'description not found'}

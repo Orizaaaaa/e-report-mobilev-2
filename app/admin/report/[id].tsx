@@ -27,6 +27,9 @@ type ReportData = {
     createdAt: string
     bukti_selesai?: string
     reason?: string
+    name: string
+    anonim: boolean
+    updatedAt: string
 }
 
 const ReportDetailAdmin = () => {
@@ -258,6 +261,9 @@ const ReportDetailAdmin = () => {
                 ) : reportData ? (
                     <>
                         <DetailReport
+                            updatedAt={reportData.updatedAt}
+                            anonim={reportData.anonim}
+                            userName={reportData.name}
                             imageCaraosel={reportData.images}
                             desc={reportData.desc}
                             location={reportData.location[0]}
@@ -265,6 +271,7 @@ const ReportDetailAdmin = () => {
                             status={reportData.status}
                             createdAt={reportData.createdAt}
                             bukti_penyelesaian={reportData.bukti_selesai}
+                            reason={reportData.reason}
                         />
                         <View className="flex-row my-5">
                             <TouchableOpacity

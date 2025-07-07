@@ -15,9 +15,13 @@ type Props = {
     typeReport: string
     status: string
     createdAt?: string
+    reason?: string
+    userName: string
+    updatedAt: string
+    anonim: boolean
 }
 
-const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, createdAt, bukti_penyelesaian }: Props) => {
+const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, createdAt, bukti_penyelesaian, reason, userName, updatedAt, anonim }: Props) => {
     const { width } = Dimensions.get('window')
     const [activeIndex, setActiveIndex] = useState(0)
     const [showImage, setShowImage] = useState(false);
@@ -49,6 +53,56 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
     };
 
 
+    const statusDisplay = (value: any) => {
+        if (value === 'tidak valid') {
+            return (
+                <View className='flex-1'>
+                    <Text className='text-sm font-thin'>Status aduan ini di tandai sebagai</Text>
+                    <Text className='text-sm font-medium'>
+                        Tidak valid<Text className='font-light'> oleh</Text> tim pemerintah
+                    </Text>
+                    {reason && <Text className='text-sm font-light'>Dengan alasan {reason}</Text>}
+                    {updatedAt && (
+                        <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
+                    )}
+                </View>)
+        } else if (value === 'selesai') {
+            return (
+                <View className='flex-1'>
+                    <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
+                    <Text className='text-sm font-medium'>
+                        Selesai<Text className='font-light'>di selesaikan oleh</Text> tim pemerintah
+                    </Text>
+                    {updatedAt && (
+                        <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
+                    )}
+                </View>
+            )
+        } else if (value === 'di proses') {
+            return (
+                <View className='flex-1'>
+                    <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
+                    <Text className='text-sm font-medium'>
+                        Selesai<Text className='font-light'>di selesaikan oleh</Text> tim pemerintah
+                    </Text>
+                    {updatedAt && (
+                        <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
+                    )}
+                </View>)
+        } else if (value === 'menunggu') {
+            return (
+                <View className='flex-1'>
+                    <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
+                    <Text className='text-sm font-medium'>
+                        Menunggu<Text className='font-light'>konfirmasi oleh</Text> tim pemerintah
+                    </Text>
+                    {updatedAt && (
+                        <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
+                    )}
+                </View>
+            )
+        }
+    }
 
     return (
         <View>
@@ -136,18 +190,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
             </View>
 
             <View className='flex-row justify-between items-end'>
-                <View className='flex-1'>
-                    <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
-                    <Text className='text-sm font-medium'>
-                        {status}<Text className='font-light'> oleh</Text> tim pemerintah
-                    </Text>
-                    <Text className='text-sm font-light'>alasan di tolak adalah lorem</Text>
-                    {createdAt && (
-                        <Text className='text-sm font-light'>{formatDate(createdAt)}</Text>
-                    )}
-                </View>
-
-
+                {statusDisplay(status)}
 
                 <View className='items-end' >
                     <Text className={`py-1 px-2 border-2 ${typeReport === 'Reguler' ? 'border-primaryNavy text-primaryNavy' : 'border-primaryOrange text-primaryOrange'}  text-sm rounded-lg `}>
@@ -155,6 +198,19 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
                     </Text>
                 </View>
             </View>
+
+            {anonim ?
+                <View className='mt-7'>
+                    <Text className='text-sm font-light'> Laporan ini di buat pada {formatDate(createdAt)}</Text>
+                </View>
+                :
+                <View className='mt-7'>
+                    <Text className='text-sm' >Laporan di buat oleh {userName}</Text>
+                    {createdAt && (
+                        <Text className='text-sm font-light'>{formatDate(createdAt)}</Text>
+                    )}
+                </View>}
+
 
             <View className='flex-row items-center justify-between bg-gray-200 rounded-2xl px-4 py-2 mt-7'>
 
