@@ -31,7 +31,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
             const url = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.long}`
             Linking.openURL(url).catch(err => console.error('Gagal membuka Google Maps:', err))
         } else {
-            alert('Lokasi belum dipilih')
+            alert('Pengirim tidak mencantumkan latitude dan longtitude')
         }
     }
 
@@ -164,26 +164,30 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
             </View>
 
             <View className='flex-row justify-between items-start'>
-                <View className='flex-row justify-between items-start'>
-                    <View className='flex-1 pr-2'>
-                        <Text className='font-light'>
-                            {location?.adress || 'Alamat tidak tersedia'}
+                <View className='flex-1 pr-2'>
+                    {/* Alamat selalu tampil */}
+                    <Text className='font-light'>
+                        {location?.adress || 'Alamat tidak tersedia'}
+                    </Text>
+
+                    {/* Tampilkan koordinat jika lat & long ada */}
+                    {typeof location?.lat === 'number' && typeof location?.long === 'number' && (
+                        <Text className='font-light text-sm mt-1 text-gray-400'>
+                            Lat: {location.lat}, Long: {location.long}
                         </Text>
-                        {location?.lat && location?.long && (
-                            <Text className='font-light text-sm mt-1 text-gray-400'>
-                                Lat: {location?.lat}, Long: {location?.long}
-                            </Text>
-                        )}
-                    </View>
-
-                    {location?.lat && location?.long && (
-                        <TouchableOpacity className='ml-2' onPress={openInGoogleMaps}>
-                            <FontAwesome5 name='map-marked-alt' size={20} color='#1E2A38' />
-                        </TouchableOpacity>
                     )}
-
                 </View>
+
+                {/* Icon map hanya muncul jika lat & long ada */}
+                {typeof location?.lat === 'number' && typeof location?.long === 'number' && (
+                    <TouchableOpacity className='ml-2' onPress={openInGoogleMaps}>
+                        <FontAwesome5 name='map-marked-alt' size={20} color='#1E2A38' />
+                    </TouchableOpacity>
+                )}
             </View>
+
+
+
 
             <View className='my-3'>
                 <Text className='text-lg font-medium'>Riwayat Status</Text>
@@ -216,7 +220,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Tidak Valid */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'tidak valid' ? 'bg-primaryNavy rounded-lg' : ''
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'tidak valid' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <Feather name='x-circle' size={24} color={status?.toLowerCase() === 'tidak valid' ? 'white' : 'black'} />
@@ -227,18 +231,18 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Menunggu */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'menunggu' ? 'bg-primaryNavy rounded-lg' : ''
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'menunggu' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <MaterialIcons name='pending-actions' size={24} color={status?.toLowerCase() === 'menunggu' ? 'white' : 'black'} />
-                    <Text className={`text-sm ${status?.toLowerCase() === 'menunggu' ? 'text-white' : 'text-primaryNavy'}`}>
+                    <Text className={`text-sm ${status?.toLowerCase() === 'menunggu' ? 'text-white' : 'text-primaryNavy '}`}>
                         Menunggu
                     </Text>
                 </View>
 
                 {/* Diproses */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'di proses' ? 'bg-primaryNavy rounded-lg' : ''
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'di proses' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <MaterialCommunityIcons
@@ -253,7 +257,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Selesai */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'selesai' ? 'bg-primaryNavy rounded-lg' : ''
+                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'selesai' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <MaterialCommunityIcons

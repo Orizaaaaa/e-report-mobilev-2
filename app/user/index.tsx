@@ -62,7 +62,7 @@ export default function Index() {
 
     const handlePress = () => {
         // Navigasi ke halaman detail dengan ID
-        router.push(`/user/report/22`);
+        router.push(`/user/report`);
     };
 
     const bottomSheetRef = useRef<BottomSheet>(null);
