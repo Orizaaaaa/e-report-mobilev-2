@@ -91,16 +91,54 @@ const NotifPage = (props: Props) => {
             <ScrollView>
                 {activeTab === 'laporan' ? (
                     // Konten Laporan
-                    dataNotif.filter((item: any) => item.typeNotif === 'report').map((item: any, index: number) => (
-                        <NotifReportCard key={index} imageUrl={item.image} description={item.body} date={item.createdAt} user={item.userName} />
-                    ))
+                    (() => {
+                        const laporanNotif = dataNotif.filter(
+                            (item: any) =>
+                                item.typeNotif === 'report' && item.toRole === 'admin'
+                        );
+                        return laporanNotif.length === 0 ? (
+                            <Text className="text-center text-gray-500 mt-5">
+                                Belum ada notifikasi
+                            </Text>
+                        ) : (
+                            laporanNotif.map((item: any, index: number) => (
+                                <NotifReportCard
+                                    key={index}
+                                    imageUrl={item.image}
+                                    description={item.body}
+                                    date={item.createdAt}
+                                    user={item.userName}
+                                />
+                            ))
+                        );
+                    })()
                 ) : (
                     // Konten Lomba
-                    dataNotif.filter((item: any) => item.typeNotif === 'contest').map((item: any, index: number) => (
-                        <NotifReportCard key={index} imageUrl={item.image} description={item.body} date={item.createdAt} user={item.userName} />
-                    ))
+                    (() => {
+                        const contestNotif = dataNotif.filter(
+                            (item: any) =>
+                                item.typeNotif === 'contest' && item.toRole === 'admin'
+                        );
+                        return contestNotif.length === 0 ? (
+                            <Text className="text-center text-gray-500 mt-5">
+                                Belum ada notifikasi
+                            </Text>
+                        ) : (
+                            contestNotif.map((item: any, index: number) => (
+                                <NotifReportCard
+                                    key={index}
+                                    imageUrl={item.image}
+                                    description={item.body}
+                                    date={item.createdAt}
+                                    user={item.userName}
+                                />
+                            ))
+                        );
+                    })()
                 )}
             </ScrollView>
+
+
         </SafeAreaView>
     )
 }
