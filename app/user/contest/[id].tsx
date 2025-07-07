@@ -1,9 +1,11 @@
 
+import ButtonPrimary from "@/components/elements/Button/ButtonPrimary";
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { db } from "@/lib/firebase/firebase";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
     ActivityIndicator,
@@ -19,7 +21,7 @@ import {
 type Participant = {
     name: string;
     email: string;
-    avatar?: string;
+    image?: string;
 };
 
 const DetailContestAdmin = () => {
@@ -27,6 +29,7 @@ const DetailContestAdmin = () => {
     const contestId: any = id
 
     const [contest, setContest] = useState<any>(null);
+    const [userEmail, setUserEmail] = useState('');
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(true);
@@ -35,7 +38,16 @@ const DetailContestAdmin = () => {
         p.name.toLowerCase().includes(query.toLowerCase())
     );
 
-    console.log('iniiiii', contestId);
+    useEffect(() => {
+        const fetchUser = async () => {
+
+            const userStr = await AsyncStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+            setUserEmail(user?.email || '');
+        };
+        fetchUser();
+    }, []);
+
 
     useEffect(() => {
         const fetchContestDetail = async () => {
@@ -59,7 +71,7 @@ const DetailContestAdmin = () => {
                         return found ? {
                             name: found.data().name,
                             email: found.data().email,
-                            avatar: found.data().image || 'https://i.pravatar.cc/150',
+                            image: found.data().image || 'https://i.primage.cc/150',
                         } : { name, email: name };
                     });
 
@@ -82,7 +94,7 @@ const DetailContestAdmin = () => {
     const ParticipantCard = ({ participant }: { participant: Participant }) => (
         <View className="bg-white rounded-xl px-3 py-2 mb-4 flex-row items-center shadow shadow-black/10">
             <Image
-                source={{ uri: participant.avatar || 'https://i.pravatar.cc/150' }}
+                source={{ uri: participant.image || 'https://i.pravatar.cc/150' }}
                 className="w-12 h-12 rounded-full mr-4"
             />
             <View className="flex-1">
@@ -108,6 +120,20 @@ const DetailContestAdmin = () => {
         );
     }
 
+    const handleJoinContest = async () => {
+        try {
+            const sudahDaftar = contest.userAudiens?.includes(userEmail);
+            if (sudahDaftar) return;
+            const updatedUserAudiens = [...(contest.userAudiens || []), userEmail];
+            await updateDoc(contestId, {
+                userAudiens: updatedUserAudiens,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const sudahDaftar: any = contest.userAudiens?.includes(userEmail);
     return (
         <SafeAreaView className="flex-1 mb-10 py-12 px-3">
             <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full mb-5">
@@ -152,6 +178,9 @@ const DetailContestAdmin = () => {
                         </View>
                     </View>
 
+                    <View className="flex-row justify-start mb-4">
+                        <ButtonPrimary disabled={sudahDaftar} className={`py-2 px-4 rounded-xl ${sudahDaftar ? 'bg-slate-400' : 'bg-primaryNavy'} `} text={sudahDaftar ? "Anda sudah daftar" : "Daftar Sekarang"} onPress={handleJoinContest} />
+                    </View>
 
 
                     <View className="flex-row items-center gap-2 mb-4">

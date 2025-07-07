@@ -26,17 +26,18 @@ type Props = {}
 const Contest = (props: Props) => {
     const [loading, setLoading] = useState(false)
     const [dataContest, setDataContest] = useState<any[]>([]);
-    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
 
     // Ambil data user dari AsyncStorage
     useEffect(() => {
         const fetchUser = async () => {
             const userStr = await AsyncStorage.getItem('user');
             const user = userStr ? JSON.parse(userStr) : null;
-            setUserName(user?.name || user?.email || '');
+            setUserEmail(user?.email || '');
         };
         fetchUser();
     }, []);
+
 
     // Ambil data lomba
 
@@ -75,10 +76,10 @@ const Contest = (props: Props) => {
 
             if (!contest) return;
 
-            const sudahDaftar = contest.userAudiens?.includes(userName);
+            const sudahDaftar = contest.userAudiens?.includes(userEmail);
             if (sudahDaftar) return;
 
-            const updatedUserAudiens = [...(contest.userAudiens || []), userName];
+            const updatedUserAudiens = [...(contest.userAudiens || []), userEmail];
 
             // Update ke Firestore
             await updateDoc(contestRef, {
@@ -98,6 +99,7 @@ const Contest = (props: Props) => {
             console.error('❌ Gagal daftar lomba:', err);
         }
     };
+
 
 
 
@@ -202,7 +204,7 @@ const Contest = (props: Props) => {
                         <ActivityIndicator size="large" color="#FF840C" />
                     ) : (
                         dataContest.map(item => {
-                            const sudahDaftar: any = item.userAudiens?.includes(userName);
+                            const sudahDaftar: any = item.userAudiens?.includes(userEmail);
                             return (
                                 <TouchableOpacity onPress={() => handleToDetail(item.id)} key={item.id}>
                                     <CardContest

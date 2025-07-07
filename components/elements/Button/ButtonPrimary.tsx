@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from 'react-native'
 type Props = {
     className?: string
     text: string
-    onPress: any
+    onPress?: any
     disabled?: boolean
 }
 
