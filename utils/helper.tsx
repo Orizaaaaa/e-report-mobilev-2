@@ -30,6 +30,38 @@ export interface ReportDescriptionInputProps {
 
 // File: screens/report/types/helper.ts
 
+export const formatDateContest = (tanggal?: string) => {
+    if (!tanggal || typeof tanggal !== 'string') {
+        return { day: '', monthName: '' }; // atau return null jika ingin handle di tempat lain
+    }
+
+    const [day, month, year] = tanggal.split('-');
+    const bulanIndo = [
+        '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+
+    return {
+        day,
+        monthName: bulanIndo[parseInt(month, 10)] || ''
+    };
+};
+
+
+export const capitalizeEachWordWithLimit = (text?: string, maxLength: number = 50): string => {
+    if (!text || typeof text !== 'string') return '';
+
+    const capitalized = text
+        .toLowerCase()
+        .replace(/\b\w/g, char => char.toUpperCase());
+
+    if (capitalized.length > maxLength) {
+        return capitalized.slice(0, maxLength).trimEnd() + '...';
+    }
+
+    return capitalized;
+};
+
 
 export const formatDate = (day: { day: number; month: number; year: number }) => {
     const pad = (num: number) => num.toString().padStart(2, '0');
