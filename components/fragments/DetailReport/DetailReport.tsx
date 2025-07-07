@@ -220,7 +220,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Tidak Valid */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'tidak valid' ? 'bg-primaryNavy' : ''
+                    className={`flex items-center px-2 py-1 rounded-lg ${status?.toLowerCase() === 'tidak valid' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <Feather name='x-circle' size={24} color={status?.toLowerCase() === 'tidak valid' ? 'white' : 'black'} />
@@ -231,7 +231,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Menunggu */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'menunggu' ? 'bg-primaryNavy' : ''
+                    className={`flex items-center px-2 py-1 rounded-lg ${status?.toLowerCase() === 'menunggu' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <MaterialIcons name='pending-actions' size={24} color={status?.toLowerCase() === 'menunggu' ? 'white' : 'black'} />
@@ -242,7 +242,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Diproses */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'di proses' ? 'bg-primaryNavy' : ''
+                    className={`flex items-center px-2 py-1 rounded-lg ${status?.toLowerCase() === 'di proses' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <MaterialCommunityIcons
@@ -257,7 +257,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
 
                 {/* Selesai */}
                 <View
-                    className={`flex items-center px-2 py-1 rounded-xl ${status?.toLowerCase() === 'selesai' ? 'bg-primaryNavy' : ''
+                    className={`flex items-center px-2 py-1 rounded-lg ${status?.toLowerCase() === 'selesai' ? 'bg-primaryNavy' : ''
                         }`}
                 >
                     <MaterialCommunityIcons
