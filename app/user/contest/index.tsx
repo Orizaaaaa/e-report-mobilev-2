@@ -7,7 +7,7 @@ import { formatDate } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router, useFocusEffect } from 'expo-router';
+import { RelativePathString, router, useFocusEffect } from 'expo-router';
 import { collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -148,6 +148,15 @@ const Contest = (props: Props) => {
 
         return marked;
     };
+
+    const handleToDetail = (contestId: string) => {
+        if (!contestId) {
+            console.warn('ID lomba tidak tersedia');
+            return;
+        }
+
+        router.push(`/user/contest/${contestId}` as RelativePathString);
+    }
     return (
         <View className="flex-1 bg-white">
             {/* Bagian Atas */}
@@ -193,16 +202,18 @@ const Contest = (props: Props) => {
                         <ActivityIndicator size="large" color="#FF840C" />
                     ) : (
                         dataContest.map(item => {
-                            const sudahDaftar = item.userAudiens?.includes(userName);
+                            const sudahDaftar: any = item.userAudiens?.includes(userName);
                             return (
-                                <CardContest
-                                    key={item.id}
-                                    contest={item}
-                                    disabled={sudahDaftar}
-                                    styleButton={sudahDaftar ? 'bg-gray-400' : 'bg-primaryNavy'}
-                                    textButton={sudahDaftar ? 'Anda sudah daftar' : 'Daftar Sekarang'}
-                                    handlePres={() => handleJoinContest(item.id)}
-                                />
+                                <TouchableOpacity onPress={() => handleToDetail(item.id)} key={item.id}>
+                                    <CardContest
+                                        key={item.id}
+                                        contest={item}
+                                        disabled={sudahDaftar}
+                                        styleButton={sudahDaftar ? 'bg-slate-400' : 'bg-primaryNavy'}
+                                        textButton={sudahDaftar ? 'Anda sudah daftar' : 'Daftar Sekarang'}
+                                        handlePres={() => handleJoinContest(item.id)}
+                                    />
+                                </TouchableOpacity>
                             );
                         })
                     )}

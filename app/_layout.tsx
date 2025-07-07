@@ -54,7 +54,7 @@ const circle2 = {
 const tabsUser = [
   { name: 'index', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'user/index', title: 'Beranda', icon: 'home' },
-  { name: 'user/contest', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'user/contest/index', title: 'Lomba', icon: 'medal-outline' },
   { name: 'user/report/index', title: 'Laporan', icon: 'newspaper-outline' },
   { name: 'user/profile/index', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'user/profile/setting', title: 'Profile', icon: 'person-circle-outline' },
@@ -163,7 +163,7 @@ export default function Layout() {
       <Tabs backBehavior="history"
         screenOptions={({ route }) => {
           // daftar halaman yang harus sembunyikan tab bar
-          const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'admin/notif', 'login', 'register'];
+          const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'user/contest/[id]', 'admin/notif', 'login', 'register'];
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
@@ -232,6 +232,18 @@ export default function Layout() {
         />
         <Tabs.Screen
           name="admin/contest/[id]"
+          options={{
+            // Cara 1: Sembunyikan dari tab bar
+            tabBarItemStyle: { display: 'none' },
+
+            // Cara 2: Atau gunakan ini sebagai alternatif
+            tabBarButton: () => null,
+
+            // Pastikan tidak ada href yang digunakan
+          }}
+        />
+        <Tabs.Screen
+          name="user/contest/[id]"
           options={{
             // Cara 1: Sembunyikan dari tab bar
             tabBarItemStyle: { display: 'none' },
