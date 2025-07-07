@@ -1,3 +1,4 @@
+import { truncateText } from '@/utils/helper'
 import { Octicons } from '@expo/vector-icons'
 import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
@@ -6,9 +7,10 @@ type Props = {
     image: any
     handlepres: any
     heightImage?: string
+    desc: string
 }
 
-const CardReport = ({ image, handlepres, heightImage = 'h-36' }: Props) => {
+const CardReport = ({ image, handlepres, heightImage = 'h-36', desc }: Props) => {
     return (
         <TouchableOpacity onPress={handlepres}>
             <View className={`rounded-2xl flex-1 mr-5 w-64  `}>
@@ -19,7 +21,7 @@ const CardReport = ({ image, handlepres, heightImage = 'h-36' }: Props) => {
                 />
 
                 <View className='py-3 w-full' >
-                    <Text className='font-light'>Beberapa mahasiswa berdem...</Text>
+                    <Text className='font-light'>{truncateText(desc, 28)}</Text>
 
                     <View className='mt-3 flex-row justify-between items-center'>
                         <View className='w-24'>

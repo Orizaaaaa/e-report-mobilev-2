@@ -120,6 +120,9 @@ export default function Index() {
         report.status?.toLowerCase() === 'selesai'
     ).length;
 
+    const priorityReports = reports.filter(
+        (report: any) => report.typeReport?.toLowerCase() === 'prioritas'
+    );
 
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
@@ -222,11 +225,25 @@ export default function Index() {
 
 
 
-                    <ScrollView className='mt-5 overflow-x-hidden' showsHorizontalScrollIndicator={false} horizontal={true} >
-                        <CardReport image={require('../../assets/images/demo.png')} handlepres={handlePress} />
-                        <CardReport image={require('../../assets/images/demo.png')} handlepres={handlePress} />
-                        <CardReport image={require('../../assets/images/demo.png')} handlepres={handlePress} />
+                    <ScrollView
+                        className='mt-5 overflow-x-hidden'
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                    >
+                        {priorityReports.map((report: any, index: number) => (
+                            <CardReport
+                                key={report.id || index}
+                                image={
+                                    report.images && report.images.length > 0
+                                        ? { uri: report.images[0] }
+                                        : require('../../assets/images/demo.png') // fallback jika tidak ada gambar
+                                }
+                                desc={report.desc} // Bisa diganti jika ada image dari report
+                                handlepres={() => router.push(`/user/report/${report.id}`)}
+                            />
+                        ))}
                     </ScrollView>
+
                 </View>
 
 
