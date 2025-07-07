@@ -519,7 +519,6 @@ const ReportScreen = () => {
     console.log('anying', dataReport);
 
     const renderContent = () => {
-        // Terapkan filter ke dataReport
         const filteredReports = filterReports(dataReport, filtering);
 
         switch (activePage) {
@@ -528,16 +527,18 @@ const ReportScreen = () => {
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-2">Belum ada laporan reguler</Text>
                 ) : (
-                    filtered.map((item: any, index: number) => (
-                        <CaraoselCard
-                            onpress={() => router.push(`/user/report/${item.id}`)}
-                            key={item.id || index}
-                            status={item.status || 'status not found'}
-                            desc={item.desc || 'description not found'}
-                            imageCaraosel={item.images}
-                            typeReport="REGULER"
-                        />
-                    ))
+                    <ScrollView contentContainerStyle={{ paddingBottom: 60 }}>
+                        {filtered.map((item: any, index: number) => (
+                            <CaraoselCard
+                                onpress={() => router.push(`/user/report/${item.id}`)}
+                                key={item.id || index}
+                                status={item.status || 'status not found'}
+                                desc={item.desc || 'description not found'}
+                                imageCaraosel={item.images}
+                                typeReport="REGULER"
+                            />
+                        ))}
+                    </ScrollView>
                 );
             }
             case 'prioritas': {
@@ -545,16 +546,18 @@ const ReportScreen = () => {
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-2">Belum ada laporan prioritas</Text>
                 ) : (
-                    filtered.map((item: any, index: number) => (
-                        <CaraoselCard
-                            onpress={() => router.push(`/user/report/${item.id}`)}
-                            key={item.id || index}
-                            status={item.status || 'status not found'}
-                            desc={item.desc || 'description not found'}
-                            imageCaraosel={item.images}
-                            typeReport="PRIORITAS"
-                        />
-                    ))
+                    <ScrollView contentContainerStyle={{ paddingBottom: 60 }}>
+                        {filtered.map((item: any, index: number) => (
+                            <CaraoselCard
+                                onpress={() => router.push(`/user/report/${item.id}`)}
+                                key={item.id || index}
+                                status={item.status || 'status not found'}
+                                desc={item.desc || 'description not found'}
+                                imageCaraosel={item.images}
+                                typeReport="PRIORITAS"
+                            />
+                        ))}
+                    </ScrollView>
                 );
             }
             case 'laporan':
@@ -563,6 +566,7 @@ const ReportScreen = () => {
                 return null;
         }
     };
+
 
     const renderStatusFilter = () => (
         <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
@@ -745,7 +749,7 @@ const ReportScreen = () => {
                 </View>
             </View>
 
-            <View className="bg-white rounded-t-3xl p-4 -mt-6 flex-1">
+            <View className="bg-white rounded-t-3xl p-4 -mt-6 flex-1 pb-20">
                 {renderContent()}
             </View>
 
