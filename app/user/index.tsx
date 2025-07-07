@@ -7,8 +7,8 @@ import { formatDate, getFirstTwoWords, truncateText } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router, useNavigation } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { router, useFocusEffect, useNavigation } from "expo-router";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
 const { height } = Dimensions.get('window');
@@ -26,20 +26,20 @@ export default function Index() {
     const navigation: any = useNavigation()
     const [searchText, setSearchText] = useState('');
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const userStr = await AsyncStorage.getItem('user');
-            const user = userStr ? JSON.parse(userStr) : null;
-            if (user) {
-                setUserData({
-                    user
-                });
-            }
-        };
+    useFocusEffect(
+        useCallback(() => {
+            const fetchUser = async () => {
+                const userStr = await AsyncStorage.getItem('user');
+                const user = userStr ? JSON.parse(userStr) : null;
+                if (user) {
+                    setUserData({ user });
+                }
+            };
 
-        fetchUser();
-    }, []);
-    console.log(userData);
+            fetchUser();
+        }, []) // dependensi kosong = hanya saat screen fokus
+    );
+
 
     const handlePress = () => {
         // Navigasi ke halaman detail dengan ID
@@ -88,7 +88,7 @@ export default function Index() {
         return marked;
     };
 
-
+    console.log('user tolol', userData);
 
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
