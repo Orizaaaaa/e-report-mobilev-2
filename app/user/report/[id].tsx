@@ -243,7 +243,6 @@ const ReportDetailAdmin = () => {
 
     console.log(reportData);
 
-    const statuses = ['menunggu', 'di proses', 'selesai', 'tidak valid']
 
     return (
         <SafeAreaView className="flex-1 pt-5">

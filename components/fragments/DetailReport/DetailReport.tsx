@@ -71,7 +71,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
                 <View className='flex-1'>
                     <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
                     <Text className='text-sm font-medium'>
-                        Selesai<Text className='font-light'>di selesaikan oleh</Text> tim pemerintah
+                        Selesai,<Text className='font-light'> di selesaikan oleh</Text> tim pemerintah
                     </Text>
                     {updatedAt && (
                         <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
@@ -83,7 +83,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
                 <View className='flex-1'>
                     <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
                     <Text className='text-sm font-medium'>
-                        Selesai<Text className='font-light'>di selesaikan oleh</Text> tim pemerintah
+                        Di proses,<Text className='font-light'> oleh</Text> tim pemerintah
                     </Text>
                     {updatedAt && (
                         <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
@@ -94,7 +94,7 @@ const DetailReport = ({ imageCaraosel, desc, location, typeReport, status, creat
                 <View className='flex-1'>
                     <Text className='text-sm font-thin'>Status aduan ini adalah</Text>
                     <Text className='text-sm font-medium'>
-                        Menunggu<Text className='font-light'>konfirmasi oleh</Text> tim pemerintah
+                        Menunggu,<Text className='font-light'> konfirmasi dari</Text> tim pemerintah
                     </Text>
                     {updatedAt && (
                         <Text className='text-sm font-light'>{formatDate(updatedAt)}</Text>
