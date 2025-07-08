@@ -264,96 +264,69 @@ const Contest = (props: Props) => {
             </View>
 
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
+                <Text className="text-sm text-slate-400 ">Filter berdasarkan tanggal</Text>
+                <Calendar
+                    onDayPress={(day) => {
+                        const formatted = formatDate({ day: day.day, month: day.month, year: day.year });
 
-                <View className="">
-                    <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
+                        if (!period.startDate || (period.startDate && period.endDate)) {
+                            // Mulai periode baru
+                            setPeriod({ startDate: day.dateString, endDate: '' });
+                            setFiltering(prev => ({ ...prev, date: formatted }));
+                        } else {
+                            const isBefore = new Date(day.dateString) < new Date(period.startDate);
 
-                    <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
-                        {statusList.map((item) => {
-                            const isActive = filtering.status === item.value;
-                            return (
-                                <TouchableOpacity
-                                    key={item.value}
-                                    className={`flex items-center px-2 py-1 rounded-xl ${isActive ? 'bg-primaryNavy' : ''}`}
-                                    onPress={() => {
-                                        // Toggle off jika sama
-                                        setFiltering((prev) => ({
-                                            ...prev,
-                                            status: prev.status === item.value ? '' : item.value,
-                                        }));
-                                    }}
-                                >
-                                    {React.cloneElement(item.icon, {
-                                        color: isActive ? 'white' : 'black',
-                                    })}
-                                    <Text className={`text-sm ${isActive ? 'text-white' : 'text-primaryNavy'}`}>
-                                        {item.label}
-                                    </Text>
-                                </TouchableOpacity>
-                            );
-                        })}
-                    </View>
-                </View>
-
-
-
-
-
-
-
-                <View className='mt-7' >
-                    <Text className="text-sm text-slate-400 ">Filter berdasarkan tanggal</Text>
-                    <Calendar
-                        onDayPress={(day) => {
-                            const formatted = formatDate({ day: day.day, month: day.month, year: day.year });
-
-                            if (!period.startDate || (period.startDate && period.endDate)) {
-                                // Mulai periode baru
-                                setPeriod({ startDate: day.dateString, endDate: '' });
-                                setFiltering(prev => ({ ...prev, date: formatted }));
+                            if (isBefore) {
+                                setPeriod({ startDate: day.dateString, endDate: period.startDate });
+                                const startFormatted = formatDate({ day: day.day, month: day.month, year: day.year });
+                                const endDateObj = new Date(period.startDate);
+                                const endFormatted = formatDate({
+                                    day: endDateObj.getDate(),
+                                    month: endDateObj.getMonth() + 1,
+                                    year: endDateObj.getFullYear()
+                                });
+                                setFiltering(prev => ({ ...prev, date: `${startFormatted} - ${endFormatted}` }));
                             } else {
-                                const isBefore = new Date(day.dateString) < new Date(period.startDate);
-
-                                if (isBefore) {
-                                    setPeriod({ startDate: day.dateString, endDate: period.startDate });
-                                    const startFormatted = formatDate({ day: day.day, month: day.month, year: day.year });
-                                    const endDateObj = new Date(period.startDate);
-                                    const endFormatted = formatDate({
-                                        day: endDateObj.getDate(),
-                                        month: endDateObj.getMonth() + 1,
-                                        year: endDateObj.getFullYear()
-                                    });
-                                    setFiltering(prev => ({ ...prev, date: `${startFormatted} - ${endFormatted}` }));
-                                } else {
-                                    setPeriod({ startDate: period.startDate, endDate: day.dateString });
-                                    const startDateObj = new Date(period.startDate);
-                                    const startFormatted = formatDate({
-                                        day: startDateObj.getDate(),
-                                        month: startDateObj.getMonth() + 1,
-                                        year: startDateObj.getFullYear()
-                                    });
-                                    const endFormatted = formatted;
-                                    setFiltering(prev => ({ ...prev, date: `${startFormatted} - ${endFormatted}` }));
-                                }
+                                setPeriod({ startDate: period.startDate, endDate: day.dateString });
+                                const startDateObj = new Date(period.startDate);
+                                const startFormatted = formatDate({
+                                    day: startDateObj.getDate(),
+                                    month: startDateObj.getMonth() + 1,
+                                    year: startDateObj.getFullYear()
+                                });
+                                const endFormatted = formatted;
+                                setFiltering(prev => ({ ...prev, date: `${startFormatted} - ${endFormatted}` }));
                             }
-                        }}
-                        markingType={'period'}
-                        markedDates={getMarkedDates(period.startDate, period.endDate)}
-                        theme={{
-                            selectedDayBackgroundColor: '#1E2A38',
-                            todayTextColor: '#1E2A38',
-                            arrowColor: '#1E2A38',
-                            textDayHeaderFontSize: 12,
-                            textDayFontSize: 14,
+                        }
+                    }}
+                    markingType={'period'}
+                    markedDates={getMarkedDates(period.startDate, period.endDate)}
+                    theme={{
+                        selectedDayBackgroundColor: '#1E2A38',
+                        todayTextColor: '#1E2A38',
+                        arrowColor: '#1E2A38',
+                        textDayHeaderFontSize: 12,
+                        textDayFontSize: 14,
+                    }}
+                />
+                <View className='flex-row justify-between mt-7 '>
+                    <ButtonSecondary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Reset'
+                        onPress={() => {
+                            setPeriod({ startDate: '', endDate: '' });
+                            setFiltering(prev => ({ ...prev, date: '' }));
                         }}
                     />
 
+                    <ButtonPrimary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Terapkan'
+                        onPress={() => {
+                            bottomSheetRef.current?.close();
+                        }}
+                    />
 
-                </View>
-
-                <View className='flex-row justify-between mt-7 '>
-                    <ButtonSecondary className='w-[48%] rounded-lg py-2' text='Reset' onPress={() => { }} />
-                    <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
                 </View>
             </BottomSheetCustom>
         </View>
