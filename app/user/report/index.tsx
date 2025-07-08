@@ -722,6 +722,21 @@ const ReportScreen = () => {
                 }
             }
 
+
+            if (filters.search) {
+                const keyword = filters.search.toLowerCase();
+                const searchFields = [
+                    report.desc?.toLowerCase() || '',
+                    report.category?.toLowerCase() || '',
+                    report.email?.toLowerCase() || '',
+                    report.location?.[0]?.adress?.toLowerCase() || '',
+                ];
+
+                const isMatch = searchFields.some(field => field.includes(keyword));
+                if (!isMatch) return false;
+            }
+
+
             // Filter berdasarkan "Laporan Saya" (UID user)
             if (filters.onlyMyReports && userUid && report.uid !== userUid) {
                 return false;
@@ -782,6 +797,9 @@ const ReportScreen = () => {
                                     className="flex-1 text-gray-800"
                                     placeholder="Cari..."
                                     placeholderTextColor={'gray'}
+                                    onChangeText={(text) =>
+                                        setFiltering((prev) => ({ ...prev, search: text }))
+                                    }
                                 />
                             </View>
 
