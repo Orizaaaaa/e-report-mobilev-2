@@ -138,7 +138,7 @@ const TabButton = ({ item, onPress }: any) => {
 export default function Layout() {
   // nanti role di ambil dari local storage
 
-  const [role, setRole] = useState<'admin' | 'user'>('admin'); // ganti sesuai hasil dari async storage/local storage
+  const [role, setRole] = useState<'admin' | 'user'>('user'); // ganti sesuai hasil dari async storage/local storage
   const pathname = usePathname();
   const router = useRouter();
 

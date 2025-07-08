@@ -30,6 +30,7 @@ interface User {
     uid: string;
 }
 const Contest = (props: Props) => {
+
     const [loading, setLoading] = useState(false)
     const [dataContest, setDataContest] = useState<any[]>([]);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -180,6 +181,25 @@ const Contest = (props: Props) => {
 
         router.push(`/user/contest/${contestId}` as RelativePathString);
     }
+
+    const parseCustomDate = (dateStr: string) => {
+        const [day, month, year] = dateStr.split('-');
+        return new Date(`${year}-${month}-${day}`); // Convert to YYYY-MM-DD
+    };
+    const filteredData = dataContest.filter(item => {
+        const matchSearch = item?.desc?.toLowerCase().includes(filtering.search.toLowerCase()) ||
+            item?.location?.toLowerCase().includes(filtering.search.toLowerCase());
+
+        const itemDate = parseCustomDate(item.date);
+        const startDate = period.startDate ? new Date(period.startDate) : null;
+        const endDate = period.endDate ? new Date(period.endDate) : null;
+
+        const matchDate = (!startDate && !endDate) || (
+            startDate && endDate && itemDate >= startDate && itemDate <= endDate
+        );
+
+        return matchSearch && matchDate;
+    });
     return (
         <View className="flex-1 bg-white">
             {/* Bagian Atas */}
@@ -192,8 +212,8 @@ const Contest = (props: Props) => {
                         <TextInput
                             className="flex-1 text-gray-800"
                             placeholder="Cari..."
-                            value={searchText}
-                            onChangeText={setSearchText}
+                            value={filtering.search}
+                            onChangeText={(text) => setFiltering(prev => ({ ...prev, search: text }))}
                         />
                     </View>
 
@@ -224,7 +244,7 @@ const Contest = (props: Props) => {
                     {loading ? (
                         <ActivityIndicator size="large" color="#FF840C" />
                     ) : (
-                        dataContest.map(item => {
+                        filteredData.map(item => {
                             const sudahDaftar: any = item.userAudiens?.includes(userEmail);
                             return (
                                 <TouchableOpacity onPress={() => handleToDetail(item.id)} key={item.id}>
