@@ -169,7 +169,7 @@ const ReportDetailAdmin = () => {
             await addDoc(collection(db, 'notifications'), {
                 title: 'Laporan ',
                 body: `Laporan anda telah ditindak lanjuti oleh admin`,
-                toRole: 'admin',
+                toRole: 'user',
                 typeNotif: 'report',
                 userName: currentUser.name,
                 image: currentUser.image || 'image empty',

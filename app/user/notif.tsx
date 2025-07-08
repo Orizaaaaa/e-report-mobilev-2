@@ -1,16 +1,20 @@
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
+import NotifReportCard from '@/components/fragments/cardNotif/notifReportCard'
 import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRoute } from '@react-navigation/native'
+import { router } from 'expo-router'
 import { collection, getDocs } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {}
 
 const NotifUser = (props: Props) => {
     const route = useRoute()
     const params = route.params as { tab?: 'laporan' | 'lomba' }
+    const [userUid, setUserUid] = useState('')
 
     const [activeTab, setActiveTab] = useState<'laporan' | 'lomba'>('laporan')
 
@@ -25,6 +29,9 @@ const NotifUser = (props: Props) => {
     useEffect(() => {
         const fetchNotifs = async () => {
             try {
+                const userStr = await AsyncStorage.getItem('user');
+                const currentUser = userStr ? JSON.parse(userStr) : null;
+                setUserUid(currentUser.uid);
                 const snapshot = await getDocs(collection(db, 'notifications'));
                 const notifications = snapshot.docs.map(doc => ({
                     id: doc.id,
@@ -88,40 +95,64 @@ const NotifUser = (props: Props) => {
             <ScrollView>
                 {activeTab === 'laporan' ? (
                     // Konten Laporan
-                    <View className="flex-row gap-3 mb-5">
-                        <View className="w-20 h-20 rounded-xl">
-                            <Image
-                                className="w-full h-full rounded-full"
-                                source={require('../../assets/images/human.png')}
-                                resizeMode="cover"
-                            />
-                        </View>
-                        <View className="flex-1 mt-1">
-                            <Text className="text-sm text-wrap">Oriza Sativa</Text>
-                            <Text className="text-xs text-wrap">
-                                Telah membuat laporan prioritas Lorem ipsum dolor sit amet consectetur adipisicing elit...
+                    (() => {
+                        const laporanNotif = dataNotif
+                            .filter(
+                                (item: any) =>
+                                    item.typeNotif === 'report' && item.fromUid === userUid && item.toRole === 'user'
+                            )
+                            .sort(
+                                (a: any, b: any) =>
+                                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                            );
+
+                        return laporanNotif.length === 0 ? (
+                            <Text className="text-center text-gray-500 mt-5">
+                                Belum ada notifikasi
                             </Text>
-                            <Text className="text-xs text-slate-400">21 Januari 2023</Text>
-                        </View>
-                    </View>
+                        ) : (
+                            laporanNotif.map((item: any, index: number) => (
+                                <NotifReportCard
+                                    goToLink={() => router.push(`/admin/report/${item.reportId}`)}
+                                    key={index}
+                                    imageUrl={item.image}
+                                    description={item.body}
+                                    date={item.createdAt}
+                                    user={item.userName}
+                                />
+                            ))
+                        );
+                    })()
                 ) : (
                     // Konten Lomba
-                    <View className="flex-row gap-3 mb-5">
-                        <View className="w-20 h-20 rounded-xl">
-                            <Image
-                                className="w-full h-full rounded-full"
-                                source={require('../../assets/images/human.png')}
-                                resizeMode="cover"
-                            />
-                        </View>
-                        <View className="flex-1 mt-1">
-                            <Text className="text-sm text-wrap">Oriza Sativa</Text>
-                            <Text className="text-xs text-wrap">
-                                Telah mengikuti lomba desain aplikasi nasional dan berhasil daftar
+                    (() => {
+                        const contestNotif = dataNotif
+                            .filter(
+                                (item: any) =>
+                                    item.typeNotif === 'contest' && item.toRole === 'admin'
+                            )
+                            .sort(
+                                (a: any, b: any) =>
+                                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                            );
+
+                        return contestNotif.length === 0 ? (
+                            <Text className="text-center text-gray-500 mt-5">
+                                Belum ada notifikasi
                             </Text>
-                            <Text className="text-xs text-slate-400">5 Maret 2023</Text>
-                        </View>
-                    </View>
+                        ) : (
+                            contestNotif.map((item: any, index: number) => (
+                                <NotifReportCard
+                                    goToLink={() => router.push(`/admin/contest/${item.id}`)}
+                                    key={index}
+                                    imageUrl={item.image}
+                                    description={item.body}
+                                    date={item.createdAt}
+                                    user={item.userName}
+                                />
+                            ))
+                        );
+                    })()
                 )}
             </ScrollView>
 
