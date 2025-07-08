@@ -224,11 +224,13 @@ export default function Index() {
                     <View className="flex-1 bg-gray-200  h-14 px-4 rounded-full flex-row items-center gap-2">
                         <Feather name="search" size={24} color="#1E2A38" />
                         <TextInput
-                            className="flex-1 text-gray-800"
-                            placeholder="Cari..."
-                            placeholderTextColor={'black'}
-                            value={searchText}
-                            onChangeText={setSearchText}
+                            className="flex-1 text-primaryNavy"
+                            placeholder="Cari laporan..."
+                            placeholderTextColor={'gray'}
+                            value={filtering.search}
+                            onChangeText={(text) =>
+                                setFiltering((prev) => ({ ...prev, search: text }))
+                            }
                         />
                     </View>
 
