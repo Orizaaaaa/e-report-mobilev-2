@@ -71,6 +71,8 @@ const tabsAdmin = [
   { name: 'admin/contest/index', title: 'Lomba', icon: 'medal-outline' },
   { name: 'admin/contest/addContest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'admin/notif/NotifPage', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/profile/setting', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/profile/index', title: 'Lomba', icon: 'person-circle-outline' },
 ]
 
 
@@ -138,7 +140,7 @@ const TabButton = ({ item, onPress }: any) => {
 export default function Layout() {
   // nanti role di ambil dari local storage
 
-  const [role, setRole] = useState<'admin' | 'user'>('user'); // ganti sesuai hasil dari async storage/local storage
+  const [role, setRole] = useState<'admin' | 'user'>('admin'); // ganti sesuai hasil dari async storage/local storage
   const pathname = usePathname();
   const router = useRouter();
 
@@ -182,6 +184,7 @@ export default function Layout() {
 
           const shouldHide =
             tab.name === 'user/profile/setting' || // selalu disembunyikan
+            tab.name === 'admin/profile/setting' || // selalu disembunyikan
             tab.name === 'user/notif' || // selalu disembunyikan
             tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
