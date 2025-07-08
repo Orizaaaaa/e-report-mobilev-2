@@ -4,7 +4,7 @@ import BottomSheetCustom from '@/components/fragments/bottomSheet';
 import CardReport from '@/components/fragments/CardReport/CardReport';
 import IndicatorInfo from '@/components/fragments/IndicatorInfo/IndicatorInfo';
 import { db } from '@/lib/firebase/firebase';
-import { formatDate, getFirstTwoWords, truncateText } from '@/utils/helper';
+import { formatDate, getFirstTwoWords, STATUS_LIST, truncateText } from '@/utils/helper';
 import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -125,6 +125,73 @@ export default function Index() {
 
     const router = useRouter()
 
+    const resetFilters = () => {
+        setFiltering({
+            status: '',
+            date: '',
+            search: '',
+        });
+        setPeriod({
+            startDate: '',
+            endDate: '',
+        });
+        bottomSheetRef.current?.close(); // Tutup bottom sheet setelah reset
+    };
+
+    const applyFilters = () => {
+        bottomSheetRef.current?.close(); // Tutup bottom sheet setelah menerapkan
+    };
+    const filterReports = (reports: any[], filters: any) => {
+        return reports.filter((report) => {
+            // Filter berdasarkan status
+            if (filters.status && report.status !== filters.status) {
+                return false;
+            }
+
+            // Filter berdasarkan tanggal
+            if (filters.date && period.startDate) {
+                const reportDate = new Date(report.createdAt);
+                const startDate = new Date(period.startDate);
+
+                if (period.endDate) {
+                    const endDate = new Date(period.endDate);
+                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari agar mencakup hari terakhir
+
+                    if (reportDate < startDate || reportDate >= endDate) {
+                        return false;
+                    }
+                } else {
+                    // Filter untuk satu hari
+                    if (
+                        reportDate.getDate() !== startDate.getDate() ||
+                        reportDate.getMonth() !== startDate.getMonth() ||
+                        reportDate.getFullYear() !== startDate.getFullYear()
+                    ) {
+                        return false;
+                    }
+                }
+            }
+
+            // 🔍 Filter berdasarkan pencarian
+            if (filters.search) {
+                const keyword = filters.search.toLowerCase();
+                const searchFields = [
+                    report.desc?.toLowerCase() || '',
+                    report.category?.toLowerCase() || '',
+                    report.email?.toLowerCase() || '',
+                    report.location?.[0]?.adress?.toLowerCase() || '',
+                ];
+
+                const isMatch = searchFields.some(field => field.includes(keyword));
+                if (!isMatch) return false;
+            }
+
+            return true;
+        });
+    };
+
+    const filteredReports = filterReports(reports, filtering);
+
     return (
         <ScrollView className='pt-12 px-3 bg-white ' style={{ height: height }} >
             <View className="mb-40">
@@ -230,24 +297,34 @@ export default function Index() {
 
 
 
-                    <ScrollView
-                        className='mt-5 overflow-x-hidden'
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                    >
-                        {priorityReports.map((report: any, index: number) => (
-                            <CardReport
-                                key={report.id || index}
-                                image={
-                                    report.images && report.images.length > 0
-                                        ? { uri: report.images[0] }
-                                        : require('../../assets/images/demo.png') // fallback jika tidak ada gambar
-                                }
-                                desc={report.desc} // Bisa diganti jika ada image dari report
-                                handlepres={() => router.push(`/user/report/${report.id}`)}
-                            />
-                        ))}
-                    </ScrollView>
+                    {filteredReports.length === 0 ? (
+                        <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
+                    ) : (
+                        <ScrollView
+                            className='mt-5 overflow-x-hidden'
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                        >
+
+                            {filteredReports
+                                .filter(r => r.typeReport === 'Prioritas')
+                                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                                .map((report, index) => (
+                                    <CardReport
+                                        key={report.id || index}
+                                        image={
+                                            report.images && report.images.length > 0
+                                                ? { uri: report.images[0] }
+                                                : require('../../assets/images/demo.png')
+                                        }
+                                        desc={report.desc}
+                                        handlepres={() => router.push(`/user/report/${report.id}`)}
+                                    />
+                                ))}
+
+                        </ScrollView>
+                    )}
+
 
                 </View>
 
@@ -263,7 +340,7 @@ export default function Index() {
                     <Text className="mb-2 text-sm text-slate-400">Filter berdasarkan status</Text>
 
                     <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
-                        {statusList.map((item) => {
+                        {STATUS_LIST.map((item) => {
                             const isActive = filtering.status === item.value;
                             return (
                                 <TouchableOpacity
@@ -288,7 +365,6 @@ export default function Index() {
                         })}
                     </View>
                 </View>
-
 
 
 
@@ -346,8 +422,16 @@ export default function Index() {
                 </View>
 
                 <View className='flex-row justify-between mt-7 '>
-                    <ButtonSecondary className='w-[48%] rounded-lg py-2' text='Reset' onPress={() => { }} />
-                    <ButtonPrimary className='w-[48%] rounded-lg py-2' text='Terapkan' onPress={() => { }} />
+                    <ButtonSecondary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Reset'
+                        onPress={resetFilters}
+                    />
+                    <ButtonPrimary
+                        className='w-[48%] rounded-lg py-2'
+                        text='Terapkan'
+                        onPress={applyFilters}
+                    />
                 </View>
             </BottomSheetCustom>
         </ScrollView >
