@@ -3,9 +3,9 @@ import NotifReportCard from '@/components/fragments/cardNotif/notifReportCard'
 import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import { collection, getDocs } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {}
@@ -17,23 +17,25 @@ const NotifPage = (props: Props) => {
 
     const [activeTab, setActiveTab] = useState<'laporan' | 'lomba'>('laporan')
 
-    useEffect(() => {
-        const fetchNotifs = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'notifications'));
-                const notifications = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+    useFocusEffect(
+        useCallback(() => {
+            const fetchNotifs = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'notifications'));
+                    const notifications = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
 
-                setDataNotif(notifications);
-            } catch (err) {
-                console.error('❌ Gagal mengambil laporan:', err);
-            }
-        };
+                    setDataNotif(notifications);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil notifikasi:', err);
+                }
+            };
 
-        fetchNotifs();
-    }, []);
+            fetchNotifs();
+        }, []) // dependensinya bisa ditambahkan jika ada
+    );
 
     console.log('data notif', dataNotif);
 
