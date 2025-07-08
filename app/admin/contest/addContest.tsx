@@ -10,13 +10,14 @@ import * as ImagePicker from 'expo-image-picker'
 import { useRouter } from 'expo-router'
 import { addDoc, collection } from 'firebase/firestore'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
 import { View } from 'react-native-animatable'
 import { Calendar } from 'react-native-calendars'
 
 type Props = {}
 
 const AddContest = (props: Props) => {
+    const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
         image: '' as string, // URI dari gambar
         desc: '',
@@ -66,8 +67,10 @@ const AddContest = (props: Props) => {
     const router = useRouter();
 
     const handleCreateContest = async () => {
+        setLoading(true);
         if (!form.image || !form.desc || !form.date || !form.audiens) {
             alert('Mohon lengkapi semua data lomba');
+            setLoading(false);
             return;
         }
 
@@ -83,30 +86,35 @@ const AddContest = (props: Props) => {
 
             const downloadURL = await uploadOneImageToStorage(form.image, uid);
 
-            await addDoc(collection(db, 'contest'), {
+            // ✅ Tambahkan lomba dan simpan docRef
+            const contestRef = await addDoc(collection(db, 'contest'), {
                 image: downloadURL,
                 desc: form.desc,
                 date: form.date,
                 audiens: form.audiens,
                 userAudiens: form.userAudiens,
                 location: form.location,
-                createdAt: new Date(), // ✅ Gunakan Date bukan string
+                createdAt: new Date(), // Date object
             });
 
+            // ✅ Simpan notifikasi dengan contestId
             await addDoc(collection(db, 'notifications'), {
                 title: 'Lomba baru telah dibuat',
                 body: `Ada lomba baru telah dibuat, yaitu ${form.desc}`,
                 toRole: 'user',
                 typeNotif: 'contest',
-                image: currentUser.image || 'image empety',
+                image: currentUser.image || 'image empty',
                 fromUid: currentUser.uid,
+                contestId: contestRef.id, // ✅ simpan contestId di sini
                 createdAt: new Date().toISOString(),
                 read: false,
-                userName: 'Admin'
+                userName: 'Admin',
             });
 
+            // ✅ Kirim push notification
             await sendNotificationToRole('user', '📢 Lomba baru telah dibuat!');
 
+            // ✅ Reset form
             setForm({
                 image: '',
                 desc: '',
@@ -115,14 +123,16 @@ const AddContest = (props: Props) => {
                 userAudiens: [],
                 location: '',
             });
-
+            setLoading(false);
             alert('Lomba berhasil dibuat!');
             router.push('/admin/contest');
         } catch (error) {
+            setLoading(false);
             console.error('❌ Gagal membuat lomba:', error);
             alert('Terjadi kesalahan saat membuat lomba.');
         }
     };
+
 
 
     return (
@@ -202,12 +212,21 @@ const AddContest = (props: Props) => {
                 </View>
 
                 <View className='mt-7 flex-row'>
-                    <ButtonPrimary
-                        className='w-fit py-2 px-3 rounded-lg'
-                        text='Buat Lomba'
-                        onPress={handleCreateContest}
-                    />
+
+                    {loading ?
+                        <View className='px-6 py-4 mt-6 mb-6 rounded-lg bg-primaryNavy' >
+                            <ActivityIndicator size="large" color="white" />
+                        </View>
+
+                        :
+                        <ButtonPrimary
+                            className='w-fit py-2 px-3 rounded-lg'
+                            text='Buat Lomba'
+                            onPress={handleCreateContest}
+                        />}
                 </View>
+
+
             </ScrollView>
 
             {/* Kalender */}
