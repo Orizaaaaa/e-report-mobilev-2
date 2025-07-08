@@ -93,10 +93,16 @@ const NotifPage = (props: Props) => {
                 {activeTab === 'laporan' ? (
                     // Konten Laporan
                     (() => {
-                        const laporanNotif = dataNotif.filter(
-                            (item: any) =>
-                                item.typeNotif === 'report' && item.toRole === 'admin'
-                        );
+                        const laporanNotif = dataNotif
+                            .filter(
+                                (item: any) =>
+                                    item.typeNotif === 'report' && item.toRole === 'admin'
+                            )
+                            .sort(
+                                (a: any, b: any) =>
+                                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                            );
+
                         return laporanNotif.length === 0 ? (
                             <Text className="text-center text-gray-500 mt-5">
                                 Belum ada notifikasi
@@ -117,10 +123,16 @@ const NotifPage = (props: Props) => {
                 ) : (
                     // Konten Lomba
                     (() => {
-                        const contestNotif = dataNotif.filter(
-                            (item: any) =>
-                                item.typeNotif === 'contest' && item.toRole === 'admin'
-                        );
+                        const contestNotif = dataNotif
+                            .filter(
+                                (item: any) =>
+                                    item.typeNotif === 'contest' && item.toRole === 'admin'
+                            )
+                            .sort(
+                                (a: any, b: any) =>
+                                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                            );
+
                         return contestNotif.length === 0 ? (
                             <Text className="text-center text-gray-500 mt-5">
                                 Belum ada notifikasi
@@ -140,6 +152,7 @@ const NotifPage = (props: Props) => {
                     })()
                 )}
             </ScrollView>
+
 
 
         </SafeAreaView>
