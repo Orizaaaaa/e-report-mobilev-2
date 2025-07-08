@@ -1,12 +1,11 @@
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
 import DetailReport from '@/components/fragments/DetailReport/DetailReport'
 import { db } from '@/lib/firebase/firebase'
-import { Octicons } from '@expo/vector-icons'
-import BottomSheet from '@gorhom/bottom-sheet'
-import * as ImagePicker from 'expo-image-picker'
+import { AntDesign, Octicons } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { doc, getDoc } from 'firebase/firestore'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -36,37 +35,15 @@ const ReportDetailAdmin = () => {
 
     const [reportData, setReportData] = useState<ReportData | null>(null)
     const [loading, setLoading] = useState(true)
-
-    const [form, setForm] = useState({
-        status: '',
-        image: '',
-        reason: '',
-    })
-
-    const bottomSheetRef = useRef<BottomSheet>(null)
-    const snapPoints = useMemo(() => ['30%'], [])
-
-    const handleChange = (key: keyof typeof form, value: string | number) => {
-        setForm(prev => ({ ...prev, [key]: value }))
-    }
-
-    const handlePickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
-        })
-
-        if (!result.canceled) {
-            const imageUri = result.assets[0].uri
-            handleChange('image', imageUri)
-        }
-    }
+    const [user, setUser] = useState('');
 
     useFocusEffect(
         useCallback(() => {
             let isActive = true;
-
             const fetchReport = async () => {
+                const userStr = await AsyncStorage.getItem('user');
+                const userData = userStr ? JSON.parse(userStr) : null;
+                setUser(userData.uid);
                 try {
                     const docRef = doc(db, 'reports', reportId);
                     const docSnap = await getDoc(docRef);
@@ -96,14 +73,16 @@ const ReportDetailAdmin = () => {
 
 
     console.log(reportData);
+    console.log('memek', user);
 
 
     return (
-        <SafeAreaView className="flex-1 pt-5">
+        <SafeAreaView className="flex-1 pt-5 mb-16">
             <ScrollView className="px-3">
                 <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full">
                     <ButtonBack colorIcon="#FF840C" />
-                    <Octicons onPress={() => router.push(`/user/report/${id}/edit`)} name="report" size={20} color="gray" />
+                    {user === reportData?.uid ? <AntDesign onPress={() => router.push(`/user/report/${id}/edit`)} name="edit" size={20} color="orange" />
+                        : <Octicons name="report" size={20} color="gray" />}
                 </View>
 
                 {loading ? (

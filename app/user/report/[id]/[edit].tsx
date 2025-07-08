@@ -7,7 +7,7 @@ import CategorySelection from '@/components/fragments/CategorySelection/Category
 import ImageUploadSection from '@/components/fragments/ImageUpload/ImageUploadSection';
 import { db } from '@/lib/firebase/firebase';
 import { CATEGORIES_DATA } from '@/utils/helper';
-import { Octicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, usePathname, useRouter } from 'expo-router';
@@ -196,7 +196,7 @@ const EditReportPage = () => {
                 < >
                     <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full mb-3">
                         <ButtonBack colorIcon="#FF840C" />
-                        <Octicons onPress={() => router.push(`/user/report/${id}/edit`)} name="report" size={20} color="gray" />
+                        <AntDesign name="edit" size={20} color="orange" />
                     </View>
                     <ImageUploadSection
                         images={images}
