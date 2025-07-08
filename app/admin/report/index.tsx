@@ -166,21 +166,30 @@ const index = (props: Props) => {
 
         switch (activePage) {
             case 'regular': {
-                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Reguler');
+                const filtered = filteredReports
+                    .filter((item: any) => item.typeReport === 'Reguler')
+                    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan reguler</Text>
                 ) : renderCards(filtered, 'REGULER');
             }
 
             case 'prioritas': {
-                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Prioritas');
+                const filtered = filteredReports
+                    .filter((item: any) => item.typeReport === 'Prioritas')
+                    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan prioritas</Text>
                 ) : renderCards(filtered, 'PRIORITAS');
             }
 
             case 'selesai': {
-                const filtered = filteredReports.filter((item: any) => item.status === 'selesai');
+                const filtered = filteredReports
+                    .filter((item: any) => item.status === 'selesai')
+                    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
                 return filtered.length === 0 ? (
                     <Text className="text-center text-gray-500 mt-5">Belum ada laporan selesai</Text>
                 ) : renderCards(filtered, 'SELESAI');
@@ -190,6 +199,7 @@ const index = (props: Props) => {
                 return null;
         }
     };
+
 
 
     const resetFilters = () => {
