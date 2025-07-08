@@ -1,11 +1,35 @@
-import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons'
-import { router } from 'expo-router'
-import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+// sesuaikan path config firebase kamu
+import { auth } from '@/lib/firebase/firebase';
+import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import React, { useState } from 'react';
+import { Alert, Modal, Text, TouchableOpacity, View } from 'react-native';
 
-type Props = {}
+const Setting = () => {
+    const [modalConfirmVisible, setModalConfirmVisible] = useState(false);
+    const [modalSentVisible, setModalSentVisible] = useState(false);
 
-const setting = (props: Props) => {
+    const handleSendPasswordReset = async () => {
+        try {
+            const userStr = await AsyncStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+
+            if (!user?.email) {
+                Alert.alert("Gagal", "Email pengguna tidak ditemukan.");
+                return;
+            }
+
+            await sendPasswordResetEmail(auth, user.email);
+            setModalConfirmVisible(false);
+            setModalSentVisible(true);
+        } catch (error) {
+            console.error("❌ Gagal mengirim email reset password:", error);
+            Alert.alert("Gagal", "Terjadi kesalahan saat mengirim email.");
+        }
+    };
+
     return (
         <View className='py-12 px-3'>
             <View className='flex-row items-center gap-6'>
@@ -14,9 +38,10 @@ const setting = (props: Props) => {
             </View>
 
             <View className="mt-10 px-4">
-
-
-                <TouchableOpacity className="flex-row justify-between items-center bg-white px-4 py-3 mb-4 rounded-xl shadow-md">
+                <TouchableOpacity
+                    onPress={() => setModalConfirmVisible(true)}
+                    className="flex-row justify-between items-center bg-white px-4 py-3 mb-4 rounded-xl shadow-md"
+                >
                     <Text className="text-base text-gray-800">Ganti Password</Text>
                     <MaterialIcons name="password" size={24} color="black" />
                 </TouchableOpacity>
@@ -31,8 +56,51 @@ const setting = (props: Props) => {
                     <MaterialIcons name="logout" size={24} color="black" />
                 </TouchableOpacity>
             </View>
-        </View>
-    )
-}
 
-export default setting
+            {/* Modal Konfirmasi Ganti Password */}
+            <Modal
+                transparent
+                visible={modalConfirmVisible}
+                animationType="fade"
+                onRequestClose={() => setModalConfirmVisible(false)}
+            >
+                <View className="flex-1 justify-center items-center bg-black/40 px-4">
+                    <View className="bg-white p-6 rounded-xl w-full">
+                        <Text className="text-lg font-semibold mb-3 text-center">Apakah Anda yakin ingin mengganti password?</Text>
+                        <View className="flex-row justify-end gap-4 mt-4">
+                            <TouchableOpacity onPress={() => setModalConfirmVisible(false)}>
+                                <Text className="text-gray-600">Batal</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleSendPasswordReset}>
+                                <Text className="text-primaryOrange font-semibold">Iya</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal Notifikasi Email Terkirim */}
+            <Modal
+                transparent
+                visible={modalSentVisible}
+                animationType="fade"
+                onRequestClose={() => setModalSentVisible(false)}
+            >
+                <View className="flex-1 justify-center items-center bg-black/40 px-4">
+                    <View className="bg-white p-6 rounded-xl w-full">
+                        <Text className="text-lg font-semibold text-center mb-2">Email telah dikirim</Text>
+                        <Text className="text-center text-gray-700">Silakan cek email Anda untuk mengganti password.</Text>
+                        <TouchableOpacity
+                            onPress={() => setModalSentVisible(false)}
+                            className="mt-4 bg-primaryOrange py-2 px-4 rounded-lg self-center"
+                        >
+                            <Text className="text-white font-medium">Tutup</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        </View>
+    );
+};
+
+export default Setting;
