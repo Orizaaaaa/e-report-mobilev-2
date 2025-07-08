@@ -105,6 +105,10 @@ const ReportDetailAdmin = () => {
             alert('Alasan harus diisi untuk status Tidak Valid');
             return;
         }
+        if (form.image.toLowerCase() === '' && !form.reason.trim()) {
+            alert('Bukti penyelesaian wajib di upload');
+            return;
+        }
 
         try {
             setLoading(true);
