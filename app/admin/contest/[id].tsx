@@ -1,17 +1,23 @@
 
+import { uploadOneImageToStorage } from '@/api/api'; // atau sesuaikan path-mu
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { db } from "@/lib/firebase/firebase";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams } from "expo-router";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
     ActivityIndicator,
+    Alert,
     FlatList,
     Image,
+    Modal,
     SafeAreaView,
     Text,
     TextInput,
+    TouchableOpacity,
     View,
 } from "react-native";
 
@@ -25,11 +31,20 @@ type Participant = {
 const DetailContestAdmin = () => {
     const { id } = useLocalSearchParams();
     const contestId: any = id
-
+    const [loadingEdit, setLoadingEdit] = useState(false);
     const [contest, setContest] = useState<any>(null);
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(true);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [editForm, setEditForm] = useState({
+        desc: '',
+        date: '',
+        location: '',
+        image: '',
+    });
+
+
 
     const filteredParticipants = participants.filter(p =>
         p.name.toLowerCase().includes(query.toLowerCase())
@@ -108,6 +123,40 @@ const DetailContestAdmin = () => {
         );
     }
 
+    const handleEdit = () => {
+        async () => {
+            try {
+                const docRef = doc(db, 'contest', contestId);
+                let updatedImageUrl = contest.image;
+
+                // ✅ Jika gambar diubah (URI lokal berbeda dari yang lama)
+                if (editForm.image && editForm.image !== contest.image && editForm.image.startsWith('file')) {
+                    const userStr = await AsyncStorage.getItem('user');
+                    const currentUser = userStr ? JSON.parse(userStr) : null;
+                    updatedImageUrl = await uploadOneImageToStorage(editForm.image, currentUser.uid);
+                }
+
+                await updateDoc(docRef, {
+                    desc: editForm.desc,
+                    date: editForm.date,
+                    location: editForm.location,
+                    image: updatedImageUrl,
+                });
+
+                setContest((prev: { desc: string; date: string; location: string; image: string }) => ({
+                    ...prev,
+                    ...editForm,
+                    image: updatedImageUrl,
+                }));
+                setEditModalVisible(false);
+                Alert.alert('Berhasil', 'Data lomba berhasil diperbarui');
+            } catch (err) {
+                console.error('Gagal update:', err);
+                Alert.alert('Error', 'Gagal memperbarui lomba');
+            }
+        }
+    };
+
     return (
         <SafeAreaView className="flex-1 mb-10 py-12 px-3">
             <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full mb-5">
@@ -123,7 +172,25 @@ const DetailContestAdmin = () => {
                     />
                 </View>
 
+                <View className="flex-row justify-end">
+                    <TouchableOpacity onPress={() => {
+                        setEditForm({
+                            desc: contest.desc || '',
+                            date: contest.date || '',
+                            location: contest.location || '',
+                            image: contest.image || '', // tambahkan ini
+                        });
+
+                        setEditModalVisible(true);
+                    }}>
+                        <Ionicons name="create-outline" size={30} color="#FF840C" />
+                    </TouchableOpacity>
+                </View>
+
+
                 <View >
+
+
                     <View className="mb-5" >
                         <Text className="text-gray-400 text-sm">Deskripsi</Text>
                         <Text>{contest.desc}</Text>
@@ -152,7 +219,10 @@ const DetailContestAdmin = () => {
                         </View>
                     </View>
 
-
+                    <View className="mb-5" >
+                        <Text className="text-gray-400 text-sm">Lokasi</Text>
+                        <Text className="text-base">{contest.location}</Text>
+                    </View>
 
                     <View className="flex-row items-center gap-2 mb-4">
                         <View className="flex-1">
@@ -171,6 +241,8 @@ const DetailContestAdmin = () => {
                             color="black"
                         />
                     </View>
+
+
                 </View>
             </View>
 
@@ -184,6 +256,123 @@ const DetailContestAdmin = () => {
                     </Text>
                 }
             />
+
+            <Modal
+                visible={editModalVisible}
+                transparent
+                animationType="slide"
+                onRequestClose={() => setEditModalVisible(false)}
+            >
+                <View className="flex-1 justify-center items-center bg-black/40 px-4">
+                    <View className="bg-white w-full rounded-xl p-4">
+                        <Text className="text-lg font-semibold mb-4 text-center">Edit Lomba</Text>
+
+                        {/* Gambar */}
+                        <TouchableOpacity
+                            onPress={async () => {
+                                const result = await ImagePicker.launchImageLibraryAsync({
+                                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                                    quality: 1,
+                                });
+
+                                if (!result.canceled) {
+                                    const uri = result.assets[0].uri;
+                                    setEditForm(prev => ({ ...prev, image: uri }));
+                                }
+                            }}
+                            className="mb-4 w-full h-40 rounded-xl justify-center items-center border-2 border-dashed border-gray-400 relative"
+                        >
+                            {editForm.image ? (
+                                <>
+                                    <Image
+                                        source={{ uri: editForm.image }}
+                                        className="w-full h-full rounded-xl"
+                                        resizeMode="cover"
+                                    />
+                                    <View className="absolute bottom-2 right-2 bg-white p-1 rounded-full">
+                                        <Ionicons name="camera" size={20} color="black" />
+                                    </View>
+                                </>
+                            ) : (
+                                <Ionicons name="image-outline" size={32} color="gray" />
+                            )}
+                        </TouchableOpacity>
+
+                        {/* Deskripsi */}
+                        <Text className="text-gray-500 mb-1">Deskripsi</Text>
+                        <TextInput
+                            className="border p-2 rounded-lg mb-3"
+                            value={editForm.desc}
+                            onChangeText={(text) => setEditForm({ ...editForm, desc: text })}
+                        />
+
+                        {/* Tanggal */}
+                        <Text className="text-gray-500 mb-1">Tanggal</Text>
+                        <TextInput
+                            className="border p-2 rounded-lg mb-3"
+                            value={editForm.date}
+                            onChangeText={(text) => setEditForm({ ...editForm, date: text })}
+                        />
+
+                        {/* Lokasi */}
+                        <Text className="text-gray-500 mb-1">Lokasi</Text>
+                        <TextInput
+                            className="border p-2 rounded-lg mb-4"
+                            value={editForm.location}
+                            onChangeText={(text) => setEditForm({ ...editForm, location: text })}
+                        />
+
+                        {/* Tombol Aksi */}
+                        <View className="flex-row justify-between">
+                            <TouchableOpacity
+                                onPress={() => setEditModalVisible(false)}
+                                className="px-4 py-2 bg-gray-300 rounded-lg"
+                            >
+                                <Text>Batal</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    try {
+                                        const docRef = doc(db, 'contest', contestId);
+                                        let updatedImageUrl = contest.image;
+
+                                        // ✅ Jika gambar diubah (URI lokal berbeda dari yang lama)
+                                        if (editForm.image && editForm.image !== contest.image && editForm.image.startsWith('file')) {
+                                            const userStr = await AsyncStorage.getItem('user');
+                                            const currentUser = userStr ? JSON.parse(userStr) : null;
+                                            updatedImageUrl = await uploadOneImageToStorage(editForm.image, currentUser.uid);
+                                        }
+
+                                        await updateDoc(docRef, {
+                                            desc: editForm.desc,
+                                            date: editForm.date,
+                                            location: editForm.location,
+                                            image: updatedImageUrl,
+                                        });
+
+                                        setContest((prev: { desc: string; date: string; location: string; image: string }) => ({
+                                            ...prev,
+                                            ...editForm,
+                                            image: updatedImageUrl,
+                                        }));
+                                        setEditModalVisible(false);
+                                        Alert.alert('Berhasil', 'Data lomba berhasil diperbarui');
+                                    } catch (err) {
+                                        console.error('Gagal update:', err);
+                                        Alert.alert('Error', 'Gagal memperbarui lomba');
+                                    }
+                                }}
+                                className="px-4 py-2 bg-primaryOrange rounded-lg"
+                            >
+                                <Text className="text-white">Simpan</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+
         </SafeAreaView>
     );
 };
