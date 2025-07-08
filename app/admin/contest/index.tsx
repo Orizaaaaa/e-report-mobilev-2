@@ -151,7 +151,7 @@ const Contest = (props: Props) => {
 
 
     console.log(filtering);
-
+    const totalLomba = dataContest.length;
     return (
         <View className="flex-1 bg-white">
             {/* Bagian Atas */}
@@ -182,7 +182,7 @@ const Contest = (props: Props) => {
 
                 <View className="relative z-10 flex justify-center items-center mt-4">
                     <MaterialCommunityIcons name="trophy-award" size={70} color="#FF840C" />
-                    <Text className="text-3xl text-white">700</Text>
+                    <Text className="text-3xl text-white">{totalLomba}</Text>
                     <Text className="text-slate-200">Lomba Tersedia</Text>
 
                 </View>
