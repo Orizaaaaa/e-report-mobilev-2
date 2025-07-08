@@ -26,7 +26,7 @@ const statusList = [
 export default function Index() {
     const [userData, setUserData]: any = useState({});
     const [reports, setReports]: any = useState([]);
-    const [searchText, setSearchText] = useState('');
+    const [contestValue, setContestValue] = useState('');
 
     useFocusEffect(
         useCallback(() => {
@@ -36,6 +36,7 @@ export default function Index() {
                 if (user) {
                     setUserData({ user });
                 }
+
             };
 
             fetchUser();
@@ -51,6 +52,13 @@ export default function Index() {
                     ...doc.data(),
                 }));
 
+
+                const snapshotContest = await getDocs(collection(db, 'contest'));
+                const contestShot = snapshotContest.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setContestValue(contestShot.length.toString());
                 setReports(reports);
             } catch (err) {
                 console.error('❌ Gagal mengambil laporan:', err);
@@ -262,7 +270,7 @@ export default function Index() {
 
 
                     <View className='absolute bottom-0 left-0 right-0 p-5'>
-                        <Text className='text-white text-lg'>Lomba Tersedia <Text className='text-primaryOrange font-semibold' >30</Text> </Text>
+                        <Text className='text-white text-lg'>Lomba Tersedia <Text className='text-primaryOrange font-semibold' >{contestValue}</Text> </Text>
                         <Text className='text-white text-sm'>Terbuka untuk umum</Text>
 
                         <View className='flex-row justify-between items-center mt-3'>
