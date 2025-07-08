@@ -8,7 +8,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
     ActivityIndicator,
     Alert,
-    Dimensions,
     SafeAreaView,
     ScrollView,
     Switch,
@@ -36,15 +35,11 @@ import { sendNotificationToRole, uploadImagesToStorage } from '@/api/api';
 import CategorySelection from '@/components/fragments/CategorySelection/CategorySelection';
 import { db } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from 'expo-router';
 import { addDoc, collection, getDocs } from 'firebase/firestore';
 
-const { width: windowWidth } = Dimensions.get('window');
 
-type CaraoselCardProps = {
-    imageCaraosel: string[];
-    typeReport: 'REGULER' | 'PRIORITAS';
-};
-// Constants
+
 
 const MAX_IMAGES = 4;
 
@@ -52,6 +47,7 @@ const ReportScreen = () => {
 
     // State Management
     const [loadingSend, setLoadingSend] = useState(false);
+    const [user, setUser] = useState('')
     const [dataReport, setDataReport]: any = useState([])
     const [form, setForm] = useState<FormState>({
         desc: '',
@@ -76,19 +72,12 @@ const ReportScreen = () => {
     const [results, setResults] = useState<any[]>([]);
     const [searched, setSearched] = useState(false);
 
-    // Filter State
-    const [period, setPeriod] = useState({ startDate: '', endDate: '' });
-    const [filtering, setFiltering] = useState({
-        status: '',
-        date: '',
-        search: '',
-    });
 
     // Refs
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["80%"], []);
 
-    // Effects
+    // fetching ke api
     useEffect(() => {
         setForm(prevForm => ({ ...prevForm, images: images }));
     }, [images]);
@@ -113,6 +102,23 @@ const ReportScreen = () => {
             }
         });
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchUser = async () => {
+                try {
+                    const userStr = await AsyncStorage.getItem('user');
+                    const userData = userStr ? JSON.parse(userStr) : null;
+                    setUser(userData.uid);
+                } catch (error) {
+                    console.error('Gagal mengambil data user:', error);
+                }
+            };
+
+            fetchUser();
+        }, [])
+    );
+
 
     // Handlers
     const handleImagePickerResponse = (result: ImagePicker.ImagePickerResult) => {
@@ -283,7 +289,23 @@ const ReportScreen = () => {
                 read: false,
             });
 
+            // perbarui state 
+            const fetchReports = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'reports'));
+                    const reports = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+                    handleResetForm();
+                    setDataReport(reports);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil laporan:', err);
+                }
+            };
+            fetchReports();
             setLoadingSend(false);
+            router.push('/user/report/');
             Alert.alert('Sukses', 'Laporan berhasil dikirim!');
         } catch (err) {
             setLoadingSend(false);
@@ -292,9 +314,7 @@ const ReportScreen = () => {
         }
     };
 
-
-
-    const resetForm = () => {
+    const handleResetForm = () => {
         setForm({
             desc: '',
             images: [],
@@ -312,37 +332,6 @@ const ReportScreen = () => {
         setSearched(false);
         setActiveCategory(null);
         setMainImageIndex(0);
-    };
-
-    const handleSearch = async () => {
-        if (query.length < 3) {
-            setResults([]);
-            setSearched(true);
-            return;
-        }
-
-        setLoading(true);
-        setResults([]);
-        setSearched(false);
-
-        try {
-            const res = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1&accept-language=id`,
-                {
-                    headers: {
-                        'User-Agent': 'e-report-mobile/1.0 (youremail@example.com)',
-                    },
-                }
-            );
-            const data = await res.json();
-            setResults(Array.isArray(data) ? data : []);
-        } catch (err) {
-            console.error('Search error:', err);
-            setResults([]);
-        } finally {
-            setLoading(false);
-            setSearched(true);
-        }
     };
 
     const handleSelect = (item: any) => {
@@ -364,13 +353,6 @@ const ReportScreen = () => {
         setSearched(false);
     };
 
-    const openBottomSheet = () => {
-        bottomSheetRef.current?.expand();
-    };
-
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log("BottomSheet index:", index);
-    }, []);
 
     // Helper Functions
     const getMarkedDates = (start: string, end: string) => {
@@ -518,10 +500,9 @@ const ReportScreen = () => {
 
         fetchReports();
     }, []);
-    console.log('anying', dataReport);
 
     const renderContent = () => {
-        const filteredReports = filterReports(dataReport, filtering);
+        const filteredReports = filterReports(dataReport, filtering, user);
 
         switch (activePage) {
             case 'regular': {
@@ -588,6 +569,52 @@ const ReportScreen = () => {
         }
     };
 
+    // filtering
+
+    const [period, setPeriod] = useState({ startDate: '', endDate: '' });
+    const [filtering, setFiltering] = useState({
+        status: '',
+        date: '',
+        search: '',
+        onlyMyReports: false
+    });
+    const handleSearch = async () => {
+        if (query.length < 3) {
+            setResults([]);
+            setSearched(true);
+            return;
+        }
+
+        setLoading(true);
+        setResults([]);
+        setSearched(false);
+
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1&accept-language=id`,
+                {
+                    headers: {
+                        'User-Agent': 'e-report-mobile/1.0 (youremail@example.com)',
+                    },
+                }
+            );
+            const data = await res.json();
+            setResults(Array.isArray(data) ? data : []);
+        } catch (err) {
+            console.error('Search error:', err);
+            setResults([]);
+        } finally {
+            setLoading(false);
+            setSearched(true);
+        }
+    };
+    const openBottomSheet = () => {
+        bottomSheetRef.current?.expand();
+    };
+
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log("BottomSheet index:", index);
+    }, []);
 
     const renderStatusFilter = () => (
         <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-2 py-2">
@@ -662,7 +689,9 @@ const ReportScreen = () => {
         />
     );
 
-    const filterReports = (reports: any[], filters: any) => {
+
+    // filtering
+    const filterReports = (reports: any[], filters: any, userUid?: string) => {
         return reports.filter((report) => {
             // Filter berdasarkan status
             if (filters.status && report.status !== filters.status) {
@@ -676,13 +705,13 @@ const ReportScreen = () => {
 
                 if (period.endDate) {
                     const endDate = new Date(period.endDate);
-                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari untuk mencakup seluruh hari terakhir
+                    endDate.setDate(endDate.getDate() + 1); // Tambah 1 hari agar hari terakhir tetap terhitung
 
                     if (reportDate < startDate || reportDate >= endDate) {
                         return false;
                     }
                 } else {
-                    // Filter untuk satu hari tertentu
+                    // Jika hanya satu tanggal
                     if (
                         reportDate.getDate() !== startDate.getDate() ||
                         reportDate.getMonth() !== startDate.getMonth() ||
@@ -693,15 +722,22 @@ const ReportScreen = () => {
                 }
             }
 
+            // Filter berdasarkan "Laporan Saya" (UID user)
+            if (filters.onlyMyReports && userUid && report.uid !== userUid) {
+                return false;
+            }
+
             return true;
         });
     };
+
 
     const resetFilters = () => {
         setFiltering({
             status: '',
             date: '',
             search: '',
+            onlyMyReports: false
         });
         setPeriod({
             startDate: '',
@@ -714,6 +750,7 @@ const ReportScreen = () => {
         bottomSheetRef.current?.close(); // Tutup bottom sheet setelah menerapkan
     };
     console.log(filtering);
+
 
     return (
         <SafeAreaView className='flex-1'>
@@ -785,25 +822,42 @@ const ReportScreen = () => {
                     {renderStatusFilter()}
                 </View>
 
-                <View className='mt-7'>
+                <View className="mt-7">
                     <Text className="text-sm text-slate-400">Filter berdasarkan tanggal</Text>
                     {renderCalendar()}
                 </View>
 
-                <View className='flex-row justify-between mt-7'>
+                <View className="mt-7 flex-row items-center justify-between bg-gray-100 rounded-xl px-4 py-3">
+                    <View className="flex-1">
+                        <Text className="text-base font-medium text-gray-800">Hanya Laporan Saya</Text>
+                        <Text className="text-xs text-gray-500">Tampilkan hanya laporan yang Anda buat</Text>
+                    </View>
+                    <Switch
+                        trackColor={{ false: "#e5e7eb", true: "#1E2A38" }}
+                        thumbColor="#ffffff"
+                        ios_backgroundColor="#e5e7eb"
+                        onValueChange={(value) =>
+                            setFiltering(prev => ({ ...prev, onlyMyReports: value }))
+                        }
+                        value={filtering.onlyMyReports}
+                        className="ml-2"
+                    />
+                </View>
 
+                <View className="flex-row justify-between mt-7">
                     <ButtonSecondary
-                        className='w-[48%] rounded-lg py-2'
-                        text='Reset'
+                        className="w-[48%] rounded-lg py-2"
+                        text="Reset"
                         onPress={resetFilters}
                     />
                     <ButtonPrimary
-                        className='w-[48%] rounded-lg py-2'
-                        text='Terapkan'
+                        className="w-[48%] rounded-lg py-2"
+                        text="Terapkan"
                         onPress={applyFilters}
                     />
                 </View>
             </BottomSheetCustom>
+
         </SafeAreaView>
     );
 };
