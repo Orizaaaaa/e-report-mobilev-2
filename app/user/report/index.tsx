@@ -397,7 +397,7 @@ const ReportScreen = () => {
 
     // Render Functions
     const renderLaporanForm = () => (
-        <ScrollView className='mb-24'>
+        <ScrollView className='mb-5'>
             <ImageUploadSection
                 images={images}
                 mainImageIndex={mainImageIndex}
