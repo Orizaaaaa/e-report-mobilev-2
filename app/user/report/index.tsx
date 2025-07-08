@@ -525,9 +525,17 @@ const ReportScreen = () => {
 
         switch (activePage) {
             case 'regular': {
-                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Reguler');
+                const filtered = filteredReports
+                    .filter((item: any) => item.typeReport === 'Reguler')
+                    .sort(
+                        (a: any, b: any) =>
+                            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                    );
+
                 return filtered.length === 0 ? (
-                    <Text className="text-center text-gray-500 mt-2">Belum ada laporan reguler</Text>
+                    <Text className="text-center text-gray-500 mt-2">
+                        Belum ada laporan reguler
+                    </Text>
                 ) : (
                     <ScrollView contentContainerStyle={{ paddingBottom: 60 }}>
                         {filtered.map((item: any, index: number) => (
@@ -543,10 +551,19 @@ const ReportScreen = () => {
                     </ScrollView>
                 );
             }
+
             case 'prioritas': {
-                const filtered = filteredReports.filter((item: any) => item.typeReport === 'Prioritas');
+                const filtered = filteredReports
+                    .filter((item: any) => item.typeReport === 'Prioritas')
+                    .sort(
+                        (a: any, b: any) =>
+                            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                    );
+
                 return filtered.length === 0 ? (
-                    <Text className="text-center text-gray-500 mt-2">Belum ada laporan prioritas</Text>
+                    <Text className="text-center text-gray-500 mt-2">
+                        Belum ada laporan prioritas
+                    </Text>
                 ) : (
                     <ScrollView contentContainerStyle={{ paddingBottom: 60 }}>
                         {filtered.map((item: any, index: number) => (
@@ -562,8 +579,10 @@ const ReportScreen = () => {
                     </ScrollView>
                 );
             }
+
             case 'laporan':
                 return renderLaporanForm();
+
             default:
                 return null;
         }
