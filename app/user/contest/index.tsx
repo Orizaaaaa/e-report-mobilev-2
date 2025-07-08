@@ -1,3 +1,4 @@
+import { sendNotificationToRole } from '@/api/api';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
 import ButtonSecondary from '@/components/elements/Button/ButtonSecondary';
 import BottomSheetCustom from '@/components/fragments/bottomSheet';
@@ -8,7 +9,7 @@ import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-ico
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RelativePathString, router, useFocusEffect } from 'expo-router';
-import { collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -22,10 +23,16 @@ const statusList = [
     { label: 'Selesai', value: 'done', icon: <MaterialCommunityIcons name="archive-check-outline" size={18} color="black" /> },
 ];
 type Props = {}
-
+interface User {
+    email: string;
+    name: string;
+    image: string;
+    uid: string;
+}
 const Contest = (props: Props) => {
     const [loading, setLoading] = useState(false)
     const [dataContest, setDataContest] = useState<any[]>([]);
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [userEmail, setUserEmail] = useState('');
 
     // Ambil data user dari AsyncStorage
@@ -34,6 +41,7 @@ const Contest = (props: Props) => {
             const userStr = await AsyncStorage.getItem('user');
             const user = userStr ? JSON.parse(userStr) : null;
             setUserEmail(user?.email || '');
+            setCurrentUser(user || '');
         };
         fetchUser();
     }, []);
@@ -86,6 +94,19 @@ const Contest = (props: Props) => {
                 userAudiens: updatedUserAudiens,
             });
 
+            await sendNotificationToRole('admin', `${userEmail} telah bergabung di lomba ${contest.desc}!`);
+            await addDoc(collection(db, 'notifications'), {
+                title: 'Laporan Baru',
+                body: ` ${currentUser?.name} Telah bergabung di lomba ${contest.desc}!`,
+                toRole: 'admin',
+                typeNotif: 'contest',
+                userName: currentUser?.name || 'User',
+                image: currentUser?.image || 'image empty',
+                fromUid: currentUser?.uid,
+                reportId: contestId, // ✅ ID laporan dibawa ke notifikasi
+                createdAt: new Date().toISOString(),
+                read: false,
+            });
             // ✅ Update state lokal agar UI ikut berubah
             setDataContest(prev =>
                 prev.map(item =>
