@@ -61,7 +61,6 @@ const tabsUser = [
   { name: 'user/notif', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'register', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'login', title: 'Profile', icon: 'person-circle-outline' },
-
 ];
 
 
@@ -140,25 +139,25 @@ const TabButton = ({ item, onPress }: any) => {
 export default function Layout() {
   // nanti role di ambil dari local storage
 
-  const [role, setRole] = useState<'admin' | 'user'>('admin'); // ganti sesuai hasil dari async storage/local storage
+  const [role, setRole] = useState<'admin' | 'user'>('user'); // ganti sesuai hasil dari async storage/local storage
   const pathname = usePathname();
   const router = useRouter();
 
   const segments = useSegments();
 
   // hanya proteksi dari user ke admin dan masih error ketika dari admin ke user
-  useEffect(() => {
-    const isAdminRoute = segments[0] === 'admin';
-    const isUserRoute = tabsUser.some(tab => segments[0] === tab.name);
+  // useEffect(() => {
+  //   const isAdminRoute = segments[0] === 'admin';
+  //   const isUserRoute = tabsUser.some(tab => segments[0] === tab.name);
 
-    if (role !== 'admin' && isAdminRoute) {
-      router.replace('/');
-    }
+  //   if (role !== 'admin' && isAdminRoute) {
+  //     router.replace('/');
+  //   }
 
-    if (role === 'admin' && isUserRoute) {
-      router.replace('/admin');
-    }
-  }, [segments, role]);
+  //   if (role === 'admin' && isUserRoute) {
+  //     router.replace('/admin');
+  //   }
+  // }, [segments, role]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -190,6 +189,7 @@ export default function Layout() {
             tab.name === 'admin/contest/addContest' || // selalu disembunyikan
             tab.name === 'index' || // selalu disembunyikan
             tab.name === 'register' || // selalu disembunyikan
+            tab.name === 'login' || // selalu disembunyikan
 
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);

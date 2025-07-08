@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { Alert, Modal, Text, TouchableOpacity, View } from 'react-native';
 
 const Setting = () => {
+
     const [modalConfirmVisible, setModalConfirmVisible] = useState(false);
     const [modalSentVisible, setModalSentVisible] = useState(false);
     const [modalLogoutVisible, setModalLogoutVisible] = useState(false);
@@ -21,15 +22,16 @@ const Setting = () => {
                 Alert.alert("Gagal", "Email pengguna tidak ditemukan.");
                 return;
             }
-
             await sendPasswordResetEmail(auth, user.email);
             setModalConfirmVisible(false);
             setModalSentVisible(true);
+            router.replace('/login');
         } catch (error) {
             console.error("❌ Gagal mengirim email reset password:", error);
             Alert.alert("Gagal", "Terjadi kesalahan saat mengirim email.");
         }
     };
+
 
     const handleLogout = async () => {
         try {

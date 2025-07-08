@@ -25,6 +25,7 @@ const Setting = () => {
             await sendPasswordResetEmail(auth, user.email);
             setModalConfirmVisible(false);
             setModalSentVisible(true);
+            router.replace('/login');
         } catch (error) {
             console.error("❌ Gagal mengirim email reset password:", error);
             Alert.alert("Gagal", "Terjadi kesalahan saat mengirim email.");
