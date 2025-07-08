@@ -1,14 +1,16 @@
 // File: EditReportPage.tsx
 import { uploadImagesToStorage } from '@/api/api';
 import ButtonPrimary from '@/components/elements/Button/ButtonPrimary';
+import ButtonBack from '@/components/elements/buttonBack/ButtonBack';
 import DescriptionInput from '@/components/elements/Input/DescriptionInput';
 import CategorySelection from '@/components/fragments/CategorySelection/CategorySelection';
 import ImageUploadSection from '@/components/fragments/ImageUpload/ImageUploadSection';
 import { db } from '@/lib/firebase/firebase';
 import { CATEGORIES_DATA } from '@/utils/helper';
+import { Octicons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, usePathname, useRouter } from 'expo-router';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, Switch, Text, TextInput, View } from 'react-native';
@@ -26,7 +28,12 @@ export interface FormState {
 }
 
 const EditReportPage = () => {
+    const pathname = usePathname();
+    console.log('lokasi bos:', pathname);
+
     const { id } = useLocalSearchParams();
+    console.log('lokasi bos', pathname);
+
     const reportId = id as string;
     const router = useRouter();
 
@@ -182,11 +189,15 @@ const EditReportPage = () => {
     };
 
     return (
-        <ScrollView className='mb-28 px-3 pt-5'>
+        <ScrollView className=' px-3 mt-12'>
             {loading ? (
                 <ActivityIndicator size="large" color="#1E2A38" />
             ) : (
-                <>
+                < >
+                    <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full mb-3">
+                        <ButtonBack colorIcon="#FF840C" />
+                        <Octicons onPress={() => router.push(`/user/report/${id}/edit`)} name="report" size={20} color="gray" />
+                    </View>
                     <ImageUploadSection
                         images={images}
                         mainImageIndex={mainImageIndex}

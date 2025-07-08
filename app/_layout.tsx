@@ -163,7 +163,8 @@ export default function Layout() {
       <Tabs backBehavior="history"
         screenOptions={({ route }) => {
           // daftar halaman yang harus sembunyikan tab bar
-          const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'user/contest/[id]', 'admin/notif', 'login', 'register'];
+          const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'user/contest/[id]',
+            'admin/notif', 'login', 'register', 'user/report/[id]/index', 'user/report/[id]/[edit]'];
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
@@ -242,6 +243,32 @@ export default function Layout() {
             // Pastikan tidak ada href yang digunakan
           }}
         />
+
+        <Tabs.Screen
+          name="user/report/[id]/index"
+          options={{
+            // Cara 1: Sembunyikan dari tab bar
+            tabBarItemStyle: { display: 'none' },
+
+            // Cara 2: Atau gunakan ini sebagai alternatif
+            tabBarButton: () => null,
+
+            // Pastikan tidak ada href yang digunakan
+          }}
+        />
+        <Tabs.Screen
+          name="user/report/[id]/[edit]"
+          options={{
+            // Cara 1: Sembunyikan dari tab bar
+            tabBarItemStyle: { display: 'none' },
+
+            // Cara 2: Atau gunakan ini sebagai alternatif
+            tabBarButton: () => null,
+
+            // Pastikan tidak ada href yang digunakan
+          }}
+        />
+
         <Tabs.Screen
           name="user/contest/[id]"
           options={{
