@@ -246,6 +246,10 @@ const Contest = (props: Props) => {
                 >
                     {loading ? (
                         <ActivityIndicator size="large" color="#FF840C" />
+                    ) : filteredData.length === 0 ? (
+                        <Text className="text-center text-slate-400 mt-5">
+                            Lomba tidak di temukan
+                        </Text>
                     ) : (
                         filteredData.map(item => {
                             const sudahDaftar: any = item.userAudiens?.includes(userEmail);
@@ -265,6 +269,7 @@ const Contest = (props: Props) => {
                     )}
                 </ScrollView>
             </View>
+
 
             <BottomSheetCustom index={-1} ref={bottomSheetRef} snap={snapPoints} onChange={handleSheetChanges} >
                 <Text className="text-sm text-slate-400 ">Filter berdasarkan tanggal</Text>
