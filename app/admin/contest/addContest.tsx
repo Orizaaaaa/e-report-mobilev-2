@@ -104,10 +104,8 @@ const AddContest = (props: Props) => {
                 toRole: 'user',
                 typeNotif: 'contest',
                 image: currentUser.image || 'image empty',
-                fromUid: currentUser.uid,
                 contestId: contestRef.id, // ✅ simpan contestId di sini
                 createdAt: new Date().toISOString(),
-                read: false,
                 userName: 'Admin',
             });
 

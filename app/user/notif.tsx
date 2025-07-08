@@ -113,7 +113,7 @@ const NotifUser = (props: Props) => {
                         ) : (
                             laporanNotif.map((item: any, index: number) => (
                                 <NotifReportCard
-                                    goToLink={() => router.push(`/admin/report/${item.reportId}`)}
+                                    goToLink={() => router.push(`/user/report/${item.reportId}`)}
                                     key={index}
                                     imageUrl={item.image}
                                     description={item.body}
@@ -129,7 +129,7 @@ const NotifUser = (props: Props) => {
                         const contestNotif = dataNotif
                             .filter(
                                 (item: any) =>
-                                    item.typeNotif === 'contest' && item.toRole === 'admin'
+                                    item.typeNotif === 'contest' && item.toRole === 'user'
                             )
                             .sort(
                                 (a: any, b: any) =>
@@ -143,7 +143,7 @@ const NotifUser = (props: Props) => {
                         ) : (
                             contestNotif.map((item: any, index: number) => (
                                 <NotifReportCard
-                                    goToLink={() => router.push(`/admin/contest/${item.id}`)}
+                                    goToLink={() => router.push(`/user/contest/${item.contestId}`)}
                                     key={index}
                                     imageUrl={item.image}
                                     description={item.body}

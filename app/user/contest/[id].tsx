@@ -134,6 +134,8 @@ const DetailContestAdmin = () => {
     }
 
     const sudahDaftar: any = contest.userAudiens?.includes(userEmail);
+    console.log('cukimai', id);
+
     return (
         <SafeAreaView className="flex-1 mb-10 py-12 px-3">
             <View className="flex-row justify-between items-center px-4 bg-slate-200 p-3 rounded-full mb-5">
