@@ -127,10 +127,6 @@ export default function Index() {
         report.status?.toLowerCase() === 'selesai'
     ).length;
 
-    const priorityReports = reports.filter(
-        (report: any) => report.typeReport?.toLowerCase() === 'prioritas'
-    );
-
     const router = useRouter()
 
     const resetFilters = () => {

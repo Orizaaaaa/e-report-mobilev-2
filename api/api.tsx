@@ -1,12 +1,12 @@
 import { db, storage } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Alert } from 'react-native';
 
 export const sendNotificationToRole =
     async (targetRole: 'admin' | 'user', messageNotif: string) => {
-        // jadi ini di buat kan text pada saat msau kirim notifikasi
+
         try {
             const userStr = await AsyncStorage.getItem('user');
             const currentUser = userStr ? JSON.parse(userStr) : null;
@@ -59,6 +59,54 @@ export const sendNotificationToRole =
             console.error('❌ Gagal mengirim notifikasi:', err);
         }
     };
+
+export const sendNotificationToUid = async (targetUid: string, messageNotif: string) => {
+    try {
+        const userStr = await AsyncStorage.getItem('user');
+        const currentUser = userStr ? JSON.parse(userStr) : null;
+
+        if (!currentUser) {
+            Alert.alert('User belum login');
+            return;
+        }
+
+        const userDoc = await getDoc(doc(db, 'users', targetUid));
+        if (!userDoc.exists()) {
+            Alert.alert('User dengan UID tersebut tidak ditemukan');
+            return;
+        }
+
+        const targetData = userDoc.data();
+        const targetToken = targetData.token;
+
+        if (!targetToken) {
+            Alert.alert('Token user tidak ditemukan');
+            return;
+        }
+
+        const message = {
+            to: targetToken,
+            sound: 'default',
+            title: `Halo ${targetData.name || 'pengguna'}`,
+            body: `${messageNotif} pada ${new Date().toLocaleTimeString()}`,
+            priority: 'high',
+            data: { clicked: true },
+        };
+
+        await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
+
+        // Alert.alert('📤 Notifikasi berhasil dikirim');
+    } catch (err) {
+        console.error('❌ Gagal mengirim notifikasi:', err);
+    }
+};
 
 export const uploadImagesToStorage = async (images: string[], uid: string): Promise<string[]> => {
     const urls: string[] = [];

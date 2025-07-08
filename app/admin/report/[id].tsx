@@ -1,11 +1,13 @@
+import { sendNotificationToUid } from '@/api/api'
 import ButtonBack from '@/components/elements/buttonBack/ButtonBack'
 import DetailReport from '@/components/fragments/DetailReport/DetailReport'
 import { db, storage } from '@/lib/firebase/firebase'
 import { FontAwesome, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons'
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ImagePicker from 'expo-image-picker'
 import { useLocalSearchParams } from 'expo-router'
-import { deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
@@ -105,7 +107,7 @@ const ReportDetailAdmin = () => {
             alert('Alasan harus diisi untuk status Tidak Valid');
             return;
         }
-        if (form.image.toLowerCase() === '' && !form.reason.trim()) {
+        if (form.image.toLowerCase() === 'selesai' && !form.reason.trim()) {
             alert('Bukti penyelesaian wajib di upload');
             return;
         }
@@ -157,6 +159,26 @@ const ReportDetailAdmin = () => {
             }
 
             await updateDoc(docRef, updateData);
+            if (reportData?.uid) {
+                sendNotificationToUid(reportData.uid, 'Laporan anda telah ditindak lanjuti oleh admin');
+            }
+
+            const userStr = await AsyncStorage.getItem('user');
+            const currentUser = userStr ? JSON.parse(userStr) : null;
+
+            await addDoc(collection(db, 'notifications'), {
+                title: 'Laporan ',
+                body: `Laporan anda telah ditindak lanjuti oleh admin`,
+                toRole: 'admin',
+                typeNotif: 'report',
+                userName: currentUser.name,
+                image: currentUser.image || 'image empty',
+                fromUid: currentUser.uid,
+                reportId: reportId,
+                createdAt: new Date().toISOString(),
+                read: false,
+            });
+
             alert('Status berhasil disimpan');
 
             setReportData(prev => {
