@@ -1,8 +1,9 @@
+import { useRoleStore } from '@/hook/stores/roleStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { Tabs, usePathname, useRouter, useSegments } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import { Tabs } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -139,25 +140,7 @@ const TabButton = ({ item, onPress }: any) => {
 export default function Layout() {
   // nanti role di ambil dari local storage
 
-  const [role, setRole] = useState<'admin' | 'user'>('user'); // ganti sesuai hasil dari async storage/local storage
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const segments = useSegments();
-
-  // hanya proteksi dari user ke admin dan masih error ketika dari admin ke user
-  // useEffect(() => {
-  //   const isAdminRoute = segments[0] === 'admin';
-  //   const isUserRoute = tabsUser.some(tab => segments[0] === tab.name);
-
-  //   if (role !== 'admin' && isAdminRoute) {
-  //     router.replace('/');
-  //   }
-
-  //   if (role === 'admin' && isUserRoute) {
-  //     router.replace('/admin');
-  //   }
-  // }, [segments, role]);
+  const role = useRoleStore((state) => state.role); // ✅ Ambil role dari Zustand
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

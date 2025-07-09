@@ -1,4 +1,5 @@
 import AuthInput from '@/components/elements/AuthInput/AuthInput';
+import { useRoleStore } from '@/hook/stores/roleStore'; // ✅ Tambahkan ini
 import { auth, db } from '@/lib/firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
@@ -104,6 +105,7 @@ export default function LoginRegisterScreen() {
 
             // Simpan seluruh data ke AsyncStorage
             await AsyncStorage.setItem('user', JSON.stringify(completeUserData));
+            useRoleStore.getState().setRole(completeUserData.role);
 
             if (completeUserData.role === 'admin') {
                 router.push('/admin')

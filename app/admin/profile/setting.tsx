@@ -1,4 +1,5 @@
 // sesuaikan path config firebase kamu
+import { useRoleStore } from '@/hook/stores/roleStore';
 import { auth } from '@/lib/firebase/firebase';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,6 +37,7 @@ const Setting = () => {
     const handleLogout = async () => {
         try {
             await AsyncStorage.removeItem('user');
+            useRoleStore.getState().setRole(null);
             setModalLogoutVisible(false);
             router.replace('/login');
         } catch (error) {
