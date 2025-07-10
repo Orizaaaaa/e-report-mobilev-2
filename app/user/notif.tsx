@@ -4,9 +4,9 @@ import { db } from '@/lib/firebase/firebase'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRoute } from '@react-navigation/native'
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import { collection, getDocs } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {}
@@ -26,25 +26,36 @@ const NotifUser = (props: Props) => {
     }, [params])
 
     const [dataNotif, setDataNotif]: any = useState([])
-    useEffect(() => {
-        const fetchNotifs = async () => {
-            try {
-                const userStr = await AsyncStorage.getItem('user');
-                const currentUser = userStr ? JSON.parse(userStr) : null;
-                setUserUid(currentUser.uid);
-                const snapshot = await getDocs(collection(db, 'notifications'));
-                const notifications = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+    useFocusEffect(
+        useCallback(() => {
+            const fetchNotifs = async () => {
+                try {
+                    const userStr = await AsyncStorage.getItem('user');
+                    const currentUser = userStr ? JSON.parse(userStr) : null;
+                    if (!currentUser) return;
 
-                setDataNotif(notifications);
-            } catch (err) {
-                console.error('❌ Gagal mengambil laporan:', err);
-            }
-        };
-        fetchNotifs();
-    }, []);
+                    setUserUid(currentUser.uid);
+
+                    const snapshot = await getDocs(collection(db, 'notifications'));
+                    const notifications = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+
+                    setDataNotif(notifications);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil notifikasi:', err);
+                }
+            };
+
+            fetchNotifs();
+
+            // Optional cleanup
+            return () => {
+                // console.log('Screen blur');
+            };
+        }, [])
+    );
 
     console.log('kontol', dataNotif);
     console.log('uid cuy', userUid);
