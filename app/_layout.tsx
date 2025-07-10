@@ -192,7 +192,7 @@ export default function Layout() {
 
 
 
-        {/* <Tabs.Screen
+        <Tabs.Screen
           name="user/report/[id]"
           options={{
             tabBarItemStyle: { display: 'none' },
@@ -260,7 +260,7 @@ export default function Layout() {
 
 
           }}
-        /> */}
+        />
       </Tabs>
     </GestureHandlerRootView>
   );

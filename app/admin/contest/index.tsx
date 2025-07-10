@@ -195,15 +195,22 @@ const Contest = (props: Props) => {
                     contentContainerStyle={{ padding: 16 }}
                     showsVerticalScrollIndicator={false}
                 >
-
-                    <View className='flex-row gap-3 mb-4' >
-                        <ButtonPrimary className='py-2 px-3 rounded-full' text='Tambah Lomba'
-                            onPress={() => { router.push(`/admin/contest/addContest`) }} />
+                    <View className="flex-row gap-3 mb-4">
+                        <ButtonPrimary
+                            className="py-2 px-3 rounded-full"
+                            text="Tambah Lomba"
+                            onPress={() => {
+                                router.push(`/admin/contest/addContest`);
+                            }}
+                        />
                     </View>
-
 
                     {loading ? (
                         <ActivityIndicator size="large" color="#FF840C" />
+                    ) : filteredData.length === 0 ? (
+                        <View className="items-center mt-10">
+                            <Text className="text-gray-500 text-base">Laporan tidak ditemukan</Text>
+                        </View>
                     ) : (
                         filteredData.map(item => (
                             <TouchableOpacity onPress={() => handlePress(item.id)} key={item.id}>
@@ -215,8 +222,8 @@ const Contest = (props: Props) => {
                             </TouchableOpacity>
                         ))
                     )}
-
                 </ScrollView>
+
             </View>
 
             <Modal
