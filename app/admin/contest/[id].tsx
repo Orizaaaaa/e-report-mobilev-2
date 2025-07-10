@@ -47,9 +47,9 @@ const DetailContestAdmin = () => {
 
 
     const filteredParticipants = participants.filter(p =>
+        typeof p.name === 'string' &&
         p.name.toLowerCase().includes(query.toLowerCase())
     );
-
     console.log('iniiiii', contestId);
 
     useEffect(() => {

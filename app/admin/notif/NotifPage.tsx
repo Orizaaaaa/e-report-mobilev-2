@@ -142,7 +142,7 @@ const NotifPage = (props: Props) => {
                         ) : (
                             contestNotif.map((item: any, index: number) => (
                                 <NotifReportCard
-                                    goToLink={() => router.push(`/admin/contest/${item.id}`)}
+                                    goToLink={() => router.push(`/admin/contest/${item.contestId}`)}
                                     key={index}
                                     imageUrl={item.image}
                                     description={item.body}

@@ -7,11 +7,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { doc, setDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Animated,
   Easing,
   StyleSheet,
-  Text,
   View
 } from 'react-native';
 
@@ -91,7 +91,7 @@ export default function Index() {
           style={[styles.logo, { opacity: logoOpacity }]}
           resizeMode="contain"
         />
-        <Text style={styles.text}>Memuat aplikasi...</Text>
+        <ActivityIndicator size="large" color="#FF840C" />
       </View>
     );
   }
@@ -102,7 +102,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: '#1E2A38',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -104,7 +104,7 @@ const Contest = (props: Props) => {
                 userName: currentUser?.name || 'User',
                 image: currentUser?.image || 'image empty',
                 fromUid: currentUser?.uid,
-                reportId: contestId, // ✅ ID laporan dibawa ke notifikasi
+                contestId: contestId, // ✅ ID laporan dibawa ke notifikasi
                 createdAt: new Date().toISOString(),
                 read: false,
             });

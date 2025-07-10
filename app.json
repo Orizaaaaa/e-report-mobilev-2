@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "e-report-mobile",
-    "slug": "e-report-mobile",
+    "name": "E-Report",
+    "slug": "E-Report",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/splash-icon.png",
+    "icon": "./assets/images/icon_app.png",
     "scheme": "ereportmobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -17,7 +17,7 @@
         "ACCESS_COARSE_LOCATION"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splash-icon.png",
+        "foregroundImage": "./assets/images/icon_app.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
