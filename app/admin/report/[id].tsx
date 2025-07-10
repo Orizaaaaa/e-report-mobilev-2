@@ -173,7 +173,7 @@ const ReportDetailAdmin = () => {
                 typeNotif: 'report',
                 userName: currentUser.name,
                 image: currentUser.image || 'image empty',
-                fromUid: currentUser.uid,
+                fromUid: reportData?.uid || '',
                 reportId: reportId,
                 createdAt: new Date().toISOString(),
                 read: false,
@@ -214,7 +214,7 @@ const ReportDetailAdmin = () => {
 
 
 
-    console.log('dara REPORT ID', reportData);
+
     console.log('ini form nya', form);
 
 
@@ -267,7 +267,7 @@ const ReportDetailAdmin = () => {
         return null
     }
 
-    console.log(reportData);
+    console.log('cari uid disini ====== ', reportData);
 
     const statuses = ['menunggu', 'di proses', 'selesai', 'tidak valid']
 
