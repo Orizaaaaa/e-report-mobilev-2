@@ -1,11 +1,12 @@
 
+import { sendNotificationToRole } from "@/api/api";
 import ButtonPrimary from "@/components/elements/Button/ButtonPrimary";
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { db } from "@/lib/firebase/firebase";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
-import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
     ActivityIndicator,
@@ -33,6 +34,7 @@ const DetailContestAdmin = () => {
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(true);
+    const [dataUser, setDataUser]: any = useState();
 
     const filteredParticipants = participants.filter(p =>
         p.name.toLowerCase().includes(query.toLowerCase())
@@ -44,6 +46,7 @@ const DetailContestAdmin = () => {
             const userStr = await AsyncStorage.getItem('user');
             const user = userStr ? JSON.parse(userStr) : null;
             setUserEmail(user?.email || '');
+            setDataUser(user);
         };
         fetchUser();
     }, []);
@@ -122,16 +125,60 @@ const DetailContestAdmin = () => {
 
     const handleJoinContest = async () => {
         try {
+            const contestRef = doc(db, 'contest', contestId);
+
+            if (!contest) return;
+
             const sudahDaftar = contest.userAudiens?.includes(userEmail);
             if (sudahDaftar) return;
+
             const updatedUserAudiens = [...(contest.userAudiens || []), userEmail];
-            await updateDoc(contestId, {
+
+            // Update ke Firestore
+            await updateDoc(contestRef, {
                 userAudiens: updatedUserAudiens,
             });
-        } catch (error) {
-            console.log(error);
+
+            await sendNotificationToRole('admin', `${userEmail} telah bergabung di lomba ${contest.desc}!`);
+            await addDoc(collection(db, 'notifications'), {
+                title: 'Laporan Baru',
+                body: ` ${dataUser?.name} Telah bergabung di lomba ${contest.desc}!`,
+                toRole: 'admin',
+                typeNotif: 'contest',
+                userName: dataUser?.name || 'User',
+                image: dataUser?.image || 'image empty',
+                fromUid: dataUser?.uid,
+                contestId: contestId, // ✅ ID laporan dibawa ke notifikasi
+                createdAt: new Date().toISOString(),
+                read: false,
+            });
+
+            const docSnap = await getDoc(contestRef);
+            // ✅ Update state lokal agar UI ikut berubah
+            const contestData: any = docSnap.data();
+            setContest(contestData);
+
+            // Ambil peserta dari userAudiens
+            const usersRef = collection(db, 'users');
+            const allUserDocs = await getDocs(usersRef);
+            const peserta: any = (contestData.userAudiens || []).map((name: string) => {
+                const found = allUserDocs.docs.find(user => {
+                    const data = user.data();
+                    return data.name === name || data.email === name;
+                });
+                return found ? {
+                    name: found.data().name,
+                    email: found.data().email,
+                    image: found.data().image || 'https://i.primage.cc/150',
+                } : { name, email: name };
+            });
+
+            setParticipants(peserta);
+
+        } catch (err) {
+            console.error('❌ Gagal daftar lomba:', err);
         }
-    }
+    };
 
     const sudahDaftar: any = contest.userAudiens?.includes(userEmail);
     console.log('cukimai', id);
