@@ -1,6 +1,7 @@
 import AdminInfo from '@/components/elements/adminInfo/AdminInfo';
 import { db } from '@/lib/firebase/firebase';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import React, { useCallback, useState } from 'react';
@@ -29,11 +30,19 @@ const index = (props: Props) => {
     const [countReguler, setCountReguler] = useState(0);
     const [countSelesai, setCountSelesai] = useState(0);
     const [countAvailableContest, setCountAvailableContest] = useState(0);
+    const [userFoto, setUserFoto] = useState('');
 
     useFocusEffect(
         useCallback(() => {
             const fetchData = async () => {
                 try {
+                    // Ambil foto user dari AsyncStorage
+                    const userData = await AsyncStorage.getItem('user');
+                    if (userData) {
+                        const parsed = JSON.parse(userData);
+                        setUserFoto(parsed?.image || ''); // asumsinya key-nya `image`, sesuaikan jika beda
+                    }
+
                     // Ambil data contest
                     const contestRef = collection(db, 'contest');
                     const contestQuery = query(contestRef, orderBy('createdAt', 'desc'));
@@ -43,8 +52,6 @@ const index = (props: Props) => {
                         ...doc.data(),
                     } as Contest));
 
-
-
                     // Ambil data reports
                     const reportRef = collection(db, 'reports');
                     const reportSnapshot = await getDocs(reportRef);
@@ -53,13 +60,11 @@ const index = (props: Props) => {
                         ...doc.data(),
                     } as Report));
 
-
-
                     // Hitung jumlah berdasarkan filter
                     const prioritas = reports.filter(item => item.typeReport === 'Prioritas');
                     const reguler = reports.filter(item => item.typeReport === 'Reguler');
                     const selesai = reports.filter(item => item.status === 'selesai');
-                    const available = contests.filter(item => item.status !== 'selesai'); // asumsi status !== selesai berarti masih tersedia
+                    const available = contests.filter(item => item.status !== 'selesai');
 
                     setCountPrioritas(prioritas.length);
                     setCountReguler(reguler.length);
@@ -87,7 +92,7 @@ const index = (props: Props) => {
                         <View className='w-16 h-16  rounded-full   '>
                             <Image
                                 className='w-full h-full rounded-full'
-                                source={require('../../assets/images/human.png')}
+                                source={{ uri: userFoto }}
                                 resizeMode='cover'
                             />
                         </View>
