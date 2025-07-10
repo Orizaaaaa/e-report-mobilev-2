@@ -6,9 +6,9 @@ import { db } from '@/lib/firebase/firebase'
 import { formatDate, STATUS_LIST } from '@/utils/helper'
 import { Feather, MaterialIcons } from '@expo/vector-icons'
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useRouter } from 'expo-router'
+import { useFocusEffect, useRouter } from 'expo-router'
 import { collection, getDocs } from 'firebase/firestore'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
@@ -72,23 +72,30 @@ const index = (props: Props) => {
 
 
 
-    useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'reports'));
-                const reports = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+    useFocusEffect(
+        useCallback(() => {
+            const fetchReports = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'reports'));
+                    const reports = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
 
-                setDataReport(reports);
-            } catch (err) {
-                console.error('❌ Gagal mengambil laporan:', err);
-            }
-        };
+                    setDataReport(reports);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil laporan:', err);
+                }
+            };
 
-        fetchReports();
-    }, []);
+            fetchReports();
+
+            // Optional: fungsi cleanup jika dibutuhkan
+            return () => {
+                // console.log('Screen blur');
+            };
+        }, [])
+    );
     console.log('anying', dataReport);
     console.log(filtering);
 
