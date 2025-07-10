@@ -2,7 +2,7 @@ import { useRoleStore } from '@/hook/stores/roleStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { SplashScreen, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -136,34 +136,18 @@ const TabButton = ({ item, onPress }: any) => {
     </TouchableOpacity>
   );
 };
-
-SplashScreen.preventAutoHideAsync(); // ⛔
 export default function Layout() {
   // nanti role di ambil dari local storage
 
   const role = useRoleStore((state) => state.role); // ✅ Ambil role dari Zustand
 
-  useEffect(() => {
-    const prepare = async () => {
-      try {
-        // Simulasi loading (bisa fetch atau cek localStorage)
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-      } catch (err) {
-        console.warn(err);
-      } finally {
-        await SplashScreen.hideAsync(); // ✅ Sembunyikan splash
-      }
-    };
-
-    prepare();
-  }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tabs backBehavior="history"
         screenOptions={({ route }) => {
           // daftar halaman yang harus sembunyikan tab bar
           const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'user/contest/[id]',
-            'admin/notif', 'login', 'register', 'user/report/[id]/index', 'user/report/[id]/[edit]'];
+            'admin/notif', 'login', 'register', 'user/report/[id]/index', 'user/report/[id]/[edit]', 'index'];
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
