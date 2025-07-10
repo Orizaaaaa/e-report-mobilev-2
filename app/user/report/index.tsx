@@ -482,24 +482,30 @@ const ReportScreen = () => {
         </ScrollView>
     );
 
+    useFocusEffect(
+        useCallback(() => {
+            const fetchReports = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'reports'));
+                    const reports = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
 
-    useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'reports'));
-                const reports = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+                    setDataReport(reports);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil laporan:', err);
+                }
+            };
 
-                setDataReport(reports);
-            } catch (err) {
-                console.error('❌ Gagal mengambil laporan:', err);
-            }
-        };
+            fetchReports();
 
-        fetchReports();
-    }, []);
+            // Optional: fungsi cleanup jika dibutuhkan
+            return () => {
+                // console.log('Screen blur');
+            };
+        }, [])
+    );
 
     const renderContent = () => {
         const filteredReports = filterReports(dataReport, filtering, user);
