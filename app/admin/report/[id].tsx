@@ -214,7 +214,7 @@ const ReportDetailAdmin = () => {
 
 
 
-    console.log('data', reportData);
+    console.log('dara REPORT ID', reportData);
     console.log('ini form nya', form);
 
 

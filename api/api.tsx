@@ -34,13 +34,13 @@ export const sendNotificationToRole =
             const greeting =
                 targetRole === 'admin'
                     ? 'Halo admin'
-                    : `Halo ${currentUser.name || currentUser.email || 'pengguna'}`;
+                    : `Halo`;
 
             const message = {
                 to: targetToken,
                 sound: 'default',
                 title: greeting,
-                body: `${messageNotif} ${currentUser.email} pada ${new Date().toLocaleTimeString()}`,
+                body: `${messageNotif} pada ${new Date().toLocaleTimeString()}`,
                 priority: 'high',
                 data: { clicked: true },
             };

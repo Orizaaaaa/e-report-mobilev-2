@@ -273,7 +273,7 @@ const ReportScreen = () => {
             console.log('✅ Laporan dikirim dengan ID:', reportRef.id);
 
             // ✅ Kirim notifikasi ke admin
-            await sendNotificationToRole('admin', 'Ada laporan baru dari');
+            await sendNotificationToRole('admin', `Ada laporan baru  bertipe ${predictedType} dari ${currentUser.name}`);
 
             // ✅ Simpan data notifikasi ke Firestore
             await addDoc(collection(db, 'notifications'), {

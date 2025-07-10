@@ -93,7 +93,7 @@ export default function LoginRegisterScreen() {
             // Gabungkan data Firestore dengan token terbaru (jika ada)
             const completeUserData = {
                 image: userDataFromFirestore.image || '',
-                uid,
+                uid: uid,
                 email: result.user.email || '',
                 name: userDataFromFirestore.name || '',
                 nik: userDataFromFirestore.nik || '',

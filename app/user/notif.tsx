@@ -47,6 +47,8 @@ const NotifUser = (props: Props) => {
     }, []);
 
     console.log('kontol', dataNotif);
+    console.log('uid cuy', userUid);
+
 
     return (
         <SafeAreaView className="pt-12 px-5">
