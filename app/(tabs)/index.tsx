@@ -191,91 +191,83 @@ export default function Index() {
   return (
 
     <SafeAreaView>
-      <ScrollView className='pt-12 px-3 bg-white' contentContainerStyle={{ paddingBottom: 100 }} >
-        <View className="mb-40">
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }} >
+        <View className="mb-10 bg-white">
+          <View className='relative bg-[#2AA8E1] h-60  mb-32'>
+            <View className='flex justify-center items-center pt-12 px-3'>
+              <View className='flex-row items-center w-full p-1'>
+                <View className='w-14 h-14 rounded-xl mx-2'>
+                  <Image
+                    className='w-full h-full rounded-full'
+                    source={require('../../assets/images/human.png')}
+                    resizeMode='cover'
+                  />
+                </View>
 
-          <View className='flex-row items-center w-full justify-between p-1    ' >
-
-            <View className="gap-3 flex-col" >
-              <View className="flex-col gap-1">
-                <Text className="text-xl font-semibold text-secondaryBlue">Hi, Gabriel Yonathan</Text>
-                <Text className="text-sm text-secondaryBlue/50">Pamulang, Benda Baru, Tangerang Selatan </Text>
-              </View>
-            </View>
-
-            <View className='w-14 h-14  rounded-xl   '>
-              <Image
-                className='w-full h-full rounded-full'
-                source={require('../assets/images/human.png')}
-                resizeMode='cover'
-              />
-            </View>
-
-          </View>
-
-
-          <View className='w-50 h-60 rounded-3xl mt-5 overflow-hidden relative flex flex-row-reverse'>
-            <View className='absolute inset-0 bg-primaryBlue/20' >
-
-              {/* Patern */}
-
-              {/* 
-            <View className="absolute -top-5 -right-35 w-52 h-52 bg-primaryBlue/20 rounded-full" />
-            <View className="absolute -bottom-10 -left-10 w-40 h-40 bg-primaryBlue/20 rounded-full" />
-            <View className="absolute top-10 right-20 w-32 h-32 bg-primaryBlue/60 rounded-full" /> */}
-
-              {/* Gambar
-            <Image
-              className='w-52 h-56 mr-15'
-              source={require('../assets/images/doctor.png')}
-              resizeMode='cover'
-            /> */}
-
-              {/* Overlay hitam */}
-
-              {/* Konten di bawah */}
-              <View className=' bottom-0 top-0 left-0 right-0 p-5'>
-                <Text className='text-secondaryBlue text-lg font-bold'>Deteksi <Text className='text-secondaryBlue' >Penyakit Gigi</Text> </Text>
-                <Text className='text-secondaryBlue text-xs'>Fitur AI untuk Analisis</Text>
-                <Text className='text-secondaryBlue text-xs'>Penyakit Gigi</Text>
-
-                <View className='flex-row top-5 justify-between mt-3'>
-                  <View className='flex-1 top-12 left-0 right-0'>
-                    <Text onPress={() => (router.push("/predict"))} className='text-center text-sm py-5 px-20 bg-primaryBlue text-white rounded-2xl'>Cek Sekarang </Text>
+                <View className="gap-3 flex-col" >
+                  <View className="flex-col gap-1">
+                    <Text className="text-lg font-semibold text-white">Hi, Gabriel Yonathan</Text>
+                    <Text className="text-sm font-extralight text-white">23 Tahun</Text>
                   </View>
-
-                  {/* <View className="flex-1 top-12 left-0 right-0 items-center">
-                    <LinearGradient
-                      colors={['#00A8A8', '#007F7F']} // Atur sesuai warna gradient yang Anda mau
-                      start={[0, 0]}
-                      end={[1, 0]}
-                      style={{
-                        borderRadius: 20,
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => router.push("/predict")}
-                        style={{
-                          paddingVertical: 14,
-                          paddingHorizontal: 40,
-                          borderRadius: 20,
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Text className="text-white text-sm text-center">Cek Sekarang</Text>
-                      </TouchableOpacity>
-                    </LinearGradient>
-                  </View>
-                   */}
                 </View>
               </View>
-            </View>
+              {/* <View className='absolute bg-gray-500 p-10 top-5'>
+              </View> */}
 
+              <View className=' h-52 absolute top-28 rounded-2xl mt-5 overflow-hidden flex flex-row-reverse shadow-md shadow-black'>
+                <View className='bg-white'>
+
+                  {/* Konten di bawah */}
+                  <View className='p-5'>
+                    <View className='flex-row justify-center items-center'>
+                      <View className='w-24 h-24 mr-6'>
+                        <Image
+                          className='w-full h-full'
+                          source={require('../../assets/images/tooth.png')}
+                          resizeMode='cover'
+                        />
+                      </View>
+
+                      <View className='flex-col'>
+                        <Text className='text-primaryNavy text-xl font-semibold'>Yuk mulai deteksi</Text>
+                        <Text className='text-primaryNavy text-xl font-semibold'>gigimu sekarang!</Text>
+                      </View>
+                    </View>
+
+
+                    <Text onPress={() => (router.push("/predict"))} className='text-center mt-5 text-lg py-3 px-16 border border-[#F7CD00] text-black font-semibold rounded-2xl'>Deteksi Kesehatan Gigi</Text>
+
+                  </View>
+                </View>
+              </View>
+
+            </View>
           </View>
 
-          {/* <View className='flex-row justify-between items-center mt-7 px-1 mb-5'>
-            <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
-          </View> */}
+          <View className='flex-row justify-center items-center px-3 mb-2'>
+            <View className='w-48 h-36 mr-2 rounded-xl text-center bg-[#FDEFB2]'>
+              <View className='m-5 flex-col justify-center'>
+                <Text className='text-primaryNavy text-sm font-semibold'>Riwayat Pemeriksaan Terakhir</Text>
+                <Text className='text-primaryNavy text-xl font-semibold py-2'>25 Juni 2025</Text>
+                <Text className='text-slate-500 text-sm font-thin italic'>Gigi Berlubang</Text>
+              </View>
+            </View>
+
+            <View className='w-60 h-36 rounded-xl bg-[#FDEFB2]'>
+              <View className='mx-3 mt-3 flex-col justify-center'>
+                <View className='flex-row'>
+                  <Image
+                    className='w-5 h-6 mr-2 mb-1'
+                    source={require('../../assets/images/gigi_biru.png')}
+                    resizeMode='contain'
+                  />
+                  <Text className='text-primaryNavy mb-2 text-md font-semibold'>Tips Hari Ini</Text>
+                </View>
+                <Text className='text-primaryNavy mb-1 text-sm font-bold'>Sikat Gigi Minimal 2x Sehari</Text>
+                <Text className='text-slate-500 text-wrap text-sm font-thin italic'>Menyikat gigi pagi dan malam membantu mencegah plak dan gigi berlubang.</Text>
+              </View>
+            </View>
+          </View>
 
 
           <View style={{ overflow: 'visible' }}>
@@ -283,60 +275,23 @@ export default function Index() {
           </View>
 
 
-
-
-
-          {/* <IndicatorInfo finised='177' onProgress='44' total='221' /> */}
-
-
-          {/* laporan */}
-          <View>
-            {/* <View className='flex-row justify-between items-center mt-7 px-1'>
-            <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
-            <TouchableOpacity
-              onPress={handlePress}
-            >
-              <Text className='text-gray-400'>Lihat Semua</Text>
-            </TouchableOpacity>
-
-          </View>
-
-          <ScrollView className='mt-5 overflow-x-hidden' showsHorizontalScrollIndicator={false} horizontal={true} >
-            <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
-            <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
-            <CardReport image={require('../assets/images/demo.png')} handlepres={handlePress} />
-          </ScrollView> */}
-
-
-            {/* <View className='flex-row justify-between items-center mt-7 px-1'>
-              <TouchableOpacity className='bg-primaryBlue  p-4 rounded-3xl' onPress={() => pickImage(true)}>
-                <Text className='text-tertiaryBlue'>prediksi gambar dari kamera</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity className='bg-primaryBlue  p-4 rounded-lg' onPress={() => pickImage(false)}  >
-                <Text>prediksi dari galeri</Text>
-              </TouchableOpacity>
-            </View> */}
-
-            <View className='flex-row justify-between items-center mt-2 px-1'>
-              <Text className='text-primaryNavy font-bold'>Artikel Kesehatan GIgi</Text>
+          <View className='px-5 mb-1 mt-2'>
+            <View className='flex-row justify-between items-center px-1 mb-2'>
+              <Text className='text-black font-semibold'>Artikel Kesehatan GIgi</Text>
               <TouchableOpacity
                 onPress={handlePress}
               >
-                <Text className='text-primaryBlue/50 font-bold'>Lihat Semua</Text>
+                <Text className='text-primaryNavy font-semibold'>Lihat Semua</Text>
               </TouchableOpacity>
 
             </View>
 
-            <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
-            <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
-            <CardReportScroll image={require('../assets/images/demo.png')} handlepres={handlePress} />
-
+            <CardReportScroll image={require('../../assets/images/artikle3.avif')} handlepres={handlePress} title='Cara Menyikat Gigi Yang Baik dan Benar Untuk Seluruh Keluarga' description='Kita mungkin sudah menyikat gigi secara teratur, tapi apakah kita sudah melakukannya dengan benar? Simak cara menyikat gigi dengan benar, untuk Anda dan keluarga Anda' />
+            <CardReportScroll image={require('../../assets/images/artikle1.jpeg')} handlepres={handlePress} title='Apakah ibu hamil perlu rutin periksa gigi?' description='Di masa kehamilan , bukan hanya fisik dan mental yang harus diperhatikan, namun  kesehatan gigi dan mulut juga harus di perhatikan. Karena penyakit pada gigi dan mulut, seperti gigi berlubang dan radang gusi sering diderita oleh ibu hamil.' />
+            <CardReportScroll image={require('../../assets/images/artikle2.jpg')} handlepres={handlePress} title='Kapan Waktu yang Tepat Bawa Anak ke Dokter Gigi?' description='Kesehatan gigi dan mulut anak merupakan aspek penting dalam pertumbuhan dan perkembangan mereka. Salah satu pertanyaan yang sering muncul di benak orangtua adalah kapan waktu yang tepat untuk membawa anak ke dokter gigi.' />
           </View>
-
-
-
         </View>
+
 
         <BottomSheet
           index={-1}
@@ -410,7 +365,7 @@ export default function Index() {
 
       </View> */}
 
-    </SafeAreaView>
+    </SafeAreaView >
   );
 
 

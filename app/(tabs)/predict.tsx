@@ -81,9 +81,16 @@ const AppContent = () => {
         // https://saving-lemming-loyal.ngrok-free.app/predict
         try {
             // ke saruaken ip server ieu jeng nu di run di ml mnh  (---ORIZA)
-            const res = await fetch('http://192.168.9.85:5000/predict', {
+            // const res = await fetch('http://192.168.9.85:5000/predict', {
+            //     method: 'POST',
+            //     body: formData, // jangan tambahkan headers
+            // })
+
+
+
+            const res = await fetch('https://saving-lemming-loyal.ngrok-free.app/predict/', {
                 method: 'POST',
-                body: formData, // jangan tambahkan headers
+                body: formData,
             })
 
             if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`)
