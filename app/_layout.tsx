@@ -71,8 +71,8 @@ const tabsAdmin = [
   { name: 'admin/contest/index', title: 'Lomba', icon: 'medal-outline' },
   { name: 'admin/contest/addContest', title: 'Lomba', icon: 'medal-outline' },
   { name: 'admin/notif/NotifPage', title: 'Lomba', icon: 'medal-outline' },
-  { name: 'admin/profile/setting', title: 'Lomba', icon: 'medal-outline' },
-  { name: 'admin/profile/index', title: 'Lomba', icon: 'person-circle-outline' },
+  { name: 'admin/profile/setting', title: 'Profile', icon: 'medal-outline' },
+  { name: 'admin/profile/index', title: 'Profile', icon: 'person-circle-outline' },
 ]
 
 

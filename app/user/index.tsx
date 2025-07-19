@@ -10,7 +10,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from "expo-router";
 import { collection, getDocs } from 'firebase/firestore';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
 const { height } = Dimensions.get('window');
@@ -28,6 +28,28 @@ export default function Index() {
     const [reports, setReports]: any = useState([]);
     const [contestValue, setContestValue] = useState('');
 
+    const fetchReports = async () => {
+        try {
+            const snapshot = await getDocs(collection(db, 'reports'));
+            const reports = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+
+            const snapshotContest = await getDocs(collection(db, 'contest'));
+            const contestShot = snapshotContest.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setContestValue(contestShot.length.toString());
+            setReports(reports);
+        } catch (err) {
+            console.error('❌ Gagal mengambil laporan:', err);
+        }
+    };
+
+
     useFocusEffect(
         useCallback(() => {
             const fetchUser = async () => {
@@ -38,35 +60,12 @@ export default function Index() {
                 }
 
             };
-
+            fetchReports();
             fetchUser();
         }, []) // dependensi kosong = hanya saat screen fokus
     );
 
-    useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const snapshot = await getDocs(collection(db, 'reports'));
-                const reports = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
 
-
-                const snapshotContest = await getDocs(collection(db, 'contest'));
-                const contestShot = snapshotContest.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setContestValue(contestShot.length.toString());
-                setReports(reports);
-            } catch (err) {
-                console.error('❌ Gagal mengambil laporan:', err);
-            }
-        };
-
-        fetchReports();
-    }, []);
 
     const handlePress = () => {
         // Navigasi ke halaman detail dengan ID
