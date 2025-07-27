@@ -125,7 +125,7 @@ export default function LoginRegisterScreen() {
 
         } catch (error: any) {
             setLoading(false)
-            Alert.alert('Gagal Login', error.message);
+            Alert.alert('Gagal Login', 'email atau password salah');
         }
     };
 
