@@ -7,7 +7,6 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import HomeIcon from '../../assets/images/Vector.svg';
 import '../../global.css';
 
 const Colors = {
@@ -21,10 +20,10 @@ const Colors = {
 // kabeh halaman atau icon tunda didieu, jang nama icon pake expo icon (---oriza)
 const tabs = [
 
-  { name: '/', title: 'Beranda', icon: HomeIcon },
-  { name: '/articles', title: 'Layanan', icon: HomeIcon },
-  { name: '/articles', title: 'Layanan', icon: HomeIcon },
-  { name: '/profile', title: 'Profile', icon: HomeIcon },
+  { name: '/', title: 'Beranda', icon: 'home-outline', second: 'home' },
+  { name: '/articles', title: 'Layanan', icon: 'tooth-outline', second: 'tooth' },
+  { name: '/klinik', title: 'Klinik', icon: 'hospital-building', second: 'hospital' },
+  { name: '/profile', title: 'Profile', icon: 'account-outline', second: 'account' },
 
 ];
 
@@ -42,7 +41,7 @@ const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => voi
       /> */}
       {/* <Icon width={24} height={24} fill={isFocused ? 'red' : 'red'} /> */}
       <MaterialCommunityIcons
-        name="hospital-building"
+        name={isFocused ? item.second : item.icon}
         size={24}
         color={isFocused ? 'red' : Colors.primaryNavy}
       />

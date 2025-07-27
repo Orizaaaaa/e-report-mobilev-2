@@ -1,9 +1,12 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import {
     ScrollView,
     StyleSheet,
+    Text,
+    TouchableOpacity,
     View
 } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -13,8 +16,7 @@ import {
     Card,
     Modal,
     PaperProvider,
-    Portal,
-    Text
+    Portal
 } from 'react-native-paper'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -108,34 +110,32 @@ const AppContent = () => {
 
 
     return (
-        <View style={[styles.scroll, { paddingTop: insets.top }]}>
-            <ScrollView contentContainerStyle={styles.container}>
-                <Text variant="headlineMedium" style={styles.header}>Gigi Analyzer</Text>
-
+        <View>
+            <ScrollView className='bg-white h-full'>
+                <View className='flex-col px-6 mt-14 mb-6 flex-1'>
+                    <Text className='font-bold text-3xl text-primaryNavy'>Deteksi</Text>
+                    <Text className='font-bold text-3xl text-primaryNavy'>Kesehatan Gigi</Text>
+                    <Text className='text-primaryNavy text-xl mt-2'>Mari Cek Kondisi Gigimu!</Text>
+                </View>
                 {/* Modified Button Group */}
-                <View style={styles.btnContainer}>
-                    <View style={styles.btnGroup}>
-                        <Button
-                            icon="camera"
-                            mode="contained"
-                            onPress={() => pickImage(true)}
-                            style={[styles.button, styles.flexButton]}
-                            labelStyle={styles.buttonLabel}
-                            contentStyle={styles.buttonContent}
-                        >
-                            Take Photo
-                        </Button>
-                        <Button
-                            icon="image"
-                            mode="contained"
-                            onPress={() => pickImage(false)}
-                            style={[styles.button, styles.flexButton]}
-                            labelStyle={styles.buttonLabel}
-                            contentStyle={styles.buttonContent}
-                        >
-                            Pick from Gallery
-                        </Button>
-                    </View>
+
+                <View className='flex-col gap-6 items-center justify-center px-6'>
+                    <TouchableOpacity onPress={() => pickImage(true)} className='h-72 bg-white rounded-2xl flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'>
+                        <MaterialCommunityIcons
+                            name='camera'
+                            size={65}
+                            color='#FEDD3F'
+                        />
+                        <Text className='text-primaryNavy font-semibold text-xl text-center'>Ambil Foto</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => pickImage(false)} className='h-72 bg-white rounded-2xl  flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'>
+                        <MaterialCommunityIcons
+                            name='image'
+                            size={65}
+                            color='#FEDD3F'
+                        />
+                        <Text className='text-primaryNavy font-semibold text-xl'>Pilih dari Galeri</Text>
+                    </TouchableOpacity>
                 </View>
 
 
@@ -158,29 +158,42 @@ const AppContent = () => {
                 )}
 
                 <Portal>
-                    <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.modalContent}>
+                    <Modal
+                        visible={modalVisible}
+                        onDismiss={() => setModalVisible(false)}
+                        contentContainerStyle={styles.modalWrapper}
+                    >
                         <Animatable.View animation="zoomIn" duration={400}>
                             {result && (
-                                <View>
-                                    <Text variant="titleLarge" style={styles.modalTitle}>
-                                        Predicted: {result.predicted_class}
+                                <View style={styles.modalContent}>
+                                    <Text className='text-center' style={styles.modalTitle}>
+                                        {result.predicted_class}
                                     </Text>
-                                    <Text style={styles.modalText}>
-                                        Confidence: {result.confidence}
+                                    <Text className='text-center' style={styles.modalText}>
+                                        {result.confidence}
                                     </Text>
+
+                                    {/* <Text style={styles.sectionTitle}>Top 3 Prediksi:</Text>
+                                    {result.top_3_predictions?.map((item, idx) => (
+                                        <Text key={idx} style={styles.modalText}>
+                                            {idx + 1}. {item.label} - {item.probability}
+                                        </Text>
+                                    ))} */}
+
+                                    <Button
+                                        mode="contained"
+                                        style={{ marginTop: 20 }}
+                                        labelStyle={{ fontSize: 16 }}
+                                        onPress={() => setModalVisible(false)}
+                                    >
+                                        Tutup
+                                    </Button>
                                 </View>
                             )}
-                            <Button
-                                mode="contained"
-                                style={{ marginTop: 20 }}
-                                labelStyle={{ fontSize: 16 }}
-                                onPress={() => setModalVisible(false)}
-                            >
-                                Close
-                            </Button>
                         </Animatable.View>
                     </Modal>
                 </Portal>
+
             </ScrollView>
         </View>
     )
@@ -293,6 +306,11 @@ const styles = StyleSheet.create({
         color: '#333',
         marginVertical: 2,
     },
+    modalWrapper: {
+        margin: 20,
+        justifyContent: 'center',
+    },
+
 })
 
 export default Index

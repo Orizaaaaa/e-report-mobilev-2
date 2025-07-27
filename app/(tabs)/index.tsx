@@ -28,9 +28,9 @@ export default function Index() {
 
 
   // bottom sheet
-  const handlePress = () => {
+  const handlePress = (id: number) => {
     // Navigasi ke halaman detail dengan ID
-    router.push(`/report/21`);
+    router.push(`/artikel/${id}`);
   };
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -191,8 +191,8 @@ export default function Index() {
   return (
 
     <SafeAreaView>
-      <ScrollView contentContainerStyle={{ paddingBottom: 100 }} >
-        <View className="mb-10 bg-white">
+      <ScrollView  >
+        <View className="bg-white pb-10">
           <View className='relative bg-[#2AA8E1] h-60  mb-32'>
             <View className='flex justify-center items-center pt-12 px-3'>
               <View className='flex-row items-center w-full p-1'>
@@ -271,7 +271,7 @@ export default function Index() {
 
 
           <View style={{ overflow: 'visible' }}>
-            <Promo handlePress={handlePress} />
+            <Promo handlePress={() => handlePress(20)} />
           </View>
 
 
@@ -279,16 +279,17 @@ export default function Index() {
             <View className='flex-row justify-between items-center px-1 mb-2'>
               <Text className='text-black font-semibold'>Artikel Kesehatan GIgi</Text>
               <TouchableOpacity
-                onPress={handlePress}
+              // onPress={handlePress}
               >
                 <Text className='text-primaryNavy font-semibold'>Lihat Semua</Text>
               </TouchableOpacity>
 
             </View>
 
-            <CardReportScroll image={require('../../assets/images/artikle3.avif')} handlepres={handlePress} title='Cara Menyikat Gigi Yang Baik dan Benar Untuk Seluruh Keluarga' description='Kita mungkin sudah menyikat gigi secara teratur, tapi apakah kita sudah melakukannya dengan benar? Simak cara menyikat gigi dengan benar, untuk Anda dan keluarga Anda' />
-            <CardReportScroll image={require('../../assets/images/artikle1.jpeg')} handlepres={handlePress} title='Apakah ibu hamil perlu rutin periksa gigi?' description='Di masa kehamilan , bukan hanya fisik dan mental yang harus diperhatikan, namun  kesehatan gigi dan mulut juga harus di perhatikan. Karena penyakit pada gigi dan mulut, seperti gigi berlubang dan radang gusi sering diderita oleh ibu hamil.' />
-            <CardReportScroll image={require('../../assets/images/artikle2.jpg')} handlepres={handlePress} title='Kapan Waktu yang Tepat Bawa Anak ke Dokter Gigi?' description='Kesehatan gigi dan mulut anak merupakan aspek penting dalam pertumbuhan dan perkembangan mereka. Salah satu pertanyaan yang sering muncul di benak orangtua adalah kapan waktu yang tepat untuk membawa anak ke dokter gigi.' />
+
+            <CardReportScroll image={require('../../assets/images/artikle3.avif')} handlepres={() => handlePress(1)} title='Cara Menyikat Gigi Yang Baik dan Benar Untuk Seluruh Keluarga' description='Kita mungkin sudah menyikat gigi secara teratur, tapi apakah kita sudah melakukannya dengan benar? Simak cara menyikat gigi dengan benar, untuk Anda dan keluarga Anda' />
+            <CardReportScroll image={require('../../assets/images/artikle1.jpeg')} handlepres={() => handlePress(2)} title='Apakah ibu hamil perlu rutin periksa gigi?' description='Di masa kehamilan , bukan hanya fisik dan mental yang harus diperhatikan, namun  kesehatan gigi dan mulut juga harus di perhatikan. Karena penyakit pada gigi dan mulut, seperti gigi berlubang dan radang gusi sering diderita oleh ibu hamil.' />
+            <CardReportScroll image={require('../../assets/images/artikle2.jpg')} handlepres={() => handlePress(3)} title='Kapan Waktu yang Tepat Bawa Anak ke Dokter Gigi?' description='Kesehatan gigi dan mulut anak merupakan aspek penting dalam pertumbuhan dan perkembangan mereka. Salah satu pertanyaan yang sering muncul di benak orangtua adalah kapan waktu yang tepat untuk membawa anak ke dokter gigi.' />
           </View>
         </View>
 
@@ -346,24 +347,7 @@ export default function Index() {
           </BottomSheetView>
         </BottomSheet>
       </ScrollView >
-      {/* <View style={{ position: 'absolute', bottom: insets.bottom + 10, left: 0, right: 0, paddingHorizontal: 16 }}>
-        <FAB
-          icon="camera"
-          label="Ambil Foto"
-          onPress={() => pickImage(true)}
-          style={{ backgroundColor: '#00A8A8' }}
-        />
-      </View>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}
-      >
 
-      </View> */}
 
     </SafeAreaView >
   );
