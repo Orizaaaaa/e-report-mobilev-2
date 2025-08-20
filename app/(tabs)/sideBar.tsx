@@ -1,4 +1,4 @@
-import { Feather, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import {
     Animated,
@@ -35,6 +35,13 @@ const SideBar = ({ onNavigate }: Props) => {
             }).start();
         }
     };
+
+    const menus = [
+        { id: 1, label: "Tambah Dokter", icon: "plus" },
+        { id: 2, label: "Tambah Artikel", icon: "plus" },
+        { id: 3, label: "Tambah Promo", icon: "plus" },
+        { id: 4, label: "Tambah Tips Harian", icon: "plus" },
+    ];
 
     return (
         <View className="flex-1">
@@ -92,6 +99,35 @@ const SideBar = ({ onNavigate }: Props) => {
 
                     </View>
                 </View>
+
+
+                <Text className="text-xl font-medium text-[#205072] px-6 my-3" >Akses Cepat</Text>
+                <View className="flex-row flex-wrap justify-between px-6 ">
+                    {menus.map((item) => (
+                        <View
+                            key={item.id}
+                            className="bg-yellow-400 rounded-xl shadow-2xl px-5 py-3 w-[48%] mb-4 flex flex-row  items-center gap-2"
+                        >
+                            <FontAwesome6 name={item.icon as any} size={14} color="black" />
+                            <Text className="font-semibold text-gray-600 text-sm">{item.label}</Text>
+                        </View>
+                    ))}
+                </View>
+
+                <Text className="text-xl font-medium text-[#205072] px-6 my-3" >Riwayat Terbaru</Text>
+                <View className="px-6" >
+                    <View className="p-2 border border-gray-[#205072] rounded-xl">
+                        <View className="flex-row items-start">
+                            <Entypo name="dot-single" size={24} color="black" />
+                            <Text className="flex-1 text-gray-800">
+                                Pengguna Andi Budi baru saja melakukan deteksi itil berlubang
+                            </Text>
+                        </View>
+
+
+                    </View>
+                </View>
+
 
             </ScrollView>
 
