@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import {
     Animated,
@@ -39,12 +39,63 @@ const SideBar = ({ onNavigate }: Props) => {
     return (
         <View className="flex-1">
             {/* Tombol Toggle */}
-            <TouchableOpacity
-                onPress={toggleSidebar}
-                className="p-4 bg-green-600 rounded-md m-4 w-12"
-            >
-                <Ionicons name="menu" size={28} color="white" />
-            </TouchableOpacity>
+            <ScrollView>
+                <View className="bg-[#2AA8E1] rounded-b-[25px]" >
+                    <View className="py-12 px-4">
+                        <View className="flex-row items-center gap-4 mb-5">
+                            <TouchableOpacity
+                                onPress={toggleSidebar}
+                            >
+                                <Ionicons name="menu" size={28} color="white" />
+                            </TouchableOpacity>
+                            <Text className="text-white  ml-2 text-lg">Selamat Datang, Admin</Text>
+                        </View>
+
+                        <View className="flex-row flex-wrap justify-between">
+                            {/* Kotak 1 */}
+                            <View className="bg-white rounded-xl shadow-2xl px-5 py-2 w-[48%]  mb-4 flex justify-center gap-3">
+                                <View className="flex-row items-center gap-4" >
+                                    <FontAwesome6 name="user-nurse" size={24} color="#205072" />
+                                    <Text className="text-gray-500">Dokter Aktif</Text>
+                                </View>
+                                <Text className="text-xl font-semibold text-gray-600" >6</Text>
+                            </View>
+
+                            {/* Kotak 2 */}
+                            <View className="bg-white rounded-xl shadow-2xl px-5 py-2 w-[48%]  mb-4 flex justify-center gap-3">
+                                <View className="flex-row items-center gap-4" >
+                                    <FontAwesome6 name="newspaper" size={24} color="#205072" />
+                                    <Text className="text-gray-500">Publish Artikel</Text>
+                                </View>
+                                <Text className="text-xl font-semibold text-gray-600" >6</Text>
+                            </View>
+
+                            {/* Kotak 3 */}
+                            <View className="bg-white rounded-xl shadow-2xl px-5 py-2 w-[48%]  mb-4 flex justify-center gap-3">
+                                <View className="flex-row items-center gap-4" >
+                                    <Feather name="gift" size={24} color="#205072" />
+                                    <Text className="text-gray-500">Promo Aktif</Text>
+                                </View>
+                                <Text className="text-xl font-semibold text-gray-600" >6</Text>
+                            </View>
+
+                            {/* Kotak 4 */}
+                            <View className="bg-white rounded-xl shadow-2xl px-5 py-2 w-[48%]  mb-4 flex justify-center gap-3">
+                                <View className="flex-row items-center gap-4" >
+                                    <MaterialIcons name="people-alt" size={24} color="#205072" />
+                                    <Text className="text-gray-500">Pengguna</Text>
+                                </View>
+                                <Text className="text-xl font-semibold text-gray-600" >6</Text>
+                            </View>
+                        </View>
+
+
+                    </View>
+                </View>
+
+            </ScrollView>
+
+            {/* SIDEBAR DI SINI BOS */}
 
             {/* Overlay */}
             {isOpen && (
