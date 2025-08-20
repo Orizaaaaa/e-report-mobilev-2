@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "E-Report",
-    "slug": "E-Report",
+    "slug": "e-report-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon_app.png",
