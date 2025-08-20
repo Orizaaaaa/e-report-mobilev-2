@@ -24,6 +24,7 @@ const tabs = [
   { name: '/articles', title: 'Layanan', icon: 'tooth-outline', second: 'tooth' },
   { name: '/klinik', title: 'Klinik', icon: 'hospital-building', second: 'hospital' },
   { name: '/profile', title: 'Profile', icon: 'account-outline', second: 'account' },
+  { name: '/sideBar', title: 'SideBar', icon: 'account-outline', second: 'account' },
 
 ];
 
