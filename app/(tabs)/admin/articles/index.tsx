@@ -1,4 +1,5 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { router, useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Animated, Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -10,6 +11,7 @@ type Props = {
 };
 
 const Article = ({ onNavigate }: Props) => {
+    const route = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const slideAnim = useRef(new Animated.Value(-screenWidth)).current;
 
@@ -49,7 +51,12 @@ const Article = ({ onNavigate }: Props) => {
             </View>
 
             <ScrollView className="mt-5  px-4" >
-                <View className="p-3 bg-white rounded-xl shadow-2xl" >
+                <TouchableOpacity onPress={() =>
+                    router.push({
+                        pathname: "/admin/articles/[id]", // path dinamis
+                        params: { id: "33" },             // params harus string
+                    })
+                } className="p-3 bg-white rounded-xl shadow-2xl" >
                     <View className="bg-gray-600 py-16 rounded-xl" >
 
                     </View>
@@ -61,7 +68,7 @@ const Article = ({ onNavigate }: Props) => {
                         <Text className="text-green-800" >Edit</Text>
                         <Text className="text-red-600" >Hapus</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
 
             </ScrollView>
 
