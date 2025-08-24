@@ -65,12 +65,7 @@ const Promo = ({ onNavigate }: Props) => {
                         praesentium consequatur delectus totam dignissimos, itaque et
                         a cupiditate neque minus cumque blanditiis repellendus ullam.</Text>
                     <View className="flex-row mt-5 gap-3 justify-end" >
-                        <TouchableOpacity onPress={() =>
-                            route.push({
-                                pathname: "/admin/articles/[id]", // path dinamis
-                                params: { id: "33" },             // params harus string
-                            })
-                        }>
+                        <TouchableOpacity onPress={() => route.push(`/admin/promo/33/edit` as any)}>
                             <AntDesign name="edit" size={24} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity>
