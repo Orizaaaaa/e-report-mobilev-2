@@ -24,9 +24,8 @@ const tabs = [
   { name: '/articles', title: 'Layanan', icon: 'tooth-outline', second: 'tooth' },
   { name: '/klinik', title: 'Klinik', icon: 'hospital-building', second: 'hospital' },
   { name: '/profile', title: 'Profile', icon: 'account-outline', second: 'account' },
-  { name: '/admin/home', title: 'HomeMIN', icon: 'account-outline', second: 'account' },
-  { name: '/admin/articles', title: 'ArticMIN', icon: 'account-outline', second: 'account' },
   { name: '/admin/promo', title: 'proMIN', icon: 'account-outline', second: 'account' },
+  { name: '/admin/promo/add_promo', title: 'proMIN', icon: 'account-outline', second: 'account' },
 
 ];
 
