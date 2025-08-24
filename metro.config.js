@@ -22,4 +22,7 @@ config.resolver = {
 };
 
 
+// ✅ Tambahkan opsi untuk kompatibilitas Firebase
+config.resolver.unstable_enablePackageExports = false;
+
 module.exports = withNativeWind(config, { input: './global.css' });

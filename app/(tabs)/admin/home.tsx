@@ -5,7 +5,7 @@ import {
     Dimensions,
     Text,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -42,6 +42,7 @@ const SideBar = ({ onNavigate }: Props) => {
         { id: 3, label: "Tambah Promo", icon: "plus" },
         { id: 4, label: "Tambah Tips Harian", icon: "plus" },
     ];
+
 
     return (
         <View className="flex-1">
@@ -104,13 +105,13 @@ const SideBar = ({ onNavigate }: Props) => {
                 <Text className="text-xl font-medium text-[#205072] px-6 my-3" >Akses Cepat</Text>
                 <View className="flex-row flex-wrap justify-between px-6 ">
                     {menus.map((item) => (
-                        <View
+                        <TouchableOpacity
                             key={item.id}
                             className="bg-yellow-400 rounded-xl shadow-2xl px-5 py-3 w-[48%] mb-4 flex flex-row  items-center gap-2"
                         >
                             <FontAwesome6 name={item.icon as any} size={14} color="black" />
                             <Text className="font-semibold text-gray-600 text-sm">{item.label}</Text>
-                        </View>
+                        </TouchableOpacity>
                     ))}
                 </View>
 
