@@ -3,12 +3,12 @@ import { Text, View } from 'react-native'
 
 type Props = {}
 
-const EditPromo = (props: Props) => {
+const DetailPromo = (props: Props) => {
     return (
         <View>
-            <Text>EditPromo</Text>
+            <Text>DetailPromo</Text>
         </View>
     )
 }
 
-export default EditPromo
+export default DetailPromo

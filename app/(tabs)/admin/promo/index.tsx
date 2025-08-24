@@ -51,7 +51,7 @@ const Promo = ({ onNavigate }: Props) => {
             </View>
 
             <ScrollView className="mt-5  px-4" >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => route.push(`/admin/promo/33` as any)}>
                     <View className='w-full h-36 mr-6'>
                         <Image
                             className='w-full h-full rounded-lg'
@@ -65,7 +65,12 @@ const Promo = ({ onNavigate }: Props) => {
                         praesentium consequatur delectus totam dignissimos, itaque et
                         a cupiditate neque minus cumque blanditiis repellendus ullam.</Text>
                     <View className="flex-row mt-5 gap-3 justify-end" >
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() =>
+                            route.push({
+                                pathname: "/admin/articles/[id]", // path dinamis
+                                params: { id: "33" },             // params harus string
+                            })
+                        }>
                             <AntDesign name="edit" size={24} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity>

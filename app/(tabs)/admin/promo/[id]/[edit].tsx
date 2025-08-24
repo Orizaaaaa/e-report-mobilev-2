@@ -1,7 +1,7 @@
 import { db, storage } from '@/database/firebase'
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
-import { useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { addDoc, collection } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useState } from 'react'
@@ -12,6 +12,7 @@ import { ActivityIndicator } from 'react-native-paper'
 type Props = {}
 
 const add_promo = (props: Props) => {
+    const { edit } = useLocalSearchParams<{ edit: string }>();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
@@ -97,7 +98,7 @@ const add_promo = (props: Props) => {
         <ScrollView>
             <View className='p-5 flex-row items-center mt-10 justify-between' >
                 <MaterialIcons onPress={() => router.back()} name="arrow-back-ios" size={24} color="#205072" />
-                <Text className='text-[#205072] text-lg font-medium' >Tambah Promo</Text>
+                <Text className='text-[#205072] text-lg font-medium' >Edit Promo</Text>
                 <Text>{''}</Text>
             </View>
             <KeyboardAvoidingView className='p-5 ' >
