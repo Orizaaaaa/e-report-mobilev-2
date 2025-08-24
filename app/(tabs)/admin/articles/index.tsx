@@ -56,7 +56,7 @@ const Article = ({ onNavigate }: Props) => {
                         pathname: "/admin/articles/[id]", // path dinamis
                         params: { id: "33" },             // params harus string
                     })
-                } className="p-3 bg-white rounded-xl shadow-2xl" >
+                } className="p-3 bg-white rounded-xl shadow-2xl mb-6" >
                     <View className="bg-gray-600 py-16 rounded-xl" >
 
                     </View>
