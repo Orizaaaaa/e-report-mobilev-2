@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { addDoc, collection } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import React, { useState } from 'react'
-import { Alert, Text, TouchableOpacity } from 'react-native'
+import { Alert, KeyboardAvoidingView, Text, TouchableOpacity } from 'react-native'
 import { Image, View } from 'react-native-animatable'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
@@ -98,7 +98,7 @@ const add_promo = (props: Props) => {
                 <Text className='text-[#205072] text-lg font-medium' >Tambah Promo</Text>
                 <Text>{''}</Text>
             </View>
-            <View className='p-5 ' >
+            <KeyboardAvoidingView className='p-5 ' >
                 <Text className='mb-3 text-gray-600' >Foto Promo</Text>
                 <TouchableOpacity
                     onPress={handlePickImage}
@@ -123,7 +123,7 @@ const add_promo = (props: Props) => {
                         <FontAwesome name="image" size={24} color="gray" />
                     )}
                 </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
 
             <View className='px-5 mb-5'>
                 <Text className='mb-1 text-gray-600'>Judul Promo</Text>
