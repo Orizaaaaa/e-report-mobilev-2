@@ -1,5 +1,6 @@
+import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
 import { AntDesign, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Animated, Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "react-native-animatable";
@@ -111,27 +112,29 @@ const Promo = ({ onNavigate }: Props) => {
 
                     <View className="p-6" >
                         {/* Menu Items */}
-                        <TouchableOpacity
-                            className="flex-row items-center py-3 bg-[#2AA8E1] px-3  rounded-md"
+                        <ButtonNav title="Home"
                             onPress={() => {
-                                onNavigate?.("Home");
+                                router.push("/admin/home");
                                 toggleSidebar();
                             }}
-                        >
-                            <Ionicons name="home-outline" size={22} color="#ffff" />
-                            <Text className="ml-3 text-base text-white">Home</Text>
-                        </TouchableOpacity>
+                            icon={"home-outline"}
+                        />
 
-                        <TouchableOpacity
-                            className="flex-row items-center p-3"
+                        <ButtonNav title="Artikel"
                             onPress={() => {
-                                onNavigate?.("Profile");
+                                router.push("/admin/articles");
                                 toggleSidebar();
                             }}
-                        >
-                            <Ionicons name="person-outline" size={22} color="#374151" />
-                            <Text className="ml-3 text-base text-gray-700">Profile</Text>
-                        </TouchableOpacity>
+                            icon={"newspaper-outline"}
+                        />
+
+                        <ButtonNav title="Promo"
+                            onPress={() => {
+                                router.push("/admin/promo");
+                                toggleSidebar();
+                            }}
+                            icon={"ticket-outline"}
+                        />
 
                         <TouchableOpacity
                             className="flex-row items-center p-3"
