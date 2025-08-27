@@ -1,4 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
@@ -18,7 +19,7 @@ const PromoDetail = () => {
             {/* Gambar */}
             <View className="relative">
                 {/* Tombol Back */}
-                <TouchableOpacity className="absolute top-10 left-4 z-10 ">
+                <TouchableOpacity className="absolute top-10 left-4 z-10 " onPress={() => router.back()}>
                     <MaterialIcons name="arrow-back-ios" size={24} color="black" />
                 </TouchableOpacity>
 
