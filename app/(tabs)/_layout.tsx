@@ -24,8 +24,7 @@ const tabs = [
   { name: '/articles', title: 'Layanan', icon: 'tooth-outline', second: 'tooth' },
   { name: '/klinik', title: 'Klinik', icon: 'hospital-building', second: 'hospital' },
   { name: '/profile', title: 'Profile', icon: 'account-outline', second: 'account' },
-  { name: '/admin/promo', title: 'proMIN', icon: 'account-outline', second: 'account' },
-  { name: '/admin/promo/add_promo', title: 'proMIN', icon: 'account-outline', second: 'account' },
+  { name: '/admin/home', title: 'Admin', icon: 'account-alert-outline', second: 'account' },
 
 ];
 
@@ -56,6 +55,7 @@ const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => voi
 };
 
 export default function Layout() {
+  const [role, setRole] = React.useState('user');
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
   const handleWhatsApp = () => {
@@ -71,30 +71,35 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }} />
 
-      <FloatingButton
-        onPress={handleWhatsApp}
-        icon={<FontAwesome6 name="whatsapp" size={37} color="white" />}
-        label="Konsultasikan Sekarang !"
-      />
+      {role === 'user' && (
+        <FloatingButton
+          onPress={handleWhatsApp}
+          icon={<FontAwesome6 name="whatsapp" size={37} color="white" />}
+          label="Konsultasikan Sekarang !"
+        />
+      )}
 
+      {role === 'user' && (
+        <View style={styles.tabBar}>
+          {tabs.map((item, index) => {
+            const isFocused = currentRoute === item.name;
+
+            return (
+              <TabButton
+                key={index}
+                item={item}
+                onPress={() => {
+                  const router = require('expo-router').router;
+                  router.push(`${item.name}`);
+                }}
+                isFocused={isFocused}
+              />
+            );
+          })}
+        </View>
+      )}
       {/* Simple Tab Bar dengan 2 tab */}
-      <View style={styles.tabBar}>
-        {tabs.map((item, index) => {
-          const isFocused = currentRoute === item.name;
 
-          return (
-            <TabButton
-              key={index}
-              item={item}
-              onPress={() => {
-                const router = require('expo-router').router;
-                router.push(`${item.name}`);
-              }}
-              isFocused={isFocused}
-            />
-          );
-        })}
-      </View>
     </GestureHandlerRootView>
 
   );
