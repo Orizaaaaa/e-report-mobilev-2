@@ -51,6 +51,15 @@ const Article = ({ onNavigate }: Props) => {
                 </View>
             </View>
 
+            <View className="px-4 bg-primaryNavy py-3 rounded-b-[60px]" >
+                <TouchableOpacity onPress={() => router.push("/admin/articles/addArticles")}>
+                    <Text className="text-center text-white"  >
+                        Tambah Artikel
+                    </Text>
+
+                </TouchableOpacity>
+            </View>
+
             <ScrollView className="mt-5  px-4" >
                 <TouchableOpacity onPress={() =>
                     router.push({
