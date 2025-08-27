@@ -1,5 +1,6 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 const PromoDetail = () => {
     const data = {
@@ -15,16 +16,24 @@ const PromoDetail = () => {
     return (
         <ScrollView className="flex-1 bg-white">
             {/* Gambar */}
-            <View className="w-full h-60 bg-gray-200 justify-center items-center">
-                {data.image ? (
-                    <Image
-                        source={{ uri: data.image }}
-                        className="w-full h-full"
-                        resizeMode="cover"
-                    />
-                ) : (
-                    <Text className="text-gray-400">No Image Available</Text>
-                )}
+            <View className="relative">
+                {/* Tombol Back */}
+                <TouchableOpacity className="absolute top-10 left-4 z-10 ">
+                    <MaterialIcons name="arrow-back-ios" size={24} color="black" />
+                </TouchableOpacity>
+
+                {/* Gambar / Placeholder */}
+                <View className="w-full h-60 bg-gray-200 justify-center items-center">
+                    {data.image ? (
+                        <Image
+                            source={{ uri: data.image }}
+                            className="w-full h-full"
+                            resizeMode="cover"
+                        />
+                    ) : (
+                        <Text className="text-gray-400">No Image Available</Text>
+                    )}
+                </View>
             </View>
 
             {/* Konten */}
@@ -33,7 +42,7 @@ const PromoDetail = () => {
                 <Text className="text-2xl font-bold text-gray-800">{data.title}</Text>
 
                 {/* Periode */}
-                <View className="self-start bg-primaryOrange px-3 py-1 rounded-md">
+                <View className="self-start bg-primaryOrange px-3 py-1 rounded-md my-3">
                     <Text className="text-white text-sm">
                         {data.start_periode} - {data.end_periode}
                     </Text>
