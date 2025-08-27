@@ -44,6 +44,7 @@ const Promo = ({ onNavigate }: Props) => {
                         <TouchableOpacity onPress={toggleSidebar}>
                             <Ionicons name="menu" size={28} color="#205072" />
                         </TouchableOpacity>
+                        <Text className="ml-3 text-lg text-[#205072] ">Promo</Text>
                     </View>
 
                     {/* Kanan */}
@@ -52,28 +53,39 @@ const Promo = ({ onNavigate }: Props) => {
             </View>
 
             <ScrollView className="mt-5  px-4" >
-                <TouchableOpacity onPress={() => route.push(`/admin/promo/33` as any)}>
-                    <View className='w-full h-36 mr-6'>
-                        <Image
-                            className='w-full h-full rounded-lg'
-                            source={require('../../../../assets/images/promo1.jpeg')}
-                            resizeMode='cover'
-                        />
-                    </View>
-                    <Text className="mt-3 text-lg text-[#205072] font-medium" >Promo minggu tenang</Text>
-                    <Text className="text-sm text-gray-600 font-light" >Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit. Cum laudantium vel, deleniti quisquam voluptatem velit
-                        praesentium consequatur delectus totam dignissimos, itaque et
-                        a cupiditate neque minus cumque blanditiis repellendus ullam.</Text>
-                    <View className="flex-row mt-5 gap-3 justify-end" >
-                        <TouchableOpacity onPress={() => route.push(`/admin/promo/33/edit` as any)}>
-                            <AntDesign name="edit" size={24} color="black" />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Feather name="trash-2" size={24} color="red" />
-                        </TouchableOpacity>
-                    </View>
-                </TouchableOpacity>
+                <View className="shadow-2xl rounded-2xl bg-white p-4" >
+                    <TouchableOpacity onPress={() => route.push(`/admin/promo/33` as any)}>
+                        <View className='w-full h-36 mr-6'>
+                            <Image
+                                className='w-full h-full rounded-lg'
+                                source={require('../../../../assets/images/promo1.jpeg')}
+                                resizeMode='cover'
+                            />
+                        </View>
+                        <Text className="mt-3 text-xl text-[#205072] font-medium" >Promo minggu tenang</Text>
+                        <View className="self-start">
+                            <Text className="p-2 rounded-xl bg-[#FEDD3F] text-[#205072] my-2 w-fit font-light">
+                                27 Agustus 2025 - 30 Agustus 2025
+                            </Text>
+                        </View>
+
+                        <View className="flex flex-col mb-5">
+                            <Text className="text-lg font-semibold text-[#FEDD3F]">Rp.200.000</Text>
+                            <Text className="text-gray-500 line-through">Rp.350.000</Text>
+                        </View>
+
+
+                        <View className="flex-row gap-3 justify-end" >
+                            <TouchableOpacity onPress={() => route.push(`/admin/promo/33/edit` as any)}>
+                                <AntDesign name="edit" size={24} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Feather name="trash-2" size={24} color="red" />
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
             </ScrollView>
 
             {/* Overlay */}

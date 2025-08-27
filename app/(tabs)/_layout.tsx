@@ -55,7 +55,7 @@ const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => voi
 };
 
 export default function Layout() {
-  const [role, setRole] = React.useState('admin');
+  const [role, setRole] = React.useState('user');
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
   const handleWhatsApp = () => {
