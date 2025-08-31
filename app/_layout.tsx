@@ -60,6 +60,7 @@ const tabsUser = [
   { name: 'user/profile/index', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'user/profile/setting', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'user/notif', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'info', title: 'Info', icon: 'person-circle-outline' },
   { name: 'register', title: 'Profile', icon: 'person-circle-outline' },
   { name: 'login', title: 'Profile', icon: 'person-circle-outline' },
 ];
@@ -147,7 +148,7 @@ export default function Layout() {
         screenOptions={({ route }) => {
           // daftar halaman yang harus sembunyikan tab bar
           const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'user/contest/[id]',
-            'admin/notif', 'login', 'register', 'user/report/[id]/index', 'user/report/[id]/[edit]', 'index', 'admin/notif/NotifPage', 'admin/contest/[id]'];
+            'admin/notif', 'login', 'info', 'register', 'user/report/[id]/index', 'user/report/[id]/[edit]', 'index', 'admin/notif/NotifPage', 'admin/contest/[id]'];
 
           const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
 
@@ -172,6 +173,7 @@ export default function Layout() {
             tab.name === 'index' || // selalu disembunyikan
             tab.name === 'register' || // selalu disembunyikan
             tab.name === 'login' || // selalu disembunyikan
+            tab.name === 'info' || // selalu disembunyikan
 
             (role === 'admin' && isUserTab) ||
             (role !== 'admin' && isAdminTab);

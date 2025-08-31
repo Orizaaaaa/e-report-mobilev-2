@@ -182,6 +182,9 @@ export default function LoginRegisterScreen() {
             <TouchableOpacity className='mt-2' onPress={() => setModalConfirmVisible(true)}>
                 <Text className='text-slate-400 font-light' >Lupa kata sandi ?</Text>
             </TouchableOpacity>
+            <TouchableOpacity className='mt-2' onPress={() => router.push('/info')}>
+                <Text className='text-primaryOrange font-light' >Lihat Informasi Laporan dan lomba</Text>
+            </TouchableOpacity>
 
             {/* Modal Konfirmasi Ganti Password */}
             <Modal
