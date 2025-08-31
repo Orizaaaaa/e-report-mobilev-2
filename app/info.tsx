@@ -106,10 +106,10 @@ const Index = (props: Props) => {
                 </View>
 
                 {/* Jumlah Lomba */}
-                <View className="bg-white rounded-2xl shadow-md mt-6 px-6 py-5">
-                    <Text className="text-gray-500 text-base">Jumlah Lomba</Text>
-                    <Text className="text-4xl font-bold text-primaryNavy mt-1">{countAllContest}</Text>
-                    <Text className="text-gray-400 text-sm mt-1">Total lomba yang pernah dibuat</Text>
+                <View className="bg-primaryNavy rounded-2xl shadow-md mt-6 px-6 py-5">
+                    <Text className="text-white text-base">Jumlah Lomba</Text>
+                    <Text className="text-4xl font-bold text-green-500 mt-1">{countAllContest}</Text>
+                    <Text className="text-white text-sm mt-1">Total lomba yang pernah dibuat</Text>
                 </View>
             </ScrollView>
         </SafeAreaView>
