@@ -5,10 +5,12 @@ import { doc, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { Alert, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
+import { ActivityIndicator } from 'react-native-paper'
 
 type Props = {}
 
 const Register = (props: Props) => {
+    const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({
         namaLengkap: '',
         nik: '',
@@ -27,6 +29,7 @@ const Register = (props: Props) => {
     }
 
     const handleSubmit = async () => {
+        setLoading(true)
         // Cek apakah ada field kosong
         if (
             !form.namaLengkap ||
@@ -40,6 +43,7 @@ const Register = (props: Props) => {
             !form.password
         ) {
             Alert.alert('Error', 'Semua field wajib diisi')
+            setLoading(false)
             return
         }
 
@@ -64,10 +68,11 @@ const Register = (props: Props) => {
                 noTelp: form.noTelp,
                 createdAt: new Date().toISOString(),
             })
-
+            setLoading(false)
             Alert.alert('Sukses', 'Akun berhasil dibuat!')
         } catch (error: any) {
             console.error(error)
+            setLoading(false)
             Alert.alert('Error', error.message)
         }
     }
@@ -185,7 +190,12 @@ const Register = (props: Props) => {
                         />
                     </View>
                     <TouchableOpacity onPress={handleSubmit} className='flex justify-center items-center bg-yellow-400 py-3 rounded-xl'>
-                        <Text className='text-[#205072] font-medium text-lg' >Sign Up</Text>
+
+                        {loading ? (
+                            <ActivityIndicator size="small" color="white" />
+                        ) : (
+                            <Text className='text-[#205072] font-medium text-lg' >Sign Up</Text>
+                        )}
                     </TouchableOpacity>
                 </ScrollView>
             </View>
