@@ -1,9 +1,9 @@
-import { db, storage } from '@/database/firebase';
+import { postImage } from '@/database/cloudinary';
+import { db } from '@/database/firebase';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { addDoc, collection } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react';
 import { Alert, Image, KeyboardAvoidingView, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
@@ -37,31 +37,28 @@ const addArticles = (props: Props) => {
         }
     };
     const handleSubmit = async () => {
-        // 🔹 Validasi semua field
         setLoading(true);
-        if (
-            !form.image ||
-            !form.title.trim() ||
-            !form.desc.trim()
-        ) {
+
+        if (!form.image || !form.title.trim() || !form.desc.trim()) {
             Alert.alert("Error", "Semua field wajib diisi!");
+            setLoading(false);
             return;
         }
 
         try {
-            // 🔹 Upload image ke Firebase Storage
-            const response = await fetch(form.image);
-            const blob = await response.blob();
-            const filename = `promo/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
-            const storageRef = ref(storage, filename);
+            // Upload image
+            const imageUrl = await postImage({ image: form.image });
 
-            await uploadBytes(storageRef, blob);
-            const downloadURL = await getDownloadURL(storageRef);
+            if (!imageUrl) {
+                Alert.alert("Error", "Upload gambar gagal. Coba lagi!");
+                setLoading(false);
+                return; // ❌ stop di sini biar Firestore gak nerima undefined
+            }
 
-            // 🔹 Simpan ke Firestore
-            await addDoc(collection(db, "promo"), {
+            // Simpan ke Firestore
+            await addDoc(collection(db, "articles"), {
                 ...form,
-                image: downloadURL, // ganti uri dengan url dari storage
+                image: imageUrl,
                 createdAt: new Date(),
             });
 
@@ -73,13 +70,15 @@ const addArticles = (props: Props) => {
                 writer: "",
                 writer_date: "",
             });
-            setLoading(false);
         } catch (error) {
             console.error("Error saving promo:", error);
             Alert.alert("Error", "Gagal menyimpan promo.");
+        } finally {
             setLoading(false);
         }
     };
+
+
     return (
         <ScrollView className='flex-1 bg-white' >
             <View className='p-5 flex-row items-center mt-10 justify-between' >
