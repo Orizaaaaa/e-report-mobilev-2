@@ -25,6 +25,7 @@ const tabs = [
   { name: '/klinik', title: 'Klinik', icon: 'hospital-building', second: 'hospital' },
   { name: '/profile', title: 'Profile', icon: 'account-outline', second: 'account' },
   { name: '/admin/home', title: 'Admin', icon: 'account-alert-outline', second: 'account' },
+  { name: '/register', title: 'Admin', icon: 'account-alert-outline', second: 'account' },
 
 ];
 
