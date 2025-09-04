@@ -1,4 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
+import { RelativePathString, router } from 'expo-router';
 export interface FormState {
     desc: string;
     images: ImagePicker.ImagePickerAsset[];
@@ -16,6 +17,11 @@ export interface Category {
     value: string;
 }
 
+
+export const movePage = (page: string) => {
+    // Navigasi ke halaman detail dengan ID
+    router.push(`${page}` as RelativePathString);
+};
 
 export interface ReportDescriptionInputProps {
     value: string;
