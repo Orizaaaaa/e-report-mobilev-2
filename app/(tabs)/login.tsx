@@ -114,7 +114,7 @@ const Login = (props: Props) => {
             await AsyncStorage.setItem('user', JSON.stringify(completeUserData));
 
             if (completeUserData.role === 'admin') {
-                router.push('/admin')
+                router.push('/(tabs)/admin/home')
             } else {
                 router.push('/home')
             }

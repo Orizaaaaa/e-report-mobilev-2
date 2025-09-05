@@ -1,10 +1,11 @@
 import { auth, db } from '@/database/firebase'
 import { Feather, FontAwesome, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { router } from 'expo-router'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { Alert, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -190,19 +191,11 @@ const Register = (props: Props) => {
                 email: form.email.toLowerCase().trim(),
                 noTelp: form.noTelp,
                 createdAt: new Date().toISOString(),
+                role: 'user',
             })
 
             setLoading(false)
-            Alert.alert(
-                'Sukses',
-                'Akun berhasil dibuat!',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate('Login' as never)
-                    }
-                ]
-            )
+            router.push('/login')
 
         } catch (error: any) {
             console.error('Register error:', error)

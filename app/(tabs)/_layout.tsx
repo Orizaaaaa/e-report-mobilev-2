@@ -24,10 +24,6 @@ const tabs = [
   { name: '/articles', title: 'Layanan', icon: 'tooth-outline', second: 'tooth' },
   { name: '/klinik', title: 'Klinik', icon: 'hospital-building', second: 'hospital' },
   { name: '/profile', title: 'Profile', icon: 'account-outline', second: 'account' },
-  { name: '/admin/home', title: 'Admin', icon: 'account-alert-outline', second: 'account' },
-  { name: '/register', title: 'Admin', icon: 'account-alert-outline', second: 'account' },
-  { name: '/login', title: 'Admin', icon: 'account-alert-outline', second: 'account' },
-
 ];
 
 const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => void, isFocused: boolean }) => {

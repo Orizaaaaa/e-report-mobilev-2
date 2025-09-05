@@ -43,7 +43,7 @@ export default function Index() {
 
         // 🔁 Arahkan ke halaman sesuai role
         if (parsed?.role === 'admin') {
-          router.replace('/admin');
+          router.replace('/(tabs)/admin/home');
         } else if (parsed?.role === 'user') {
           router.replace('/home');
         } else {
