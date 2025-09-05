@@ -1,35 +1,34 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import * as ImagePicker from 'expo-image-picker'
-import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import { postImage } from '@/database/cloudinary';
+import { db } from '@/database/firebase';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { getAuth } from 'firebase/auth';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import React, { useState } from 'react';
 import {
+    Alert,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
-} from 'react-native'
-import * as Animatable from 'react-native-animatable'
+} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import {
-    ActivityIndicator,
     Button,
-    Card,
     Modal,
     PaperProvider,
     Portal
-} from 'react-native-paper'
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
-
-type Top3Item = {
-    label: string
-    probability: string
-}
+} from 'react-native-paper';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type PredictionResult = {
     predicted_class: string
     confidence: string
-    top_3_predictions: Top3Item[]
-    probabilities: Record<string, string>
+    description: string
+    guest_action: string[]
 }
 
 const AppContent = () => {
@@ -37,6 +36,7 @@ const AppContent = () => {
     const [result, setResult] = useState<PredictionResult | null>(null)
     const [loading, setLoading] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
+    const [saving, setSaving] = useState(false)
 
     const insets = useSafeAreaInsets()
 
@@ -70,6 +70,47 @@ const AppContent = () => {
         }
     }
 
+    const savePredictionToFirestore = async (predictionData: PredictionResult, imageUri: string) => {
+        try {
+            const auth = getAuth();
+            const user = auth.currentUser;
+
+            if (!user) {
+                Alert.alert("Error", "Anda harus login untuk menyimpan hasil prediksi");
+                return null;
+            }
+
+            setSaving(true)
+            const imageUrl = await postImage({ image: imageUri });
+
+            if (!imageUrl) {
+                Alert.alert("Error", "Upload gambar gagal. Coba lagi!");
+                return null;
+            }
+
+            const docRef = await addDoc(collection(db, 'predictions'), {
+                userId: user.uid,
+                predictedClass: predictionData.predicted_class,
+                confidence: predictionData.confidence,
+                description: predictionData.description,
+                guestAction: predictionData.guest_action,
+                imageUrl: imageUrl,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            });
+
+            console.log("Prediction saved with ID: ", docRef.id);
+            return docRef.id;
+
+        } catch (error) {
+            console.error("Error saving prediction: ", error);
+            Alert.alert("Error", "Gagal menyimpan hasil prediksi");
+            return null;
+        } finally {
+            setSaving(false)
+        }
+    }
+
     const uploadImage = async () => {
         if (!image) return
         setLoading(true)
@@ -80,16 +121,7 @@ const AppContent = () => {
             name: 'photo.jpg',
             type: 'image/jpeg',
         } as any)
-        // https://saving-lemming-loyal.ngrok-free.app/predict
         try {
-            // ke saruaken ip server ieu jeng nu di run di ml mnh  (---ORIZA)
-            // const res = await fetch('http://192.168.9.85:5000/predict', {
-            //     method: 'POST',
-            //     body: formData, // jangan tambahkan headers
-            // })
-
-
-
             const res = await fetch('https://saving-lemming-loyal.ngrok-free.app/predict/', {
                 method: 'POST',
                 body: formData,
@@ -99,7 +131,33 @@ const AppContent = () => {
 
             const json: PredictionResult = await res.json()
             setResult(json)
-            setModalVisible(true)
+
+            // Langsung simpan ke Firestore dan navigasi ke halaman detail
+            try {
+                const predictionId = await savePredictionToFirestore(json, image.uri);
+
+                if (predictionId) {
+                    router.push({
+                        pathname: "/detail_predict",
+                        params: {
+                            predictionId: predictionId,
+                            predictedClass: json.predicted_class,
+                            confidence: json.confidence,
+                            description: json.description,
+                            guestAction: JSON.stringify(json.guest_action),
+                            imageUri: image.uri
+                        }
+                    });
+                } else {
+                    // Jika gagal menyimpan ke Firestore, tetap tampilkan hasil
+                    setModalVisible(true);
+                }
+            } catch (saveError) {
+                console.error("Error saving to Firestore:", saveError);
+                // Tetap tampilkan hasil meski gagal simpan ke database
+                setModalVisible(true);
+            }
+
         } catch (e) {
             console.error(e)
             alert('Failed to get prediction')
@@ -107,7 +165,6 @@ const AppContent = () => {
             setLoading(false)
         }
     }
-
 
     return (
         <View>
@@ -117,44 +174,75 @@ const AppContent = () => {
                     <Text className='font-bold text-3xl text-primaryNavy'>Kesehatan Gigi</Text>
                     <Text className='text-primaryNavy text-xl mt-2'>Mari Cek Kondisi Gigimu!</Text>
                 </View>
-                {/* Modified Button Group */}
 
                 <View className='flex-col gap-6 items-center justify-center px-6'>
-                    <TouchableOpacity onPress={() => pickImage(true)} className='h-72 bg-white rounded-2xl flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'>
-                        <MaterialCommunityIcons
-                            name='camera'
-                            size={65}
-                            color='#FEDD3F'
-                        />
-                        <Text className='text-primaryNavy font-semibold text-xl text-center'>Ambil Foto</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => pickImage(false)} className='h-72 bg-white rounded-2xl  flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'>
-                        <MaterialCommunityIcons
-                            name='image'
-                            size={65}
-                            color='#FEDD3F'
-                        />
-                        <Text className='text-primaryNavy font-semibold text-xl'>Pilih dari Galeri</Text>
-                    </TouchableOpacity>
+                    {image ? (
+                        // Tampilkan image preview di tombol galeri
+                        <TouchableOpacity
+                            onPress={() => pickImage(false)}
+                            className='h-72 bg-white rounded-2xl flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'
+                        >
+                            <View style={styles.imagePreviewContainer}>
+                                <Animatable.Image
+                                    animation="fadeIn"
+                                    duration={500}
+                                    source={{ uri: image.uri }}
+                                    style={styles.imagePreview}
+                                    resizeMode="cover"
+                                />
+                                <View style={styles.overlay}>
+                                    <MaterialCommunityIcons
+                                        name='image-edit'
+                                        size={40}
+                                        color='white'
+                                    />
+                                    <Text className='text-white font-semibold text-lg mt-2'>Ganti Gambar</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ) : (
+                        // Tampilkan tombol biasa jika belum ada gambar
+                        <>
+                            <TouchableOpacity
+                                onPress={() => pickImage(true)}
+                                className='h-72 bg-white rounded-2xl flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'
+                            >
+                                <MaterialCommunityIcons
+                                    name='camera'
+                                    size={65}
+                                    color='#FEDD3F'
+                                />
+                                <Text className='text-primaryNavy font-semibold text-xl text-center'>Ambil Foto</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => pickImage(false)}
+                                className='h-72 bg-white rounded-2xl flex-col justify-center items-center shadow-lg w-full border border-[#FEDD3F]'
+                            >
+                                <MaterialCommunityIcons
+                                    name='image'
+                                    size={65}
+                                    color='#FEDD3F'
+                                />
+                                <Text className='text-primaryNavy font-semibold text-xl'>Pilih dari Galeri</Text>
+                            </TouchableOpacity>
+                        </>
+                    )}
                 </View>
 
-
-
                 {image && (
-                    <Card style={styles.imageCard}>
-                        <Card.Cover source={{ uri: image.uri }} style={styles.image} />
-                        <Card.Actions>
-                            <Button
-                                mode="contained-tonal"
-                                onPress={uploadImage}
-                                disabled={loading}
-                                labelStyle={{ fontSize: 16 }}
-                            >
-                                {loading ? 'Predicting...' : '🔍 Predict'}
-                            </Button>
-                            {loading && <ActivityIndicator style={{ marginLeft: 10 }} />}
-                        </Card.Actions>
-                    </Card>
+                    <View className='px-6 mt-4'>
+                        <Button
+                            mode="contained"
+                            onPress={uploadImage}
+                            disabled={loading}
+                            loading={loading}
+                            style={styles.predictButton}
+                            labelStyle={styles.predictButtonLabel}
+                        >
+                            {loading ? 'Menganalisis...' : 'Deteksi Sekarang'}
+                        </Button>
+                    </View>
                 )}
 
                 <Portal>
@@ -170,29 +258,62 @@ const AppContent = () => {
                                         {result.predicted_class}
                                     </Text>
                                     <Text className='text-center' style={styles.modalText}>
-                                        {result.confidence}
+                                        Confidence: {result.confidence}
                                     </Text>
 
-                                    {/* <Text style={styles.sectionTitle}>Top 3 Prediksi:</Text>
-                                    {result.top_3_predictions?.map((item, idx) => (
-                                        <Text key={idx} style={styles.modalText}>
-                                            {idx + 1}. {item.label} - {item.probability}
-                                        </Text>
-                                    ))} */}
+                                    <Text style={styles.sectionTitle}>Deskripsi:</Text>
+                                    <Text style={styles.modalText}>
+                                        {result.description}
+                                    </Text>
 
-                                    <Button
-                                        mode="contained"
-                                        style={{ marginTop: 20 }}
-                                        labelStyle={{ fontSize: 16 }}
-                                        onPress={() => setModalVisible(false)}
-                                    >
-                                        Tutup
-                                    </Button>
+                                    <Text style={styles.sectionTitle}>Saran Tindakan:</Text>
+                                    {result.guest_action.map((action, idx) => (
+                                        <Text key={idx} style={styles.modalText}>
+                                            • {action}
+                                        </Text>
+                                    ))}
+
+                                    <View style={styles.modalButtons}>
+                                        <Button
+                                            mode="outlined"
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => setModalVisible(false)}
+                                        >
+                                            Tutup
+                                        </Button>
+                                        <Button
+                                            mode="contained"
+                                            onPress={() => {
+                                                setModalVisible(false);
+                                                router.push({
+                                                    pathname: "/detail_predict",
+                                                    params: {
+                                                        predictedClass: result.predicted_class,
+                                                        confidence: result.confidence,
+                                                        description: result.description,
+                                                        guestAction: JSON.stringify(result.guest_action),
+                                                        imageUri: image?.uri || ''
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            Lihat Detail
+                                        </Button>
+                                    </View>
                                 </View>
                             )}
                         </Animatable.View>
                     </Modal>
                 </Portal>
+
+                <View className='mb-10 mt-2 px-6 flex-row gap-3 justify-center items-center' style={styles.btnContainer}>
+                    <TouchableOpacity
+                        onPress={() => (router.push("/history_predict"))}
+                        className="w-full items-center bg-primaryBlue p-4 rounded-2xl shadow"
+                    >
+                        <Text className="text-lg font-semibold text-white">Lihat Riwayat Deteksi</Text>
+                    </TouchableOpacity>
+                </View>
 
             </ScrollView>
         </View>
@@ -211,76 +332,41 @@ const Index = () => {
 }
 
 const styles = StyleSheet.create({
-
     btnContainer: {
         flex: 1,
         width: '100%',
-        paddingVertical: 20, // jarak atas bawah container tombol
+        paddingVertical: 20,
     },
-    btnGroup: {
-        flex: 1,
-        justifyContent: 'space-between',
-        gap: 20, // jarak antar tombol (jika gap tidak support, gunakan marginVertical di tombol)
-        paddingHorizontal: 20,
+    imagePreviewContainer: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 16,
+        overflow: 'hidden',
+        position: 'relative',
     },
-    flexButton: {
-        flex: 1,
-        justifyContent: 'center',
-        borderRadius: 12, // gunakan borderRadius
-        overflow: 'hidden', // pastikan radius berlaku
-        marginVertical: 10, // jika `gap` tidak berlaku
-    },
-
-
-
-    buttonContent: {
-        flex: 1,
+    imagePreview: {
+        width: '100%',
         height: '100%',
     },
-
-    scroll: {
-        flex: 1,
-        backgroundColor: '#E6F5F3',
-    },
-    container: {
-        padding: 20,
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 60,
-        flexGrow: 1,
     },
-    header: {
-        marginBottom: 30,
-        fontWeight: 'bold',
-        color: '#007F7F',
+    predictButton: {
+        backgroundColor: '#FEDD3F',
+        borderRadius: 12,
+        paddingVertical: 8,
     },
-    // New styles for full-height balanced buttons
-
-    button: {
-        backgroundColor: '#00A8A8',
-        borderRadius: 8,
-    },
-    fullWidthButton: {
-        width: '100%',
-        paddingVertical: 12,
-    },
-
-    buttonLabel: {
+    predictButtonLabel: {
         fontSize: 16,
-        color: 'white',
+        fontWeight: 'heavy',
+        color: '#205072',
     },
-    imageCard: {
-        width: '100%',
-        borderRadius: 10,
-        overflow: 'hidden',
-        marginBottom: 20,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
-    },
-    image: {
-        height: 220,
+    modalWrapper: {
+        margin: 20,
+        justifyContent: 'center',
     },
     modalContent: {
         backgroundColor: 'white',
@@ -306,11 +392,11 @@ const styles = StyleSheet.create({
         color: '#333',
         marginVertical: 2,
     },
-    modalWrapper: {
-        margin: 20,
-        justifyContent: 'center',
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 20,
     },
-
 })
 
 export default Index
