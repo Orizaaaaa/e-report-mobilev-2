@@ -1,6 +1,7 @@
 
 
 import FloatingButton from '@/components/fragments/FloatingButton';
+import { useRoleStore } from '@/hook/state/stores/roleStore';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigationState } from '@react-navigation/native';
 import { Stack } from 'expo-router';
@@ -53,7 +54,7 @@ const TabButton = ({ item, onPress, isFocused }: { item: any, onPress: () => voi
 };
 
 export default function Layout() {
-  const [role, setRole] = React.useState('user');
+  const role = useRoleStore((state) => state.role);
   const state = useNavigationState(state => state);
   const currentRoute = state.routes[state.index].name;
   const handleWhatsApp = () => {

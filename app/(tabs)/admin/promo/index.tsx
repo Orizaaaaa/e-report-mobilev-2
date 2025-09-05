@@ -1,5 +1,6 @@
 import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
 import { AntDesign, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Animated, Dimensions, Text, TouchableOpacity, View } from "react-native";
@@ -151,7 +152,8 @@ const Promo = ({ onNavigate }: Props) => {
                         <TouchableOpacity
                             className="flex-row items-center p-3"
                             onPress={() => {
-                                onNavigate?.("Logout");
+                                AsyncStorage.removeItem('user');
+                                router.replace('/(tabs)/login');
                                 toggleSidebar();
                             }}
                         >

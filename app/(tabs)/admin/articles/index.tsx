@@ -1,6 +1,7 @@
 import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
 import { db } from "@/database/firebase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useFocusEffect, useRouter } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
 import React, { useCallback, useRef, useState } from "react";
@@ -184,7 +185,8 @@ const Article = ({ onNavigate }: Props) => {
                         <TouchableOpacity
                             className="flex-row items-center p-3"
                             onPress={() => {
-                                onNavigate?.("Logout");
+                                AsyncStorage.removeItem('user');
+                                router.replace('/(tabs)/login');
                                 toggleSidebar();
                             }}
                         >

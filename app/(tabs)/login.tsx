@@ -1,4 +1,5 @@
 import { auth, db } from '@/database/firebase';
+import { useRoleStore } from '@/hook/state/stores/roleStore';
 import { movePage } from '@/utils/helper';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -112,7 +113,7 @@ const Login = (props: Props) => {
 
             // Simpan seluruh data ke AsyncStorage
             await AsyncStorage.setItem('user', JSON.stringify(completeUserData));
-
+            useRoleStore.getState().setRole(completeUserData.role);
             if (completeUserData.role === 'admin') {
                 router.push('/(tabs)/admin/home')
             } else {
