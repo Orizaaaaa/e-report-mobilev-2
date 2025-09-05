@@ -1,9 +1,13 @@
-import { auth } from '@/database/firebase';
+import { auth, db } from '@/database/firebase';
 import { movePage } from '@/utils/helper';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import React from 'react';
 import {
+    Alert,
     Image,
     SafeAreaView,
     ScrollView,
@@ -81,22 +85,43 @@ const Login = (props: Props) => {
         setErrors({ email: '', password: '', general: '' });
 
         try {
-            console.log('Attempting login with:', form.email);
+            const result = await signInWithEmailAndPassword(auth, form.email, form.password);
+            const uid = result.user.uid;
 
-            // Sign in dengan email dan password
-            const userCredential = await signInWithEmailAndPassword(
-                auth,
-                form.email,
-                form.password
-            );
+            const userDocRef = doc(db, 'users', uid);
+            const userDocSnap = await getDoc(userDocRef);
 
-            // Login berhasil
-            const user = userCredential.user;
-            console.log('Login successful:', user);
+            if (!userDocSnap.exists()) {
+                Alert.alert('Data user tidak ditemukan di Firestore');
+                return;
+            }
 
+            const userDataFromFirestore = userDocSnap.data();
+
+            // Gabungkan data Firestore dengan token terbaru (jika ada)
+            const completeUserData = {
+                image: userDataFromFirestore.image || '',
+                uid: uid,
+                email: result.user.email || '',
+                name: userDataFromFirestore.namaLengkap || '',
+                nik: userDataFromFirestore.nik || '',
+                phone: userDataFromFirestore.noTelp || '',
+                alamat: userDataFromFirestore.alamat || '',
+                role: userDataFromFirestore.role || 'user',
+            };
+
+            // Simpan seluruh data ke AsyncStorage
+            await AsyncStorage.setItem('user', JSON.stringify(completeUserData));
+
+            if (completeUserData.role === 'admin') {
+                router.push('/admin')
+            } else {
+                router.push('/home')
+            }
+
+            setLoading(false)
             // Reset form setelah login berhasil
             setForm({ email: '', password: '' });
-
             // Navigasi atau tindakan setelah login berhasil
             // navigation.navigate('Home');
 

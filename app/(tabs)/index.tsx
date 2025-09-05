@@ -39,6 +39,7 @@ export default function Index() {
 
         // ✅ Sembunyikan splash screen
         await SplashScreen.hideAsync();
+        console.log('parser', parsed);
 
         // 🔁 Arahkan ke halaman sesuai role
         if (parsed?.role === 'admin') {

@@ -7,14 +7,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAx-wFdl3XMxSbCxJZQUHS7JCXT4C_mc3s",
-    authDomain: "skrips-zain-strawberry.firebaseapp.com",
-    databaseURL: "https://skrips-zain-strawberry-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "skrips-zain-strawberry",
-    storageBucket: "skrips-zain-strawberry.firebasestorage.app",
-    messagingSenderId: "395461719128",
-    appId: "1:395461719128:web:6c7b9b7f182071e840862d",
-    measurementId: "G-G4J89VW2SB"
+    apiKey: "AIzaSyD5bP1-dur3jiuOlANd27636kw8kOqlE0Y",
+    authDomain: "klinik-harum.firebaseapp.com",
+    projectId: "klinik-harum",
+    storageBucket: "klinik-harum.firebasestorage.app",
+    messagingSenderId: "736969242358",
+    appId: "1:736969242358:web:68e61a7de544f770b99ed7",
+    measurementId: "G-8SCHGZ6HVD"
 };
 const app = initializeApp(firebaseConfig);
 
