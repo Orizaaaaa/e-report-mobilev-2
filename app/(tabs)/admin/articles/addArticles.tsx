@@ -62,7 +62,7 @@ const addArticles = (props: Props) => {
                 createdAt: new Date(),
             });
 
-            Alert.alert("Sukses", "Promo berhasil disimpan!");
+            Alert.alert("Sukses", "Artikel berhasil disimpan!");
             setForm({
                 image: null,
                 title: "",
@@ -70,6 +70,7 @@ const addArticles = (props: Props) => {
                 writer: "",
                 writer_date: "",
             });
+            router.push('/(tabs)/admin/articles');
         } catch (error) {
             console.error("Error saving promo:", error);
             Alert.alert("Error", "Gagal menyimpan promo.");

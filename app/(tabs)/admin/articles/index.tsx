@@ -1,8 +1,10 @@
 import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
+import { db } from "@/database/firebase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { router, useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
-import { Animated, Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { router, useFocusEffect, useRouter } from "expo-router";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useCallback, useRef, useState } from "react";
+import { Animated, Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const screenWidth = Dimensions.get("window").width;
@@ -13,6 +15,7 @@ type Props = {
 
 const Article = ({ onNavigate }: Props) => {
     const route = useRouter();
+    const [articles, setArticles] = useState([] as any);
     const [isOpen, setIsOpen] = useState(false);
     const slideAnim = useRef(new Animated.Value(-screenWidth)).current;
 
@@ -32,6 +35,32 @@ const Article = ({ onNavigate }: Props) => {
             }).start();
         }
     };
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchReports = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'articles'));
+                    const articlesData = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+                    setArticles(articlesData);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil laporan:', err);
+                }
+            };
+
+            fetchReports();
+
+            return () => {
+                // cleanup jika diperlukan
+            };
+        }, [])
+    );
+
+    console.log(articles);
+
 
     return (
         <View className="flex-1 bg-white">
@@ -61,24 +90,34 @@ const Article = ({ onNavigate }: Props) => {
             </View>
 
             <ScrollView className="mt-5  px-4" >
-                <TouchableOpacity onPress={() =>
-                    router.push({
-                        pathname: "/admin/articles/[id]", // path dinamis
-                        params: { id: "33" },             // params harus string
-                    })
-                } className="p-3 bg-white rounded-xl shadow-2xl mb-6" >
-                    <View className="bg-gray-600 py-16 rounded-xl" >
+                {articles.map((item: any) => (
+                    <TouchableOpacity key={item.id} onPress={() =>
+                        router.push({
+                            pathname: "/admin/articles/[id]", // path dinamis
+                            params: { id: item.id },             // params harus string
+                        })
+                    } className="p-3 bg-white rounded-xl shadow-2xl mb-6" >
+                        <Image
+                            source={{ uri: item.image }}
+                            style={{
+                                width: '100%',
+                                height: 125,
+                                borderRadius: 10
+                            }}
+                            className='relative'
+                            resizeMode="cover"
+                        />
+                        <View className="py-2" >
+                            <Text className="font-medium text-[#205072]" >{item.title}</Text>
+                            <Text className="text-sm text-[#205072]" >{item.desc}</Text>
+                        </View>
+                        <View className="flex-row items-center gap-6" >
+                            <Text className="text-green-800" >Edit</Text>
+                            <Text className="text-red-600" >Hapus</Text>
+                        </View>
+                    </TouchableOpacity>
+                ))}
 
-                    </View>
-                    <View className="py-2" >
-                        <Text className="font-medium text-[#205072]" >Cara sikat bool</Text>
-                        <Text className="text-sm text-[#205072]" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa dignissimos rerum, eius, tempora deserunt dolorum facere natus minima fugit harum aliquam, doloribus in eligendi reprehenderit. Voluptatem totam quia non commodi.</Text>
-                    </View>
-                    <View className="flex-row items-center gap-6" >
-                        <Text className="text-green-800" >Edit</Text>
-                        <Text className="text-red-600" >Hapus</Text>
-                    </View>
-                </TouchableOpacity>
 
             </ScrollView>
 
