@@ -118,7 +118,7 @@ const DetailPredict = () => {
                 {/* Confidence */}
                 <View className="items-center justify-center mt-2">
                     <Text className="text-primaryNavy/70 text-sm">
-                        Tingkat Kepercayaan: {(confidence * 100).toFixed(2)}%
+                        Tingkat Kepercayaan: {confidence}
                     </Text>
                 </View>
 

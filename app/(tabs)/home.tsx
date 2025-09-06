@@ -1,8 +1,10 @@
 import CardReportScroll from '@/components/fragments/CardReport/CardReportScroll';
 import Promo from '@/components/fragments/IndicatorInfo/Promo';
+import { db } from '@/database/firebase';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
+import { collection, getDocs } from 'firebase/firestore';
 import React, { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Button, Card } from 'react-native-paper';
@@ -25,7 +27,7 @@ type PredictionResult = {
 
 
 export default function Home() {
-
+    const [articles, setArticles] = useState([] as any);
 
     // bottom sheet
     const handlePress = (id: number) => {
@@ -188,6 +190,29 @@ export default function Home() {
         },
     })
 
+    useFocusEffect(
+        useCallback(() => {
+            const fetchReports = async () => {
+                try {
+                    const snapshot = await getDocs(collection(db, 'articles'));
+                    const articlesData = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
+                    setArticles(articlesData);
+                } catch (err) {
+                    console.error('❌ Gagal mengambil laporan:', err);
+                }
+            };
+
+            fetchReports();
+
+            return () => {
+                // cleanup jika diperlukan
+            };
+        }, [])
+    );
+
     return (
 
         <SafeAreaView>
@@ -271,7 +296,7 @@ export default function Home() {
 
 
                     <View style={{ overflow: 'visible' }}>
-                        <Promo handlePress={() => handlePress(20)} />
+                        <Promo />
                     </View>
 
 
@@ -285,11 +310,12 @@ export default function Home() {
                             </TouchableOpacity>
 
                         </View>
+                        {articles.map((article: any, index: number) => (
+                            <CardReportScroll description={article.desc} image={{ uri: article.image }} handlepres={() => handlePress(article.id)} title={article.title} />
+
+                        ))}
 
 
-                        <CardReportScroll image={require('../../assets/images/artikle3.avif')} handlepres={() => handlePress(1)} title='Cara Menyikat Gigi Yang Baik dan Benar Untuk Seluruh Keluarga' description='Kita mungkin sudah menyikat gigi secara teratur, tapi apakah kita sudah melakukannya dengan benar? Simak cara menyikat gigi dengan benar, untuk Anda dan keluarga Anda' />
-                        <CardReportScroll image={require('../../assets/images/artikle1.jpeg')} handlepres={() => handlePress(2)} title='Apakah ibu hamil perlu rutin periksa gigi?' description='Di masa kehamilan , bukan hanya fisik dan mental yang harus diperhatikan, namun  kesehatan gigi dan mulut juga harus di perhatikan. Karena penyakit pada gigi dan mulut, seperti gigi berlubang dan radang gusi sering diderita oleh ibu hamil.' />
-                        <CardReportScroll image={require('../../assets/images/artikle2.jpg')} handlepres={() => handlePress(3)} title='Kapan Waktu yang Tepat Bawa Anak ke Dokter Gigi?' description='Kesehatan gigi dan mulut anak merupakan aspek penting dalam pertumbuhan dan perkembangan mereka. Salah satu pertanyaan yang sering muncul di benak orangtua adalah kapan waktu yang tepat untuk membawa anak ke dokter gigi.' />
                     </View>
                 </View>
 

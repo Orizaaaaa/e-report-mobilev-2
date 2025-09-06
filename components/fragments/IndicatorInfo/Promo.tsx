@@ -6,7 +6,7 @@ import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
 type Props = {
-    handlePress: () => void;
+    handlePress?: () => void;
 };
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -84,7 +84,6 @@ const Promo = ({ handlePress }: Props) => {
                 pagingEnabled={true}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={handlePress}
                         // style={{ paddingHorizontal: 0 }}
                         activeOpacity={0.9}
                     >

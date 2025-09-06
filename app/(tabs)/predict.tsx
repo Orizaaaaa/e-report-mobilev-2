@@ -234,9 +234,6 @@ const AppContent = () => {
                         </Button>
                     </View>
                 )}
-                <TouchableOpacity onPress={() => router.push('/detail_predict')}>
-                    <Text className='text-center text-primaryNavy font-semibold text-lg mt-4'>Detail</Text>
-                </TouchableOpacity>
 
                 <Portal>
                     <Modal
