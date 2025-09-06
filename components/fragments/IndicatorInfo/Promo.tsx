@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import { db } from '@/database/firebase';
+import { useFocusEffect } from 'expo-router';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useCallback, useState } from 'react';
 import { Dimensions, Image, TouchableOpacity, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
@@ -20,7 +23,44 @@ const imagesCarousel = [
 const { width } = Dimensions.get('window');
 
 const Promo = ({ handlePress }: Props) => {
+    const [promo, setPromo] = useState([] as any[]);
+    useFocusEffect(
+        useCallback(() => {
+            let isActive = true;
+
+            const fetchPromoImages = async () => {
+                try {
+
+                    const snapshot = await getDocs(collection(db, 'promo'));
+
+                    if (isActive) {
+                        const imageArray = snapshot.docs.map(doc => doc.data().image)
+                            .filter(image => image && typeof image === 'string');
+
+                        setPromo(imageArray);
+                    }
+                } catch (err) {
+                    console.error('❌ Gagal mengambil promo:', err);
+                } finally {
+                    if (isActive) {
+                        return () => {
+                            isActive = false;
+                        };
+                    }
+                }
+            };
+
+            fetchPromoImages();
+
+            return () => {
+                isActive = false;
+            };
+        }, [])
+    );
     const [activeIndex, setActiveIndex] = useState(0);
+    console.log(promo);
+
+
 
     return (
         <View style={{ marginTop: 10, marginBottom: 10, width: '100%' }}>
@@ -30,7 +70,7 @@ const Promo = ({ handlePress }: Props) => {
                 autoPlayInterval={3000}
                 width={width}
                 height={120}
-                data={imagesCarousel}
+                data={promo}
                 scrollAnimationDuration={1000}
                 onSnapToItem={(index) => setActiveIndex(index)}
                 mode="parallax"
@@ -49,7 +89,7 @@ const Promo = ({ handlePress }: Props) => {
                         activeOpacity={0.9}
                     >
                         <Image
-                            source={item}
+                            source={{ uri: item }}
                             style={{
                                 width: '100%',
                                 height: 120,
