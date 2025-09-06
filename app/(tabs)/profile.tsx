@@ -2,10 +2,27 @@ import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { useRoleStore } from "@/hook/state/stores/roleStore";
 import { AntDesign, Entypo, FontAwesome5, Fontisto, Ionicons, Octicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
+interface CompleteUserData {
+    image: string;
+    uid: string;
+    email: string;
+    name: string;
+    nik: string;
+    phone: string;
+    alamat: string;
+    usia: string;
+    role: string;
+}
+
+
 export default function Profile() {
+    const [userData, setUserData] = useState<CompleteUserData | null>(null);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
     const handleLogout = async () => {
         try {
             await AsyncStorage.removeItem('user');
@@ -15,6 +32,25 @@ export default function Profile() {
             console.error('Error logging out:', error);
         }
     }
+
+    useEffect(() => {
+        loadUserData();
+    }, []);
+
+    const loadUserData = async () => {
+        try {
+            const userJson = await AsyncStorage.getItem('user');
+
+            if (userJson) {
+                const userData: CompleteUserData = JSON.parse(userJson);
+                setUserData(userData);
+            }
+        } catch (error) {
+            console.error('Gagal mengambil data user:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <View  >
             <View className="bg-white">
@@ -33,7 +69,7 @@ export default function Profile() {
                             />
                         </View>
                         <View className="mt-5" >
-                            <Text className="text-white text-xl">Gabriel Yonathan</Text>
+                            <Text className="text-white text-xl">{userData?.name}</Text>
 
                         </View>
                     </View>
@@ -55,7 +91,7 @@ export default function Profile() {
                                     <Ionicons name="person-circle-outline" size={24} color="white" />
                                     <Text className="text-white">NIK</Text>
                                 </View>
-                                <Text className="text-white">23332121212121</Text>
+                                <Text className="text-white">{userData?.nik}</Text>
                             </View>
                         </View>
                         <View className="border-b-2 border-white pb-2 mb-2" >
@@ -64,7 +100,7 @@ export default function Profile() {
                                     <Fontisto name="email" size={24} color="white" />
                                     <Text className="text-white" >email</Text>
                                 </View>
-                                <Text className="text-white">gabrielmonyet@gmail.com</Text>
+                                <Text className="text-white">{userData?.email}</Text>
                             </View>
                         </View>
                         <View className="border-b-2 border-white pb-2 mb-2" >
@@ -73,7 +109,7 @@ export default function Profile() {
                                     <FontAwesome5 name="whatsapp" size={24} color="white" />
                                     <Text className="text-white">nomor handphone</Text>
                                 </View>
-                                <Text className="text-white">085150586363</Text>
+                                <Text className="text-white">{userData?.phone}</Text>
                             </View>
                         </View>
                         <View className="border-b-2 border-white pb-2 mb-2" >
@@ -82,7 +118,7 @@ export default function Profile() {
                                     <Entypo name="location-pin" size={22} color="white" />
                                     <Text className="text-white">lokasi</Text>
                                 </View>
-                                <Text className="text-white">Garut, Jawa Barat, Indonesia</Text>
+                                <Text className="text-white">{userData?.alamat}</Text>
                             </View>
                         </View>
 

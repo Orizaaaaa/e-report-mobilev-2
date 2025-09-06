@@ -108,6 +108,7 @@ const Login = (props: Props) => {
                 nik: userDataFromFirestore.nik || '',
                 phone: userDataFromFirestore.noTelp || '',
                 alamat: userDataFromFirestore.alamat || '',
+                usia: userDataFromFirestore.usia || '',
                 role: userDataFromFirestore.role || 'user',
             };
 

@@ -2,6 +2,7 @@ import CardReportScroll from '@/components/fragments/CardReport/CardReportScroll
 import Promo from '@/components/fragments/IndicatorInfo/Promo';
 import { db } from '@/database/firebase';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { router, useFocusEffect } from "expo-router";
 import { collection, getDocs } from 'firebase/firestore';
@@ -25,6 +26,10 @@ type PredictionResult = {
     probabilities: Record<string, string>
 }
 
+interface UserData {
+    name: string;
+    usia: number;
+}
 
 export default function Home() {
     const [articles, setArticles] = useState([] as any);
@@ -190,6 +195,29 @@ export default function Home() {
         },
     })
 
+    const [userData, setUserData] = useState<UserData | null>(null);
+
+
+    useEffect(() => {
+        const loadUserData = async () => {
+            try {
+                // Mengambil data dari AsyncStorage dengan key 'user'
+                const userJson = await AsyncStorage.getItem('user');
+
+                if (userJson) {
+                    const user: UserData = JSON.parse(userJson);
+                    setUserData(user);
+                }
+            } catch (error) {
+                console.error('Gagal mengambil data user:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadUserData();
+    }, []);
+
     useFocusEffect(
         useCallback(() => {
             const fetchReports = async () => {
@@ -231,8 +259,12 @@ export default function Home() {
 
                                 <View className="gap-3 flex-col" >
                                     <View className="flex-col gap-1">
-                                        <Text className="text-lg font-semibold text-white">Hi, Gabriel Yonathan</Text>
-                                        <Text className="text-sm font-extralight text-white">23 Tahun</Text>
+                                        <Text className="text-lg font-semibold text-white">
+                                            Hi, {userData?.name || 'Pengguna'}
+                                        </Text>
+                                        <Text className="text-sm font-extralight text-white">
+                                            {userData?.usia ? `${userData.usia} Tahun` : 'Usia tidak tersedia'}
+                                        </Text>
                                     </View>
                                 </View>
                             </View>
