@@ -7,7 +7,7 @@ export default function Profile() {
         <View  >
             <View className="bg-white">
                 {/* <View className="bg-primaryNavy py-12  rounded-bl-[60px]" > */}
-                <View className="bg-primaryBlue py-12  rounded-bl-[60px]" >
+                <View className="bg-['#2AA8E1'] py-12  rounded-bl-[60px]" >
                     <View className="flex-row justify-between items-center px-3">
                         <ButtonBack colorIcon="white" />
                         <Octicons name="gear" size={24} color="white" />
@@ -28,7 +28,7 @@ export default function Profile() {
                 </View>
             </View>
 
-            <View className="bg-primaryBlue">
+            <View className="bg-['#2AA8E1']">
                 {/* <View className="bg-primaryNavy"> */}
                 <View className="bg-white rounded-tr-[60px] p-4  -mt-0 h-full" >
                     <View className="mt-9 flex-row justify-between px-2" >
@@ -36,7 +36,7 @@ export default function Profile() {
                         <AntDesign name="edit" size={24} color="#002B5A" />
                     </View>
 
-                    <View className=" w-full bg-primaryBlue py-3 mt-6  rounded-2xl" >
+                    <View className=" w-full bg-['#2AA8E1'] py-3 mt-6  rounded-2xl" >
                         <View className="border-b-2 border-white pb-2 mb-2" >
                             <View className="flex-row justify-between px-4 py-2">
                                 <View className="flex-row justify-center items-center gap-2">
