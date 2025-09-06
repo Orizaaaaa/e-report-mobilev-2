@@ -343,7 +343,7 @@ export default function Home() {
 
                         </View>
                         {articles.map((article: any, index: number) => (
-                            <CardReportScroll description={article.desc} image={{ uri: article.image }} handlepres={() => handlePress(article.id)} title={article.title} />
+                            <CardReportScroll key={index} description={article.desc} image={{ uri: article.image }} handlepres={() => handlePress(article.id)} title={article.title} />
 
                         ))}
 
