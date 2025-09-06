@@ -1,4 +1,6 @@
-import React from 'react';
+import { db } from '@/database/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const fasilitasData = [
@@ -13,6 +15,22 @@ const fasilitasData = [
 ];
 
 const FasilitasPage = () => {
+    const [Fasilitas, setFasilitas]: any = React.useState([]);
+    const fetchFasilitas = async () => {
+        try {
+            const snapshot = await getDocs(collection(db, 'facilities'));
+            const fasilitasData = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setFasilitas(fasilitasData);
+        } catch (err) {
+            console.error('❌ Gagal mengambil laporan:', err);
+        }
+    };
+    useEffect(() => {
+        fetchFasilitas();
+    }, []);
     return (
         <View className="flex-1 bg-white">
             <ScrollView className="bg-white h-full">
@@ -23,13 +41,13 @@ const FasilitasPage = () => {
 
                 {/* Grid Fasilitas */}
                 <View className="flex-row flex-wrap justify-center px-4">
-                    {fasilitasData.map((item) => (
+                    {Fasilitas.map((item: any, index: number) => (
                         <TouchableOpacity
                             key={item.id}
                             className="w-[45%] m-2 bg-white rounded-lg shadow-md overflow-hidden"
                             activeOpacity={0.8}
                         >
-                            <Image source={item.image} className="w-full h-28" resizeMode="cover" />
+                            <Image source={{ uri: item.image }} className="w-full h-28" resizeMode="cover" />
                             <View className="p-2 items-center">
                                 <Text className="text-sm font-medium text-gray-800 text-center">
                                     {item.title}
