@@ -111,60 +111,50 @@ const AppContent = () => {
         }
     }
 
+    // Di halaman upload/scan
     const uploadImage = async () => {
-        if (!image) return
-        setLoading(true)
+        if (!image) return;
+        setLoading(true);
 
-        const formData = new FormData()
+        const formData = new FormData();
         formData.append('image', {
             uri: image.uri,
             name: 'photo.jpg',
             type: 'image/jpeg',
-        } as any)
+        } as any);
+
         try {
             const res = await fetch('https://saving-lemming-loyal.ngrok-free.app/predict/', {
                 method: 'POST',
                 body: formData,
-            })
+            });
 
-            if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`)
+            if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-            const json: PredictionResult = await res.json()
-            setResult(json)
+            const json: PredictionResult = await res.json();
+            setResult(json);
 
-            // Langsung simpan ke Firestore dan navigasi ke halaman detail
-            try {
-                const predictionId = await savePredictionToFirestore(json, image.uri);
+            // Simpan ke Firestore dan dapatkan ID dokumen
+            const predictionId = await savePredictionToFirestore(json, image.uri);
 
-                if (predictionId) {
-                    router.push({
-                        pathname: "/detail_predict",
-                        params: {
-                            predictionId: predictionId,
-                            predictedClass: json.predicted_class,
-                            confidence: json.confidence,
-                            description: json.description,
-                            guestAction: JSON.stringify(json.guest_action),
-                            imageUri: image.uri
-                        }
-                    });
-                } else {
-                    // Jika gagal menyimpan ke Firestore, tetap tampilkan hasil
-                    setModalVisible(true);
-                }
-            } catch (saveError) {
-                console.error("Error saving to Firestore:", saveError);
-                // Tetap tampilkan hasil meski gagal simpan ke database
+            if (predictionId) {
+                // Navigasi ke halaman detail dengan ID prediksi saja
+                router.push({
+                    pathname: "/detail_predict",
+                    params: {
+                        predictionId: predictionId // Hanya kirim ID, data lain diambil dari Firestore
+                    }
+                });
+            } else {
                 setModalVisible(true);
             }
-
         } catch (e) {
-            console.error(e)
-            alert('Failed to get prediction')
+            console.error(e);
+            alert('Failed to get prediction');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     return (
         <View>
@@ -244,6 +234,9 @@ const AppContent = () => {
                         </Button>
                     </View>
                 )}
+                <TouchableOpacity onPress={() => router.push('/detail_predict')}>
+                    <Text className='text-center text-primaryNavy font-semibold text-lg mt-4'>Detail</Text>
+                </TouchableOpacity>
 
                 <Portal>
                     <Modal
