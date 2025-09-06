@@ -26,7 +26,7 @@ module.exports = {
         primaryGreen: '#E2FA49',
         primaryWhite: '#fbfafa',
         primaryBlack: '#141414',
-        primaryBlue: '#20BEC6',
+        primaryBlue: '#2AA8E1',
         secondaryBlue: '#2C3E50 ',
         tertiaryBlue: '#F5F5F5',
         aksen1: '#FFE66D',

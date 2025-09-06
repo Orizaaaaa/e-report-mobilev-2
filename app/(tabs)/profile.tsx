@@ -1,6 +1,8 @@
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
 import { AntDesign, Entypo, FontAwesome5, Fontisto, Ionicons, Octicons } from "@expo/vector-icons";
-import { Image, Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Profile() {
     return (
@@ -73,6 +75,17 @@ export default function Profile() {
                                 <Text className="text-white">Garut, Jawa Barat, Indonesia</Text>
                             </View>
                         </View>
+
+                        <TouchableOpacity onPress={() => {
+                            AsyncStorage.removeItem('user');
+                            router.replace('/(tabs)/login');
+                        }} className="border-b-2 border-white pb-2 mb-2" >
+                            <View className="flex-row items-center px-4 py-2">
+                                <View className="flex-row justify-center items-center gap-2">
+                                    <Text className="text-white">Logout</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
 
                     </View>
                 </View>

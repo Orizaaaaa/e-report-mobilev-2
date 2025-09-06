@@ -92,8 +92,8 @@ const DetailPredict = () => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => router.push("/history_predict")}
-                        className="flex-1 items-center bg-primaryBlue p-4 rounded-2xl shadow"
+                        onPress={() => router.push("/home")}
+                        className="flex-1 items-center bg-[#2AA8E1] p-4 rounded-2xl shadow"
                     >
                         <Text className="text-lg font-semibold text-white">Selesai</Text>
                     </TouchableOpacity>

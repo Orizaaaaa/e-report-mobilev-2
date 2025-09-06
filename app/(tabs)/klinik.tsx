@@ -221,7 +221,7 @@ export default function Klinik() {
                                 </View>
                             </TouchableOpacity>
 
-                            <View
+                            <TouchableOpacity onPress={() => router.push('/fasilitas')}
                                 className="m-2 rounded-xl bg-[#FEDD3F]"
                                 style={{ width: boxWidth, height: 130 }}
                             >
@@ -234,11 +234,11 @@ export default function Klinik() {
                                     />
                                     <Text className="text-center mt-2 text-xl font-bold text-[#205072]">Fasilitas</Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
 
                         <View className="flex-row justify-center items-center">
-                            <View
+                            <TouchableOpacity onPress={() => router.push('/promo')}
                                 className="m-2 rounded-xl bg-[#FEDD3F]"
                                 style={{ width: boxWidth, height: 130 }}
                             >
@@ -249,12 +249,12 @@ export default function Klinik() {
                                         source={require('../../assets/images/megaphone.png')}
                                         resizeMode="contain"
                                     />
-                                    <Text className="text-center mt-2 text-xl font-bold text-[#205072]">Event & Promo</Text>
+                                    <Text className="text-center mt-2 text-xl font-bold text-[#205072]">Promo</Text>
 
                                 </View>
-                            </View>
+                            </TouchableOpacity>
 
-                            <View
+                            <TouchableOpacity onPress={() => router.push('/testimoni')}
                                 className="m-2 rounded-xl bg-[#FEDD3F]"
                                 style={{ width: boxWidth, height: 130 }}
                             >
@@ -267,84 +267,13 @@ export default function Klinik() {
                                     />
                                     <Text className="text-center mt-2 text-xl font-bold text-[#205072]">Testimoni</Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
-
-
-
-                    {/* <View className='flex-row justify-center items-center '>
-                        <View className='w-48 h-36 mr-2 rounded-xl bg-[#FDEFB2]'>
-                            <View className='m-5 flex-col justify-center'>
-                                <Image
-                                    className='w-50 h-60 mr-2 mb-1'
-                                    source={require('../../assets/images/building.png')}
-                                    resizeMode='contain'
-                                />
-                            </View>
-                        </View>
-
-                        <View className='w-50 h-50 rounded-xl bg-[#FDEFB2]'>
-                            <View className='mx-3 mt-3 flex-col justify-center'>
-                                <Image
-                                    className='w-50 h-60 mr-2 mb-1'
-                                    source={require('../../assets/images/building.png')}
-                                    resizeMode='contain'
-                                />
-                                <Text className='text-primaryNavy text-sm font-semibold text-center'>Klinik Harum Lembang</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View className='flex-row justify-center items-center'>
-                        <View className='w-50 h-50 mr-2 rounded-xl bg-[#FDEFB2]'>
-                            <View className='m-5 flex-col justify-center'>
-                                <Image
-                                    className='w-50 h-60 mr-2 mb-1'
-                                    source={require('../../assets/images/building.png')}
-                                    resizeMode='contain'
-                                />
-                            </View>
-                        </View>
-
-                        <View className='w-50 h-50 rounded-xl bg-[#FDEFB2]'>
-                            <View className='mx-3 mt-3 flex-col justify-center'>
-                                <Image
-                                    className='w-50 h-60 mr-2 mb-1'
-                                    source={require('../../assets/images/building.png')}
-                                    resizeMode='contain'
-                                />
-                                <Text className='text-primaryNavy text-sm font-semibold text-center'>Klinik Harum Lembang</Text>
-                            </View>
-                        </View>
-                    </View> */}
-
-
-
-
                 </View>
 
 
             </ScrollView >
-            {/* <View style={{ position: 'absolute', bottom: insets.bottom + 10, left: 0, right: 0, paddingHorizontal: 16 }}>
-        <FAB
-          icon="camera"
-          label="Ambil Foto"
-          onPress={() => pickImage(true)}
-          style={{ backgroundColor: '#00A8A8' }}
-        />
-      </View>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}
-      >
-
-      </View> */}
-
         </SafeAreaView >
     );
 

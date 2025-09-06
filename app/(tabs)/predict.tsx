@@ -309,7 +309,7 @@ const AppContent = () => {
                 <View className='mb-10 mt-2 px-6 flex-row gap-3 justify-center items-center' style={styles.btnContainer}>
                     <TouchableOpacity
                         onPress={() => (router.push("/history_predict"))}
-                        className="w-full items-center bg-primaryBlue p-4 rounded-2xl shadow"
+                        className="w-full items-center bg-[#2AA8E1] p-4 rounded-2xl shadow"
                     >
                         <Text className="text-lg font-semibold text-white">Lihat Riwayat Deteksi</Text>
                     </TouchableOpacity>
