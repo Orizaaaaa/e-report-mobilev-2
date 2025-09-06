@@ -44,7 +44,7 @@ const SideBar = ({ onNavigate }: Props) => {
         { id: 1, label: "Tambah Dokter", icon: "plus" },
         { id: 2, label: "Tambah Artikel", icon: "plus" },
         { id: 3, label: "Tambah Promo", icon: "plus" },
-        { id: 4, label: "Tambah Tips Harian", icon: "plus" },
+        { id: 4, label: "Tambah Fasilitas", icon: "plus" },
     ];
 
 
@@ -183,6 +183,24 @@ const SideBar = ({ onNavigate }: Props) => {
                             icon={"home-outline"}
                         />
 
+                        <ButtonNav
+                            title="Doctors"
+                            onPress={() => {
+                                router.push("/admin/doctors");
+                                toggleSidebar();
+                            }}
+                            icon={"medkit-outline"}
+                        />
+
+                        <ButtonNav
+                            title="Facilities"
+                            onPress={() => {
+                                router.push("/admin/facilities");
+                                toggleSidebar();
+                            }}
+                            icon={"business-outline"}
+                        />
+
                         <ButtonNav title="Artikel"
                             onPress={() => {
                                 router.push("/admin/articles");
@@ -198,6 +216,7 @@ const SideBar = ({ onNavigate }: Props) => {
                             }}
                             icon={"ticket-outline"}
                         />
+
 
                         <TouchableOpacity
                             className="flex-row items-center p-3"

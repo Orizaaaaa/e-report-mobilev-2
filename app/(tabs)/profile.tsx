@@ -76,14 +76,15 @@ export default function Profile() {
                             </View>
                         </View>
 
-                        <TouchableOpacity onPress={() => {
-                            AsyncStorage.removeItem('user');
-                            router.replace('/(tabs)/login');
-                        }} className="border-b-2 border-white pb-2 mb-2" >
-                            <View className="flex-row items-center px-4 py-2">
-                                <View className="flex-row justify-center items-center gap-2">
-                                    <Text className="text-white">Logout</Text>
-                                </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                AsyncStorage.removeItem('user');
+                                router.replace('/(tabs)/login');
+                            }}
+                            className="border-b-2 border-white pb-2 mb-2"
+                        >
+                            <View className="px-4 py-2 items-center">
+                                <Text className="text-white font-medium">Logout</Text>
                             </View>
                         </TouchableOpacity>
 

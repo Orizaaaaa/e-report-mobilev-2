@@ -1,12 +1,11 @@
 import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
 import { db } from "@/database/firebase";
-import { AntDesign, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useFocusEffect, useRouter } from "expo-router";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import React, { useCallback, useRef, useState } from "react";
-import { Alert, Animated, Dimensions, Text, TouchableOpacity, View } from "react-native";
-import { Image } from "react-native-animatable";
+import { Alert, Animated, Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const screenWidth = Dimensions.get("window").width;
@@ -15,9 +14,9 @@ type Props = {
     onNavigate?: (screen: string) => void;
 };
 
-const Promo = ({ onNavigate }: Props) => {
+const Doctors = ({ onNavigate }: Props) => {
     const route = useRouter();
-    const [promos, setPromos] = useState([] as any[]);
+    const [doctors, setDoctors] = useState([] as any);
     const [isOpen, setIsOpen] = useState(false);
     const slideAnim = useRef(new Animated.Value(-screenWidth)).current;
 
@@ -38,31 +37,31 @@ const Promo = ({ onNavigate }: Props) => {
         }
     };
 
-    const fetchPromos = async () => {
+    const fetchDoctors = async () => {
         try {
-            const snapshot = await getDocs(collection(db, "promo"));
-            const promosData = snapshot.docs.map(doc => ({
+            const snapshot = await getDocs(collection(db, "doctors"));
+            const doctorsData = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setPromos(promosData);
+            setDoctors(doctorsData);
         } catch (err) {
-            console.error("❌ Gagal mengambil data promo:", err);
+            console.error("❌ Gagal mengambil data dokter:", err);
         }
     };
 
     useFocusEffect(
         useCallback(() => {
-            fetchPromos();
+            fetchDoctors();
             return () => { };
         }, [])
     );
 
-    // Fungsi untuk menghapus promo
-    const handleDeletePromo = (promoId: string, promoName: string) => {
+    // Fungsi untuk menghapus dokter
+    const handleDeleteDoctor = (doctorId: string, doctorName: string) => {
         Alert.alert(
             "Konfirmasi Hapus",
-            `Apakah Anda yakin ingin menghapus promo ${promoName}?`,
+            `Apakah Anda yakin ingin menghapus dokter ${doctorName}?`,
             [
                 {
                     text: "Batal",
@@ -73,13 +72,13 @@ const Promo = ({ onNavigate }: Props) => {
                     style: "destructive",
                     onPress: async () => {
                         try {
-                            await deleteDoc(doc(db, "promo", promoId));
-                            Alert.alert("Sukses", "Promo berhasil dihapus");
-                            // Refresh daftar promo
-                            fetchPromos();
+                            await deleteDoc(doc(db, "doctors", doctorId));
+                            Alert.alert("Sukses", "Dokter berhasil dihapus");
+                            // Refresh daftar dokter
+                            fetchDoctors();
                         } catch (error) {
-                            console.error("Error deleting promo: ", error);
-                            Alert.alert("Error", "Gagal menghapus promo");
+                            console.error("Error deleting doctor: ", error);
+                            Alert.alert("Error", "Gagal menghapus dokter");
                         }
                     }
                 }
@@ -87,75 +86,94 @@ const Promo = ({ onNavigate }: Props) => {
         );
     };
 
-    // Fungsi untuk format harga
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-        }).format(price);
-    };
-
     return (
         <View className="flex-1 bg-white">
-
+            {/* Header */}
             <View className="pt-12 px-4">
                 <View className="flex-row items-center justify-between mb-5">
-                    {/* Kiri */}
                     <View className="flex-row items-center">
                         <TouchableOpacity onPress={toggleSidebar}>
                             <Ionicons name="menu" size={28} color="#205072" />
                         </TouchableOpacity>
-                        <Text className="ml-3 text-lg text-[#205072] ">Promo</Text>
+                        <Text className="text-[#205072] ml-2 text-lg">Daftar Dokter</Text>
                     </View>
-
-                    {/* Kanan */}
                     <MaterialIcons name="notifications-none" size={24} color="black" />
                 </View>
             </View>
 
-            {/* Tambah Promo */}
+            {/* Tambah Dokter */}
             <View className="flex items-end">
-                <TouchableOpacity className="px-4 mr-5 rounded-lg mt-3 bg-[#FEDD3F] py-3" onPress={() => router.push("/admin/promo/addPromo")}>
-                    <Text className="text-center text-primaryNavy font-semibold">Tambah Promo</Text>
+                <TouchableOpacity className="px-4 mr-5 rounded-lg mt-3 bg-[#FEDD3F] py-3" onPress={() => router.push("/admin/doctors/addDoctors")}>
+                    <Text className="text-center text-primaryNavy font-semibold">Tambah Dokter</Text>
                 </TouchableOpacity>
             </View>
 
+            {/* List Dokter */}
             <ScrollView className="mt-5 px-4 mb-20">
-                {promos.map((item) => (
-                    <View key={item.id} className="shadow-2xl rounded-2xl bg-white p-4 mb-4">
-                        <TouchableOpacity onPress={() => route.push(`/admin/promo/${item.id}` as any)}>
-                            <View className='w-full h-36 mr-6'>
+                {doctors.map((item: any) => (
+                    <View key={item.id} className="mb-4 rounded-2xl shadow-lg bg-white">
+                        <TouchableOpacity
+                            onPress={() =>
+                                router.push({
+                                    pathname: "/admin/doctors/[id]",
+                                    params: { id: item.id },
+                                })
+                            }
+                            activeOpacity={0.8}
+                            className="flex-row h-44"
+                        >
+                            {/* Foto Dokter */}
+                            <View className="h-full w-36">
                                 <Image
-                                    className='w-full h-full rounded-lg'
-                                    source={{ uri: item.image }}
-                                    resizeMode='cover'
+                                    source={{ uri: item.icon }}
+                                    className="w-32 h-full rounded-2xl"
+                                    resizeMode="cover"
                                 />
                             </View>
-                            <Text className="mt-3 text-xl text-[#205072] font-medium">{item.title}</Text>
-                            <View className="self-start">
-                                <Text className="p-2 rounded-xl bg-[#FEDD3F] text-[#205072] my-2 w-fit font-light">
-                                    {item.start_periode} - {item.end_periode}
-                                </Text>
-                            </View>
 
-                            <View className="flex flex-col mb-5">
-                                <Text className="text-lg font-semibold text-[#FEDD3F]">
-                                    {formatPrice(item.price_promo)}
-                                </Text>
-                                <Text className="text-gray-500 line-through">
-                                    {formatPrice(item.real_price)}
-                                </Text>
-                            </View>
+                            {/* Info Dokter */}
+                            <View className="flex-col gap-2 m-3 flex-1">
+                                <View className="flex-col">
+                                    <Text className="text-md font-semibold text-primaryNavy">
+                                        {item.title}
+                                    </Text>
+                                    <Text className="text-md text-primaryNavy">{item.description}</Text>
+                                </View>
 
-                            <View className="flex-row gap-3 justify-end">
-                                <TouchableOpacity onPress={() => route.push(`/admin/promo/${item.id}/edit` as any)}>
-                                    <AntDesign name="edit" size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleDeletePromo(item.id, item.title)}>
-                                    <Feather name="trash-2" size={24} color="red" />
-                                </TouchableOpacity>
+                                {/* Hari */}
+                                <View className="flex-row items-center bg-[#FEDD3F] rounded-full px-3 py-2 w-40">
+                                    <MaterialCommunityIcons name="calendar" size={18} color="#205072" />
+                                    <Text
+                                        className="text-sm text-gray-600 ml-2"
+                                        numberOfLines={1}
+                                        ellipsizeMode="tail"
+                                        style={{ width: 120 }}
+                                    >
+                                        {item.hari || "Hari: -"}
+                                    </Text>
+                                </View>
+
+                                {/* Jam */}
+                                <View className="flex-row items-center bg-[#FEDD3F] rounded-full px-3 py-2 w-40">
+                                    <MaterialCommunityIcons name="clock-outline" size={18} color="#205072" />
+                                    <Text
+                                        className="text-sm text-gray-600 ml-2"
+                                        numberOfLines={1}
+                                        ellipsizeMode="tail"
+                                        style={{ width: 120 }}
+                                    >
+                                        {item.jam || "Jam: -"}
+                                    </Text>
+                                </View>
                             </View>
+                        </TouchableOpacity>
+
+                        {/* Tombol Hapus */}
+                        <TouchableOpacity
+                            onPress={() => handleDeleteDoctor(item.id, item.title)}
+                            className="absolute top-2 right-2 bg-red-500 p-2 rounded-full"
+                        >
+                            <Ionicons name="trash-outline" size={20} color="white" />
                         </TouchableOpacity>
                     </View>
                 ))}
@@ -175,18 +193,15 @@ const Promo = ({ onNavigate }: Props) => {
                 style={{
                     transform: [{ translateX: slideAnim }],
                 }}
-                className="absolute top-0 bottom-0 left-0 w-3/4 bg-white "
+                className="absolute top-0 bottom-0 left-0 w-3/4 bg-white"
             >
-                <ScrollView className="bg-[#D4F2FF]" >
-                    {/* Header */}
+                <ScrollView className="bg-[#D4F2FF]">
+                    {/* Header Sidebar */}
                     <View className="mb-8 bg-[#2AA8E1] py-16 rounded-br-[60px] px-6 justify-center">
                         <View className="flex-row items-center gap-4">
-                            {/* Avatar */}
                             <View className="w-20 h-20 rounded-full bg-green-200 items-center justify-center">
                                 <Ionicons name="person" size={40} color="#16a34a" />
                             </View>
-
-                            {/* Nama + Role */}
                             <View className="justify-center">
                                 <Text className="text-lg text-white font-medium">Bunga Melati</Text>
                                 <Text className="text-white font-light">Admin</Text>
@@ -194,9 +209,10 @@ const Promo = ({ onNavigate }: Props) => {
                         </View>
                     </View>
 
-                    <View className="p-6" >
-                        {/* Menu Items */}
-                        <ButtonNav title="Home"
+                    {/* Menu Items */}
+                    <View className="p-6">
+                        <ButtonNav
+                            title="Home"
                             onPress={() => {
                                 router.push("/admin/home");
                                 toggleSidebar();
@@ -214,15 +230,7 @@ const Promo = ({ onNavigate }: Props) => {
                         />
 
                         <ButtonNav
-                            title="Facilities"
-                            onPress={() => {
-                                router.push("/admin/facilities");
-                                toggleSidebar();
-                            }}
-                            icon={"business-outline"}
-                        />
-
-                        <ButtonNav title="Artikel"
+                            title="Articles"
                             onPress={() => {
                                 router.push("/admin/articles");
                                 toggleSidebar();
@@ -230,7 +238,8 @@ const Promo = ({ onNavigate }: Props) => {
                             icon={"newspaper-outline"}
                         />
 
-                        <ButtonNav title="Promo"
+                        <ButtonNav
+                            title="Promo"
                             onPress={() => {
                                 router.push("/admin/promo");
                                 toggleSidebar();
@@ -238,12 +247,11 @@ const Promo = ({ onNavigate }: Props) => {
                             icon={"ticket-outline"}
                         />
 
-
                         <TouchableOpacity
                             className="flex-row items-center p-3"
                             onPress={() => {
-                                AsyncStorage.removeItem('user');
-                                router.replace('/(tabs)/login');
+                                AsyncStorage.removeItem("user");
+                                router.replace("/(tabs)/login");
                                 toggleSidebar();
                             }}
                         >
@@ -251,12 +259,10 @@ const Promo = ({ onNavigate }: Props) => {
                             <Text className="ml-3 text-base text-red-600">Logout</Text>
                         </TouchableOpacity>
                     </View>
-
-
                 </ScrollView>
             </Animated.View>
         </View>
     );
 };
 
-export default Promo;
+export default Doctors;

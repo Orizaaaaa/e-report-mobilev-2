@@ -80,13 +80,19 @@ const Article = ({ onNavigate }: Props) => {
                     <MaterialIcons name="notifications-none" size={24} color="black" />
                 </View>
             </View>
-
+            {/* 
             <View className="px-4 bg-primaryNavy py-3 rounded-b-[60px]" >
                 <TouchableOpacity onPress={() => router.push("/admin/articles/addArticles")}>
                     <Text className="text-center text-white"  >
                         Tambah Artikel
                     </Text>
 
+                </TouchableOpacity>
+            </View> */}
+
+            <View className="flex items-end">
+                <TouchableOpacity className="px-4 mr-5 rounded-lg mt-3 bg-[#FEDD3F] py-3" onPress={() => router.push("/admin/articles/addArticles")}>
+                    <Text className="text-center text-primaryNavy font-semibold">Tambah Artikel</Text>
                 </TouchableOpacity>
             </View>
 
