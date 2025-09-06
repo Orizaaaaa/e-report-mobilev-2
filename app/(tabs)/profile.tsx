@@ -1,10 +1,20 @@
 import ButtonBack from "@/components/elements/buttonBack/ButtonBack";
+import { useRoleStore } from "@/hook/state/stores/roleStore";
 import { AntDesign, Entypo, FontAwesome5, Fontisto, Ionicons, Octicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Profile() {
+    const handleLogout = async () => {
+        try {
+            await AsyncStorage.removeItem('user');
+            useRoleStore.getState().setRole('admin');
+            router.replace('/login');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    }
     return (
         <View  >
             <View className="bg-white">
@@ -77,10 +87,7 @@ export default function Profile() {
                         </View>
 
                         <TouchableOpacity
-                            onPress={() => {
-                                AsyncStorage.removeItem('user');
-                                router.replace('/(tabs)/login');
-                            }}
+                            onPress={handleLogout}
                             className="border-b-2 border-white pb-2 mb-2"
                         >
                             <View className="px-4 py-2 items-center">
