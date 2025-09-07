@@ -3,7 +3,7 @@ import { db } from '@/database/firebase';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { router, useLocalSearchParams } from 'expo-router';
-import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, KeyboardAvoidingView, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
@@ -78,7 +78,7 @@ const EditDoctor = (props: Props) => {
             }
 
             // Simpan ke Firestore
-            await addDoc(collection(db, "doctors"), {
+            await updateDoc(doc(db, "doctors", id), {
                 ...form,
                 icon: imageUrl,
                 createdAt: new Date(),
