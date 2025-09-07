@@ -1,5 +1,6 @@
 import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
 import { db } from "@/database/firebase";
+import { movePage } from "@/utils/helper";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useFocusEffect, useRouter } from "expo-router";
@@ -113,12 +114,7 @@ const Facilities = ({ onNavigate }: Props) => {
                 {facilities.map((item: any) => (
                     <View key={item.id} className="mb-4 rounded-2xl shadow-lg bg-white">
                         <TouchableOpacity
-                            onPress={() =>
-                                router.push({
-                                    pathname: "/admin/facilities/[id]",
-                                    params: { id: item.id },
-                                })
-                            }
+                            onPress={() => movePage(`admin/facilities/${item.id}/edit`)}
                             activeOpacity={0.8}
                             className="flex-row h-28"
                         >
