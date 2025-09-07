@@ -22,7 +22,9 @@ const CardReportScroll = ({ image, handlepres, title, description }: Props) => {
                     <Text className='font-light'>{title}</Text>
 
                     <View className='mt-3 flex-row justify-between items-center'>
-                        <Text className='font-light text-sm text-gray-500'>{description}....</Text>
+                        <Text className='font-light text-sm text-gray-500'
+                            numberOfLines={2}
+                            ellipsizeMode="tail" >{description}</Text>
 
                     </View>
 

@@ -210,9 +210,9 @@ const Doctors = ({ onNavigate }: Props) => {
                     </View>
 
                     {/* Menu Items */}
-                    <View className="p-6">
-                        <ButtonNav
-                            title="Home"
+                    <View className="p-6" >
+                        {/* Menu Items */}
+                        <ButtonNav title="Dashboard"
                             onPress={() => {
                                 router.push("/admin/home");
                                 toggleSidebar();
@@ -220,17 +220,7 @@ const Doctors = ({ onNavigate }: Props) => {
                             icon={"home-outline"}
                         />
 
-                        <ButtonNav
-                            title="Doctors"
-                            onPress={() => {
-                                router.push("/admin/doctors");
-                                toggleSidebar();
-                            }}
-                            icon={"medkit-outline"}
-                        />
-
-                        <ButtonNav
-                            title="Articles"
+                        <ButtonNav title="Artikel Kesehatan"
                             onPress={() => {
                                 router.push("/admin/articles");
                                 toggleSidebar();
@@ -239,7 +229,24 @@ const Doctors = ({ onNavigate }: Props) => {
                         />
 
                         <ButtonNav
-                            title="Promo"
+                            title="Daftar Dokter"
+                            onPress={() => {
+                                router.push("/admin/doctors");
+                                toggleSidebar();
+                            }}
+                            icon={"medkit-outline"}
+                        />
+
+                        <ButtonNav
+                            title="Fasilitas Klinik"
+                            onPress={() => {
+                                router.push("/admin/facilities");
+                                toggleSidebar();
+                            }}
+                            icon={"business-outline"}
+                        />
+
+                        <ButtonNav title="Promo"
                             onPress={() => {
                                 router.push("/admin/promo");
                                 toggleSidebar();
@@ -247,11 +254,12 @@ const Doctors = ({ onNavigate }: Props) => {
                             icon={"ticket-outline"}
                         />
 
+
                         <TouchableOpacity
                             className="flex-row items-center p-3"
                             onPress={() => {
-                                AsyncStorage.removeItem("user");
-                                router.replace("/(tabs)/login");
+                                AsyncStorage.removeItem('user');
+                                router.replace('/(tabs)/login');
                                 toggleSidebar();
                             }}
                         >
@@ -259,6 +267,7 @@ const Doctors = ({ onNavigate }: Props) => {
                             <Text className="ml-3 text-base text-red-600">Logout</Text>
                         </TouchableOpacity>
                     </View>
+
                 </ScrollView>
             </Animated.View>
         </View>

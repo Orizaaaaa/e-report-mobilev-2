@@ -114,10 +114,19 @@ const Article = ({ onNavigate }: Props) => {
                             className='relative'
                             resizeMode="cover"
                         />
-                        <View className="py-2" >
-                            <Text className="font-medium text-[#205072]" >{item.title}</Text>
-                            <Text className="text-sm text-[#205072]" >{item.desc}</Text>
+                        <View className="py-2">
+                            <Text className="font-medium text-[#205072]">
+                                {item.title}
+                            </Text>
+                            <Text
+                                className="text-sm text-[#205072]"
+                                numberOfLines={2}   // hanya tampil 2 baris
+                                ellipsizeMode="tail" // kasih "..." di akhir
+                            >
+                                {item.desc}
+                            </Text>
                         </View>
+
                         <View className="flex-row items-center gap-6" >
                             <Text className="text-green-800" >Edit</Text>
                             <Text className="text-red-600" >Hapus</Text>
@@ -164,7 +173,7 @@ const Article = ({ onNavigate }: Props) => {
 
                     <View className="p-6" >
                         {/* Menu Items */}
-                        <ButtonNav title="Home"
+                        <ButtonNav title="Dashboard"
                             onPress={() => {
                                 router.push("/admin/home");
                                 toggleSidebar();
@@ -172,12 +181,30 @@ const Article = ({ onNavigate }: Props) => {
                             icon={"home-outline"}
                         />
 
-                        <ButtonNav title="Articles"
+                        <ButtonNav title="Artikel Kesehatan"
                             onPress={() => {
                                 router.push("/admin/articles");
                                 toggleSidebar();
                             }}
                             icon={"newspaper-outline"}
+                        />
+
+                        <ButtonNav
+                            title="Daftar Dokter"
+                            onPress={() => {
+                                router.push("/admin/doctors");
+                                toggleSidebar();
+                            }}
+                            icon={"medkit-outline"}
+                        />
+
+                        <ButtonNav
+                            title="Fasilitas Klinik"
+                            onPress={() => {
+                                router.push("/admin/facilities");
+                                toggleSidebar();
+                            }}
+                            icon={"business-outline"}
                         />
 
                         <ButtonNav title="Promo"
@@ -187,6 +214,7 @@ const Article = ({ onNavigate }: Props) => {
                             }}
                             icon={"ticket-outline"}
                         />
+
 
                         <TouchableOpacity
                             className="flex-row items-center p-3"

@@ -196,7 +196,7 @@ const Promo = ({ onNavigate }: Props) => {
 
                     <View className="p-6" >
                         {/* Menu Items */}
-                        <ButtonNav title="Home"
+                        <ButtonNav title="Dashboard"
                             onPress={() => {
                                 router.push("/admin/home");
                                 toggleSidebar();
@@ -204,8 +204,16 @@ const Promo = ({ onNavigate }: Props) => {
                             icon={"home-outline"}
                         />
 
+                        <ButtonNav title="Artikel Kesehatan"
+                            onPress={() => {
+                                router.push("/admin/articles");
+                                toggleSidebar();
+                            }}
+                            icon={"newspaper-outline"}
+                        />
+
                         <ButtonNav
-                            title="Doctors"
+                            title="Daftar Dokter"
                             onPress={() => {
                                 router.push("/admin/doctors");
                                 toggleSidebar();
@@ -214,20 +222,12 @@ const Promo = ({ onNavigate }: Props) => {
                         />
 
                         <ButtonNav
-                            title="Facilities"
+                            title="Fasilitas Klinik"
                             onPress={() => {
                                 router.push("/admin/facilities");
                                 toggleSidebar();
                             }}
                             icon={"business-outline"}
-                        />
-
-                        <ButtonNav title="Artikel"
-                            onPress={() => {
-                                router.push("/admin/articles");
-                                toggleSidebar();
-                            }}
-                            icon={"newspaper-outline"}
                         />
 
                         <ButtonNav title="Promo"
@@ -251,7 +251,6 @@ const Promo = ({ onNavigate }: Props) => {
                             <Text className="ml-3 text-base text-red-600">Logout</Text>
                         </TouchableOpacity>
                     </View>
-
 
                 </ScrollView>
             </Animated.View>

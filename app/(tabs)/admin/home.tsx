@@ -1,7 +1,7 @@
 import ButtonNav from "@/components/fragments/ButtonNav/ButtonNav";
 import { Entypo, Feather, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+import { RelativePathString, router } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
     Animated,
@@ -41,10 +41,10 @@ const SideBar = ({ onNavigate }: Props) => {
     };
 
     const menus = [
-        { id: 1, label: "Tambah Dokter", icon: "plus" },
-        { id: 2, label: "Tambah Artikel", icon: "plus" },
-        { id: 3, label: "Tambah Promo", icon: "plus" },
-        { id: 4, label: "Tambah Fasilitas", icon: "plus" },
+        { id: 1, label: "Tambah Dokter", icon: "plus", url: "/admin/doctors/addDoctors" },
+        { id: 2, label: "Tambah Artikel", icon: "plus", url: "/admin/articles/addArticles" },
+        { id: 3, label: "Tambah Promo", icon: "plus", url: "/admin/promo/addPromo" },
+        { id: 4, label: "Tambah Fasilitas", icon: "plus", url: "/admin/facilities/addFacilities" },
     ];
 
 
@@ -111,7 +111,7 @@ const SideBar = ({ onNavigate }: Props) => {
                 <View className="flex-row flex-wrap justify-between px-6 ">
                     {menus.map((item) => (
                         <TouchableOpacity
-                            key={item.id}
+                            onPress={() => router.push(item.url as RelativePathString)}
                             className="bg-yellow-400 rounded-xl shadow-2xl px-5 py-3 w-[48%] mb-4 flex flex-row  items-center gap-2"
                         >
                             <FontAwesome6 name={item.icon as any} size={14} color="black" />
@@ -175,7 +175,7 @@ const SideBar = ({ onNavigate }: Props) => {
 
                     <View className="p-6" >
                         {/* Menu Items */}
-                        <ButtonNav title="Home"
+                        <ButtonNav title="Dashboard"
                             onPress={() => {
                                 router.push("/admin/home");
                                 toggleSidebar();
@@ -183,8 +183,16 @@ const SideBar = ({ onNavigate }: Props) => {
                             icon={"home-outline"}
                         />
 
+                        <ButtonNav title="Artikel Kesehatan"
+                            onPress={() => {
+                                router.push("/admin/articles");
+                                toggleSidebar();
+                            }}
+                            icon={"newspaper-outline"}
+                        />
+
                         <ButtonNav
-                            title="Doctors"
+                            title="Daftar Dokter"
                             onPress={() => {
                                 router.push("/admin/doctors");
                                 toggleSidebar();
@@ -193,20 +201,12 @@ const SideBar = ({ onNavigate }: Props) => {
                         />
 
                         <ButtonNav
-                            title="Facilities"
+                            title="Fasilitas Klinik"
                             onPress={() => {
                                 router.push("/admin/facilities");
                                 toggleSidebar();
                             }}
                             icon={"business-outline"}
-                        />
-
-                        <ButtonNav title="Artikel"
-                            onPress={() => {
-                                router.push("/admin/articles");
-                                toggleSidebar();
-                            }}
-                            icon={"newspaper-outline"}
                         />
 
                         <ButtonNav title="Promo"
