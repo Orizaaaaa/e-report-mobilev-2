@@ -1,9 +1,10 @@
 import { db } from '@/database/firebase'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons'
-import { useFocusEffect, useLocalSearchParams } from 'expo-router'
-import { doc, getDoc } from 'firebase/firestore'
+import { movePage } from '@/utils/helper'
+import { MaterialIcons } from '@expo/vector-icons'
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
+import { deleteDoc, doc, getDoc } from 'firebase/firestore'
 import React, { useCallback, useState } from 'react'
-import { Image, TouchableOpacity } from 'react-native'
+import { Alert, Image, TouchableOpacity } from 'react-native'
 import { View } from 'react-native-animatable'
 import { ScrollView, Text } from 'react-native-gesture-handler'
 
@@ -47,6 +48,35 @@ const DetailArticle = (props: Props) => {
         }, [articleId])
     );
 
+    const handleDelete = async () => {
+        // Tampilkan alert konfirmasi terlebih dahulu
+        Alert.alert(
+            "Konfirmasi Hapus",
+            "Apakah Anda yakin ingin menghapus data ini?",
+            [
+                {
+                    text: "Batal",
+                    style: "cancel"
+                },
+                {
+                    text: "Hapus",
+                    onPress: async () => {
+                        try {
+                            await deleteDoc(doc(db, 'articles', id as string));
+                            console.log('Artikel berhasil dihapus');
+                            // Tambahkan alert sukses jika perlu
+                            Alert.alert("Sukses", "Data Artikel berhasil dihapus");
+                            router.push('/admin/articles');
+                        } catch (error) {
+                            console.error('Gagal menghapus Artikel:', error);
+                            // Tambahkan alert error
+                            Alert.alert("Error", "Gagal menghapus data dokter");
+                        }
+                    }
+                }
+            ]
+        );
+    };
     console.log(data);
 
     return (
@@ -65,28 +95,14 @@ const DetailArticle = (props: Props) => {
                 />
                 <Text className='mt-5 text-[#205072]' >{data.title}</Text>
 
-                <View className='mt-4 flex-row items-center gap-4'>
-                    <Ionicons name="person" size={30} color="#16a34a" />
-                    <View>
-                        <Text className='text-sm font-light' >Dr Kemem</Text>
-                        <Text className='text-sm font-light' >Dr Sepesialis gigi umum</Text>
-                    </View>
-
-                </View>
-
-                <View className='mt-5' >
-                    <Text className='text-sm font-light' >Oleh diidng</Text>
-                    <Text className='text-sm font-light' >Di publikasi 10 agustus 2021</Text>
-                </View>
-
                 <Text className='mt-6 text-sm font-light text-[#205072]' >{data.desc}</Text>
 
-                <View className="flex-row mt-5 gap-3">
-                    <TouchableOpacity className="flex-1 bg-green-700 px-6 py-3 rounded-lg items-center">
-                        <Text className="text-white font-medium">Edit</Text>
+                <View className="flex-row my-5 gap-3">
+                    <TouchableOpacity className="flex-1 bg-green-700 px-6 py-3 rounded-lg items-center" onPress={() => movePage(`/admin/articles/${id}/edit`)}>
+                        <Text className="text-white font-medium" >Edit</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-1 bg-red-700 px-6 py-3 rounded-lg items-center">
+                    <TouchableOpacity className="flex-1 bg-red-700 px-6 py-3 rounded-lg items-center" onPress={handleDelete}>
                         <Text className="text-white font-medium">Hapus</Text>
                     </TouchableOpacity>
                 </View>
