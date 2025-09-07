@@ -1,10 +1,10 @@
-import { db, storage } from '@/database/firebase'
+import { postImage } from '@/database/cloudinary'
+import { db } from '@/database/firebase'
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { addDoc, collection } from 'firebase/firestore'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import React, { useState } from 'react'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import React, { useEffect, useState } from 'react'
 import { Alert, KeyboardAvoidingView, Text, TouchableOpacity } from 'react-native'
 import { Image, View } from 'react-native-animatable'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
@@ -12,7 +12,8 @@ import { ActivityIndicator } from 'react-native-paper'
 type Props = {}
 
 const add_promo = (props: Props) => {
-    const { edit } = useLocalSearchParams<{ edit: string }>();
+    const { id } = useLocalSearchParams<{ id: string }>();
+    const promoId = id
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
@@ -22,9 +23,24 @@ const add_promo = (props: Props) => {
         end_periode: '',
         real_price: 0,
         price_promo: 0,
-        des: ''
+        description: ''
 
     });
+
+    useEffect(() => {
+        const fetchPromo = async () => {
+            try {
+                const docRef = doc(db, 'promo', id);
+                const docSnap: any = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setForm(docSnap.data());
+                }
+            } catch (error) {
+                console.error('Error fetching promo:', error);
+            }
+        };
+        fetchPromo();
+    }, []);
 
     const handleChange = (key: keyof typeof form, value: string | number) => {
         setForm(prev => ({ ...prev, [key]: value }));
@@ -41,9 +57,10 @@ const add_promo = (props: Props) => {
         }
     };
 
-    const handleSubmit = async () => {
-        // 🔹 Validasi semua field
+    const handleEdit = async () => {
         setLoading(true);
+
+        // Validasi semua field
         if (
             !form.image ||
             !form.title.trim() ||
@@ -51,48 +68,53 @@ const add_promo = (props: Props) => {
             !form.end_periode.trim() ||
             !form.real_price ||
             !form.price_promo ||
-            !form.des.trim()
+            !form.description.trim()
         ) {
             Alert.alert("Error", "Semua field wajib diisi!");
+            setLoading(false);
             return;
         }
 
         try {
-            // 🔹 Upload image ke Firebase Storage
-            const response = await fetch(form.image);
-            const blob = await response.blob();
-            const filename = `promo/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
-            const storageRef = ref(storage, filename);
+            let imageUrl: any = form.image;
 
-            await uploadBytes(storageRef, blob);
-            const downloadURL = await getDownloadURL(storageRef);
+            // Deteksi apakah image adalah file (bukan string URL)
+            if (typeof form.image !== 'string') {
+                // Upload foto baru ke Cloudinary
+                imageUrl = await postImage({ image: form.image });
 
-            // 🔹 Simpan ke Firestore
-            await addDoc(collection(db, "promo"), {
-                ...form,
-                image: downloadURL, // ganti uri dengan url dari storage
-                createdAt: new Date(),
+                if (!imageUrl) {
+                    Alert.alert("Error", "Upload gambar gagal. Coba lagi!");
+                    setLoading(false);
+                    return;
+                }
+            }
+
+            // Update data di Firestore
+            await updateDoc(doc(db, "promo", promoId), {
+                title: form.title,
+                image: imageUrl,
+                start_periode: form.start_periode,
+                end_periode: form.end_periode,
+                real_price: form.real_price,
+                price_promo: form.price_promo,
+                description: form.description,
+                updatedAt: new Date(),
             });
 
-            Alert.alert("Sukses", "Promo berhasil disimpan!");
-            setForm({
-                image: null,
-                title: "",
-                start_periode: "",
-                end_periode: "",
-                real_price: 0,
-                price_promo: 0,
-                des: "",
-            });
-            setLoading(false);
+            Alert.alert("Sukses", "Promo berhasil diupdate!");
+            router.back(); // Kembali ke halaman sebelumnya
         } catch (error) {
-            console.error("Error saving promo:", error);
-            Alert.alert("Error", "Gagal menyimpan promo.");
+            console.error("Error updating promo:", error);
+            Alert.alert("Error", "Gagal mengupdate promo.");
+        } finally {
             setLoading(false);
         }
     };
 
     console.log(form);
+    console.log('edit', id);
+
 
     return (
         <ScrollView>
@@ -186,15 +208,15 @@ const add_promo = (props: Props) => {
                 <Text className='mb-1 text-gray-600'>Deskripsi</Text>
                 <TextInput
                     className='p-3 border-2 border-gray-200 rounded-xl'
-                    value={form.des}
-                    onChangeText={(text) => setForm({ ...form, des: text })}
+                    value={form.description}
+                    onChangeText={(text) => setForm({ ...form, description: text })}
                     multiline
                     numberOfLines={4}
                 />
             </View>
 
             <View className='flex justify-center items-center p-5' >
-                <TouchableOpacity onPress={handleSubmit} className='p-3 bg-[#FEDD3F] rounded-xl w-full' >
+                <TouchableOpacity onPress={handleEdit} className='p-3 bg-[#FEDD3F] rounded-xl w-full' >
                     {loading ? <ActivityIndicator size="small" color="white" />
                         : <Text className='text-center text-[#205072] font-medium' >Simpan</Text>}
 
