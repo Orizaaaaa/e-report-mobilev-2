@@ -110,7 +110,7 @@ const SideBar = ({ onNavigate }: Props) => {
                 <Text className="text-xl font-medium text-[#205072] px-6 my-3" >Akses Cepat</Text>
                 <View className="flex-row flex-wrap justify-between px-6 ">
                     {menus.map((item) => (
-                        <TouchableOpacity
+                        <TouchableOpacity key={item.id}
                             onPress={() => router.push(item.url as RelativePathString)}
                             className="bg-yellow-400 rounded-xl shadow-2xl px-5 py-3 w-[48%] mb-4 flex flex-row  items-center gap-2"
                         >
