@@ -1,79 +1,48 @@
+import { db } from '@/database/firebase';
+import { movePage } from '@/utils/helper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useCallback, useState } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 
-const dentalServices = [
-    {
-        id: '1',
-        title: 'Drg. Nur Eka P',
-        description: 'Dokter Gigi',
-        icon: require('../../assets/images/doctor1.jpeg'),
-        jam: '14.00 - 18.00',
-        hari: 'Selasa & Jumat',
-    },
-    {
-        id: '2',
-        title: 'Drg. Sarah N. A. Widodo',
-        description: 'Dokter Gigi',
-        icon: require('../../assets/images/doctor2.jpeg'),
-        jam: '14.00 - 18.00',
-        hari: 'Rabu & Kamis',
-    },
-    {
-        id: '3',
-        title: 'Drg. Anten, SP.KGA',
-        description: 'Dokter Spesialis Gigi Anak',
-        icon: require('../../assets/images/doctor3.jpeg'),
-        jam: '13.00 - 16.00',
-        hari: 'Selasa & Jumat',
-    },
-    {
-        id: '4',
-        title: 'Drg. Three Rejeki N, SP.KGA',
-        description: 'Dokter Spesialis Gigi Anak',
-        icon: require('../../assets/images/doctor4.jpeg'),
-        jam: '09.00 - 16.00',
-        hari: 'Sabtu',
-    },
-    {
-        id: '5',
-        title: 'Dr. Erick Satria, SP.B',
-        description: 'Dokter Spesialis Bedah',
-        icon: require('../../assets/images/doctor5.jpeg'),
-        jam: '16.00 - 18.00',
-        hari: 'Sabtu',
-    },
-    {
-        id: '6',
-        title: 'Dr. Devi M Susanto',
-        description: 'Dokter Umum',
-        icon: require('../../assets/images/doctor6.jpeg'),
-        jam: '16.00 - 18.00',
-        hari: 'Senin & Sabtu',
-    },
-    {
-        id: '7',
-        title: 'Drg. Helmi Budimansyah ',
-        description: 'Dokter Gigi',
-        icon: require('../../assets/images/doctor7.jpeg'),
-        jam: '16.00 - 20.00',
-        hari: 'Senin',
-    },
-];
+;
 
 const Dokter = () => {
+    const [doctors, setDoctors] = useState([] as any);
     const router = useRouter();
+    const fetchDoctors = async () => {
+        try {
+            const snapshot = await getDocs(collection(db, "doctors"));
+            const doctorsData = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setDoctors(doctorsData);
+        } catch (err) {
+            console.error("❌ Gagal mengambil data dokter:", err);
+        }
+    };
 
-    const renderItem = ({ item }: { item: typeof dentalServices[0] }) => (
+    useFocusEffect(
+        useCallback(() => {
+            fetchDoctors();
+            return () => { };
+        }, [])
+    );
+
+
+
+    const renderItem = ({ item }: { item: any }) => (
         <TouchableOpacity
             activeOpacity={0.8}
+            onPress={() => movePage(`/dokter/${item.id}`)}
             className="flex-row bg-white h-44 mx-5 mb-3 rounded-2xl shadow-lg"
         >
             <View className="h-full w-36">
                 <Image
                     className="w-32 rounded-2xl h-full"
-                    source={item.icon as any}
+                    source={{ uri: item.icon }}
                     resizeMode="cover"
                 />
             </View>
@@ -129,7 +98,7 @@ const Dokter = () => {
 
             <FlatList
                 className="mt-8 mb-10"
-                data={dentalServices}
+                data={doctors}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}

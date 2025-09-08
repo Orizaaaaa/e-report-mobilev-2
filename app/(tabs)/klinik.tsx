@@ -26,10 +26,7 @@ export default function Klinik() {
 
 
     // bottom sheet
-    const handlePress = () => {
-        // Navigasi ke halaman detail dengan ID
-        router.push(`/report/21`);
-    };
+
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -206,7 +203,7 @@ export default function Klinik() {
                     {/* koding nya di sini tod */}
                     <View className='mt-5'>
                         <View className="flex-row justify-center items-center">
-                            <TouchableOpacity onPress={() => router.push('/dokter')}
+                            <TouchableOpacity onPress={() => router.push('/(tabs)/dokter/index.tsx')}
                                 className="m-2 rounded-xl bg-[#FEDD3F]"
                                 style={{ width: boxWidth, height: 130 }}
                             >
