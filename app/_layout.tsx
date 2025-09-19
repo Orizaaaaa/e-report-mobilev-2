@@ -1,0 +1,327 @@
+import { useRoleStore } from '@/hook/stores/roleStore';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigationState } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
+import { Tabs } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import '../global.css';
+
+Notifications.setNotificationHandler({
+  handleNotification: async (): Promise<Notifications.NotificationBehavior> => ({
+    shouldShowAlert: true, // kita akan tampilkan manual
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: false,
+    shouldShowList: true,
+  }),
+});
+
+const Colors = {
+
+  primaryOrange: '#FF840C',
+  primaryBlue: '#40D8D4',
+  primaryGreen: '#E2FA49',
+  primaryWhite: 'white',
+  primaryBlack: '#1E2A38'
+};
+
+const animate1 = {
+  0: { scale: 0.5, translateY: 7 },
+  0.92: { translateY: -34 },
+  1: { scale: 1.2, translateY: -24 }
+};
+
+const animate2 = {
+  0: { scale: 1.2, translateY: -24 },
+  1: { scale: 1, translateY: 7 }
+};
+
+const circle1 = {
+  0: { scale: 0 },
+  0.3: { scale: 0.9 },
+  0.5: { scale: 0.2 },
+  0.8: { scale: 0.7 },
+  1: { scale: 1 }
+};
+
+const circle2 = {
+  0: { scale: 1 },
+  1: { scale: 0 }
+};
+
+const tabsUser = [
+  { name: 'index', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'user/index', title: 'Beranda', icon: 'home' },
+  { name: 'user/contest/index', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'user/report/index', title: 'Laporan', icon: 'newspaper-outline' },
+  { name: 'user/profile/index', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'user/profile/setting', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'user/notif', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'info/index', title: 'Info', icon: 'person-circle-outline' },
+  { name: 'register', title: 'Profile', icon: 'person-circle-outline' },
+  { name: 'login', title: 'Profile', icon: 'person-circle-outline' },
+];
+
+
+const tabsAdmin = [
+  { name: 'admin/index', title: 'Beranda', icon: 'home' },
+  { name: 'admin/report/index', title: 'Laporan', icon: 'newspaper-outline' },
+  { name: 'admin/contest/index', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/contest/addContest', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/notif/NotifPage', title: 'Lomba', icon: 'medal-outline' },
+  { name: 'admin/profile/setting', title: 'Profile', icon: 'medal-outline' },
+  { name: 'admin/profile/index', title: 'Profile', icon: 'person-circle-outline' },
+]
+
+
+// ... (Warna dan animasi tetap sama)
+
+const TabButton = ({ item, onPress }: any) => {
+
+  const state = useNavigationState(state => state);
+  const currentRoute = state.routes[state.index].name;
+  const isReportDetail = currentRoute.startsWith('user/report/index') && currentRoute !== 'user/report/index';
+  const isProfileSetting = currentRoute.startsWith('user/profile/');
+  const focused =
+    !isReportDetail &&
+    (currentRoute === item.name ||
+      (item.name === 'user/profile/index' && isProfileSetting));
+  const viewRef = useRef<any>(null);
+  const circleRef = useRef<any>(null);
+  const textRef = useRef<any>(null);
+
+  const bgColor = Colors.primaryBlack;
+
+  useEffect(() => {
+    if (focused) {
+      viewRef.current?.animate(animate1);
+      circleRef.current?.animate(circle1);
+      textRef.current?.transitionTo({ scale: 1 });
+    } else {
+      viewRef.current?.animate(animate2);
+      circleRef.current?.animate(circle2);
+      textRef.current?.transitionTo({ scale: 0 });
+    }
+  }, [focused]);
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={1}
+      style={styles.container}>
+      <Animatable.View
+        ref={viewRef}
+        duration={1000}
+        style={styles.container}>
+        <View style={[styles.btn, { backgroundColor: bgColor }]}>
+          <Animatable.View
+            ref={circleRef}
+            style={[styles.circle, { backgroundColor: Colors.primaryOrange }]}
+          />
+          <Ionicons
+            name={item.icon}
+            size={24}
+            color={focused ? Colors.primaryBlack : Colors.primaryOrange}
+          />
+        </View>
+        <Animatable.Text
+          ref={textRef}
+          style={[styles.text, { color: Colors.primaryWhite }]}>
+          {item.title}
+        </Animatable.Text>
+
+      </Animatable.View>
+    </TouchableOpacity>
+  );
+};
+export default function Layout() {
+  // nanti role di ambil dari local storage
+
+  const role = useRoleStore((state) => state.role); // ✅ Ambil role dari Zustand
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Tabs backBehavior="history"
+        screenOptions={({ route }) => {
+          // daftar halaman yang harus sembunyikan tab bar
+          const hideTabBarRoutes = ['user/report/[id]', 'admin/report/[id]', 'user/contest/[id]',
+            'admin/notif', 'login', 'info/index', 'info/report/[id]/index', 'register', 'user/report/[id]/index', 'user/report/[id]/[edit]', 'index', 'admin/notif/NotifPage',
+            'admin/contest/[id],  '];
+
+          const shouldHideTabBar = hideTabBarRoutes.includes(route.name);
+
+          return {
+            headerShown: false,
+            tabBarStyle: shouldHideTabBar ? { display: 'none' } : styles.tabBar,
+            tabBarHideOnKeyboard: true,
+          };
+        }}
+      >
+
+        {[...tabsUser, ...tabsAdmin].map((tab, index) => {
+          const isUserTab = tabsUser.find(t => t.name === tab.name);
+          const isAdminTab = tabsAdmin.find(t => t.name === tab.name);
+
+          const shouldHide =
+            tab.name === 'user/profile/setting' || // selalu disembunyikan
+            tab.name === 'admin/profile/setting' || // selalu disembunyikan
+            tab.name === 'user/notif' || // selalu disembunyikan
+            tab.name === 'admin/notif/NotifPage' || // selalu disembunyikan
+            tab.name === 'admin/contest/addContest' || // selalu disembunyikan
+            tab.name === 'index' || // selalu disembunyikan
+            tab.name === 'register' || // selalu disembunyikan
+            tab.name === 'login' || // selalu disembunyikan
+            tab.name === 'info/index' || // selalu disembunyikan
+
+
+            (role === 'admin' && isUserTab) ||
+            (role !== 'admin' && isAdminTab);
+
+          return (
+            <Tabs.Screen
+              key={index}
+              name={tab.name}
+              options={{
+                animation: 'shift',
+                tabBarItemStyle: shouldHide ? { display: 'none' } : undefined,
+                tabBarButton: shouldHide ? () => null : (props) => <TabButton {...props} item={tab} />,
+                title: tab.title,
+              }}
+            />
+          );
+        })}
+
+
+
+        <Tabs.Screen
+          name="user/report/[id]"
+          options={{
+            tabBarItemStyle: { display: 'none' },
+            tabBarButton: () => null,
+          }}
+        />
+        <Tabs.Screen
+          name="admin/report/[id]"
+          options={{
+
+            tabBarItemStyle: { display: 'none' },
+
+
+            tabBarButton: () => null,
+
+
+          }}
+        />
+        <Tabs.Screen
+          name="admin/contest/[id]"
+          options={{
+
+            tabBarItemStyle: { display: 'none' },
+
+
+            tabBarButton: () => null,
+
+
+          }}
+        />
+
+        <Tabs.Screen
+          name="user/report/[id]/index"
+          options={{
+
+            tabBarItemStyle: { display: 'none' },
+
+
+            tabBarButton: () => null,
+
+
+          }}
+        />
+        <Tabs.Screen
+          name="user/report/[id]/[edit]"
+          options={{
+
+            tabBarItemStyle: { display: 'none' },
+
+
+            tabBarButton: () => null,
+
+
+          }}
+        />
+        <Tabs.Screen
+          name="info/report/[id]/index"
+          options={{
+
+            tabBarItemStyle: { display: 'none' },
+
+
+            tabBarButton: () => null,
+
+
+          }}
+        />
+
+        <Tabs.Screen
+          name="user/contest/[id]"
+          options={{
+
+            tabBarItemStyle: { display: 'none' },
+
+
+            tabBarButton: () => null,
+
+
+          }}
+        />
+      </Tabs>
+    </GestureHandlerRootView>
+  );
+}
+// Styles tetap sama
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 70,
+  },
+  tabBar: {
+    height: 70,
+    position: 'absolute',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 16,
+    marginBottom: 16,
+    borderRadius: 16,
+    backgroundColor: Colors.primaryBlack,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 10,
+  },
+  btn: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 4,
+    borderColor: Colors.primaryBlack,
+    backgroundColor: Colors.primaryWhite,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  circle: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 25,
+  },
+  text: {
+    fontSize: 12,
+    textAlign: 'center',
+    fontWeight: '400',
+    marginTop: 4
+  }
+});
