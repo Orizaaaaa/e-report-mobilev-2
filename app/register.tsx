@@ -8,7 +8,7 @@ import {
     createUserWithEmailAndPassword,
     UserCredential,
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
@@ -140,38 +140,144 @@ const RegisterScreen = () => {
         return isValid;
     };
 
+
     const signUp = async () => {
         setLoading(true);
+
         if (!validateForm()) {
             setLoading(false);
             return;
         }
 
         try {
-            const result: UserCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
-            const uid: string = result.user.uid;
-            const downloadURL = await uploadOneImageToStorage(form.image, uid, 'users_profiles');
+            const nik = form.nik.toString().trim();
+            console.log("Memeriksa NIK:", nik);
 
-            await setDoc(doc(db, 'users', uid), {
+            // 1. Cari NIK di koleksi nik-auth (karena disimpan sebagai field "NIK")
+            const nikQuery = query(
+                collection(db, "nik-auth"),
+                where("NIK", "==", nik)
+            );
+            const querySnapshot = await getDocs(nikQuery);
+
+            if (querySnapshot.empty) {
+                setLoading(false);
+                Alert.alert(
+                    "Registrasi Gagal",
+                    "NIK Anda tidak terdaftar dalam sistem. Silakan hubungi administrator."
+                );
+                return;
+            }
+
+            // 2. Cek apakah email sudah dipakai
+            const emailQuery = query(
+                collection(db, "users"),
+                where("email", "==", form.email.trim().toLowerCase())
+            );
+            const emailSnapshot = await getDocs(emailQuery);
+
+            if (!emailSnapshot.empty) {
+                setLoading(false);
+                Alert.alert("Registrasi Gagal", "Email sudah terdaftar");
+                return;
+            }
+
+            // 3. Cek apakah NIK sudah dipakai di users
+            const nikUserQuery = query(
+                collection(db, "users"),
+                where("nik", "==", nik)
+            );
+            const nikUserSnapshot = await getDocs(nikUserQuery);
+
+            if (!nikUserSnapshot.empty) {
+                setLoading(false);
+                Alert.alert("Registrasi Gagal", "NIK sudah terdaftar");
+                return;
+            }
+
+            // 4. Registrasi akun baru
+            const result: UserCredential = await createUserWithEmailAndPassword(
+                auth,
+                form.email.trim().toLowerCase(),
+                form.password
+            );
+
+            const uid: string = result.user.uid;
+            console.log("User created with UID:", uid);
+
+            // 5. Upload foto profil
+            let downloadURL = "";
+            if (form.image) {
+                try {
+                    downloadURL = await uploadOneImageToStorage(
+                        form.image,
+                        uid,
+                        "users_profiles"
+                    );
+                } catch (uploadError) {
+                    console.warn("Gagal upload gambar:", uploadError);
+                    downloadURL = "https://via.placeholder.com/150";
+                }
+            }
+
+            // 6. Simpan data user ke Firestore
+            const userData = {
                 image: downloadURL,
-                email: form.email,
-                name: form.name,
-                nik: form.nik,
-                phone: form.phone,
-                location: form.location,
+                email: form.email.trim().toLowerCase(),
+                name: form.name.trim(),
+                nik: nik,
+                phone: form.phone.toString().trim(),
+                location: form.location.trim(),
                 role: form.role,
-            });
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                isActive: true
+            };
+
+            await setDoc(doc(db, "users", uid), userData);
+            console.log("User data saved successfully");
+
+            // 7. (opsional) update dokumen nik-auth yang ditemukan → kasih tanda registered
+            try {
+                const foundDoc = querySnapshot.docs[0];
+                await setDoc(
+                    doc(db, "nik-auth", foundDoc.id),
+                    {
+                        status: "registered",
+                        registeredAt: new Date(),
+                        registeredBy: uid
+                    },
+                    { merge: true }
+                );
+                console.log("NIK status updated");
+            } catch (updateError) {
+                console.warn("Gagal update status NIK:", updateError);
+            }
 
             setLoading(false);
-            router.push('/login')
-            // You might want to navigate to another screen after successful registration
-            // For example: navigation.navigate('Home');
+            Alert.alert("Sukses", "Registrasi berhasil!");
+            router.push("/login");
         } catch (error: any) {
-            Alert.alert('Gagal Register', error.message);
+            setLoading(false);
+            console.error("Error during registration:", error);
+
+            if (error.code === "auth/email-already-in-use") {
+                Alert.alert("Gagal Register", "Email sudah terdaftar");
+            } else if (error.code === "auth/weak-password") {
+                Alert.alert("Gagal Register", "Password terlalu lemah");
+            } else if (error.code === "auth/invalid-email") {
+                Alert.alert("Gagal Register", "Format email tidak valid");
+            } else {
+                Alert.alert(
+                    "Gagal Register",
+                    error.message || "Terjadi kesalahan saat registrasi"
+                );
+            }
         }
     };
 
 
+    console.log(form);
 
 
     return (
