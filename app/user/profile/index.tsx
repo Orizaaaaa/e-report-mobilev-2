@@ -173,7 +173,7 @@ export default function Profile() {
 
                     <View className="w-full py-3 rounded-2xl">
                         <Item title="Nama" value={user.name} formValue={form.name} icon={<Ionicons name="person-circle-outline" size={24} color="gray" />} isEditing={isEditing} onChangeText={(text) => handleChange('name', text)} />
-                        <Item title="NIK" value={user.nik} formValue={form.nik} icon={<AntDesign name="idcard" size={24} color="gray" />} isEditing={isEditing} onChangeText={(text) => handleChange('nik', text)} keyboardType="numeric" />
+                        <Item title="NIK" value={user.nik} formValue={form.nik} icon={<AntDesign name="idcard" size={24} color="gray" />} isEditing={false} onChangeText={(text) => handleChange('nik', text)} keyboardType="numeric" />
                         <Item title="Email" value={user.email} formValue={form.email} icon={<Fontisto name="email" size={24} color="gray" />} isEditing={isEditing} onChangeText={(text) => handleChange('email', text)} keyboardType="email-address" />
                         <Item title="Nomor Handphone" value={user.phone} formValue={form.phone} icon={<FontAwesome5 name="whatsapp" size={24} color="gray" />} isEditing={isEditing} onChangeText={(text) => handleChange('phone', text)} keyboardType="phone-pad" />
                         <Item title="Lokasi" value={user.location} formValue={form.location} icon={<Entypo name="location-pin" size={22} color="gray" />} isEditing={isEditing} onChangeText={(text) => handleChange('location', text)} />

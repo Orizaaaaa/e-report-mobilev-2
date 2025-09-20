@@ -7,7 +7,7 @@ module.exports = function (api) {
         ],
         plugins: [
             // plugin lain jika ada
-            "react-native-reanimated/plugin", // harus paling akhir!
+            "react-native-worklets/plugin", // harus paling akhir!
         ],
     };
 };
